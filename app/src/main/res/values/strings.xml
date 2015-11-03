@@ -1,0 +1,44 @@
+<resources>
+    <string name="app_url">10.0.3.93/tradingplatform</string>
+    <string name="app_name">Trading platform</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+
+    <string name="group_menu_title">My trading platform</string>
+    <string name="action_address">Address</string>
+    <string name="action_order">My order</string>
+    <string name="action_watch_list">My watch list</string>
+    <string name="action_wallet">My wallet</string>
+    <string name="action_message">My message</string>
+    <string name="subheader">More</string>
+    <string name="action_signup">Sign up</string>
+    <string name="action_login">Login</string>
+
+
+    <string name="bssmenu_buy">BUY</string>
+    <string name="bssmenu_share">SHARE</string>
+    <string name="bssmenu_sell">SELL</string>
+
+
+    <string name="buymenu_display">Product</string>
+    <string name="buymenu_groupbuy">GroupBuy</string>
+    <string name="buymenu_bulk">Bulk</string>
+    <string name="buymenu_watch_list">Watch list</string>
+
+
+    <string name="sellmenu_selling">Selling</string>
+    <string name="sellmenu_scheduled">Scheduled</string>
+    <string name="sellmenu_add">Add</string>
+    <string name="sellmenu_bulk">Bulk</string>
+
+
+    <string name="sharemenu_share_item">Share item</string>
+    <string name="sharemenu_customize">Customize</string>
+    <string name="sharemenu_history">History</string>
+    <string name="sharemenu_statistics">Statistics</string>
+
+</resources>
