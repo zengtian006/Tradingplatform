@@ -6,18 +6,25 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <!--<item name="android:spinnerDropDownItemStyle">@style/mySpinnerItemStyle</item>-->
 
     </style>
-    <style name="AppTheme.NoActionBar">
+
+    <style name="AppTheme.NoActionBar" parent="android:Theme.Holo.Light">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="AutoCompleteTextViewAppTheme" parent="Base.Widget.AppCompat.EditText">
         <item name="android:textColor">#ffffffff</item>
-
     </style>
+
+    <!--<style name="mySpinnerItemStyle" parent="@android:style/Widget.Holo.DropDownItem.Spinner">-->
+    <!--<item name="android:textColor">@color/grey05</item>-->
+    <!--</style>-->
 
 </resources>

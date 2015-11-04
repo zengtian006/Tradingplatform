@@ -41,4 +41,15 @@
     <string name="sharemenu_history">History</string>
     <string name="sharemenu_statistics">Statistics</string>
 
+
+    <!--Sign up-->
+    <string name="hint_name">Full Name</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_phone">Phone</string>
+    <string name="hint_password">Password</string>
+    <string name="btn_sign_up">Sign Up</string>
+    <string name="btn_verify">Next</string>
+    <string name="btn_link_to_login">Already registred! Login Me.</string>
+    <string name="title_signup_phone">Sign Up with Phone</string>
+    <string name="title_signup_email">Sign Up with Email</string>
 </resources>
