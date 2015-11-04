@@ -385,9 +385,7 @@ public class MainActivity extends AppCompatActivity
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this, SignupActivity.class);
                 startActivity(intent);
-                // 设置切换动画，从右边进入，左边退出
-//                activity.overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-                Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
                 break;
             case R.id.login:
                 break;

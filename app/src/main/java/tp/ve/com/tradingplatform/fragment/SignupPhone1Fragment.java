@@ -1,13 +1,11 @@
 package tp.ve.com.tradingplatform.fragment;
 
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import tp.ve.com.tradingplatform.R;
 
@@ -56,14 +52,6 @@ public class SignupPhone1Fragment extends Fragment {
                 verifyLayout.addView(et);
 
                 LinearLayout buttonLayout = (LinearLayout) rootView.findViewById(R.id.button_layout);
-//                <Button
-//                android:id="@+id/btn_verify"
-//                android:layout_width="fill_parent"
-//                android:layout_height="wrap_content"
-//                android:layout_marginTop="20dp"
-//                android:background="@color/colorAccent"
-//                android:text="@string/btn_verify"
-//                android:textColor="@android:color/white" />
 
                 Button confirmBtn = new Button(getContext());
                 confirmBtn.setBackgroundColor(getResources().getColor(R.color.colorAccent));
