@@ -47,9 +47,16 @@
     <string name="hint_email">Email</string>
     <string name="hint_phone">Phone</string>
     <string name="hint_password">Password</string>
-    <string name="btn_sign_up">Sign Up</string>
-    <string name="btn_verify">Next</string>
+    <string name="btn_sign_up">SIGN UP</string>
+    <string name="btn_verify">NEXT</string>
     <string name="btn_link_to_login">Already registred! Login Me.</string>
+    <string name="btn_link_to_register">Not a Member? Sign up now.</string>
     <string name="title_signup_phone">Sign Up with Phone</string>
     <string name="title_signup_email">Sign Up with Email</string>
+
+    <!--Login-->
+    <string name="login_name">Email or Phone</string>
+    <string name="btn_login">LOGIN</string>
+    <string name="err_msg_name">Enter your full name or email</string>
+    <string name="err_msg_password">Enter the password</string>
 </resources>

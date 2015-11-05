@@ -382,12 +382,17 @@ public class MainActivity extends AppCompatActivity
 
         switch (id) {
             case R.id.sign_up:
-                Intent intent = new Intent();
-                intent.setClass(MainActivity.this, SignupActivity.class);
-                startActivity(intent);
+                Intent intent_sign = new Intent();
+                intent_sign.setClass(MainActivity.this, SignupActivity.class);
+                startActivity(intent_sign);
+//                finish();
 //                Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
                 break;
             case R.id.login:
+                Intent intent_login = new Intent();
+                intent_login.setClass(MainActivity.this, LoginActivity.class);
+                startActivity(intent_login);
+//                finish();
                 break;
             default:
                 item.setChecked(true);

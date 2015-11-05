@@ -27,9 +27,9 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        toolbar = (Toolbar) findViewById(R.id.sToolbar);
-        setSupportActionBar(toolbar);
+//        toolbar = (Toolbar) findViewById(R.id.sToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.floatBtn);
         myFab.setOnClickListener(new View.OnClickListener() {
