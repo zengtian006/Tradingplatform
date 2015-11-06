@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -38,6 +39,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import tp.ve.com.tradingplatform.R;
+import tp.ve.com.tradingplatform.helper.SessionManager;
 
 
 public class MainActivity extends AppCompatActivity
@@ -88,41 +90,44 @@ public class MainActivity extends AppCompatActivity
 
     private LinearLayout scroll_linear_bss_menu;
     private LinearLayout scroll_linear_sub_menu;
+    DrawerLayout drawer;
+    NavigationView navigationView;
 
-    SharedPreferences appPreferences;
-    boolean isAppInstalled = false;
-
+    private SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        appPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        isAppInstalled = appPreferences.getBoolean("isAppInstalled", false);
-        if (isAppInstalled == false) {
-            addShortcut();
-            /**
-             * Make preference true
-             */
-            SharedPreferences.Editor editor = appPreferences.edit();
-            editor.putBoolean("isAppInstalled", true);
-            editor.commit();
-        }
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //getSupportActionBar().hide();
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+
         navigationView.setNavigationItemSelectedListener(this);
 
+        session = new SessionManager(getApplicationContext());
+
+        if (!session.isLoggedIn()) {
+            logoutUser();
+            showSignupMenu();
+//            Toast.makeText(MainActivity.this, "no logged in", Toast.LENGTH_SHORT).show();
+        } else {
+            showLogoutMenu();
+//            Toast.makeText(MainActivity.this, "logged in", Toast.LENGTH_SHORT).show();
+            Snackbar snackbar = Snackbar
+                    .make(drawer, "You have logged in", Snackbar.LENGTH_SHORT);
+
+            snackbar.show();
+        }
 
 
         /*BUY SHARE SELL Menu*/
@@ -201,8 +206,33 @@ public class MainActivity extends AppCompatActivity
        /* if (Build.VERSION.SDK_INT >= 19) {
             webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         }*/
+    }
+
+    private void showSignupMenu() {
+        MenuItem noLogMenuItem = navigationView.getMenu().findItem(R.id.nav_noLoggedin);
+        noLogMenuItem.setVisible(true);
+        MenuItem LogMenuItem = navigationView.getMenu().findItem(R.id.nav_Loggedin);
+        LogMenuItem.setVisible(false);
+    }
+
+    private void showLogoutMenu() {
+        MenuItem noLogMenuItem = navigationView.getMenu().findItem(R.id.nav_noLoggedin);
+        noLogMenuItem.setVisible(false);
+        MenuItem LogMenuItem = navigationView.getMenu().findItem(R.id.nav_Loggedin);
+        LogMenuItem.setVisible(true);
+
+    }
 
 
+    private void logoutUser() {
+        session.setLogin(false, "");
+
+//        db.deleteUsers();
+
+        // Launching the login activity
+//        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//        startActivity(intent);
+//        finish();
     }
 
 
@@ -343,7 +373,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -378,21 +408,27 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-
         switch (id) {
-            case R.id.sign_up:
+            case R.id.nav_sign_up:
                 Intent intent_sign = new Intent();
                 intent_sign.setClass(MainActivity.this, SignupActivity.class);
                 startActivity(intent_sign);
 //                finish();
 //                Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.login:
+            case R.id.nav_login:
                 Intent intent_login = new Intent();
                 intent_login.setClass(MainActivity.this, LoginActivity.class);
                 startActivity(intent_login);
 //                finish();
+                break;
+            case R.id.nav_logout:
+                logoutUser();
+                showSignupMenu();
+                Snackbar snackbar = Snackbar
+                        .make(drawer, "You have successfully logged out", Snackbar.LENGTH_SHORT);
+
+                snackbar.show();
                 break;
             default:
                 item.setChecked(true);
@@ -405,30 +441,11 @@ public class MainActivity extends AppCompatActivity
 
         }
 */
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+//        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
 
-    private void addShortcut() {
-        //Adding shortcut for MainActivity
-        //on Home screen
-        Intent shortcutIntent = new Intent(getApplicationContext(),
-                MainActivity.class);
-
-        shortcutIntent.setAction(Intent.ACTION_MAIN);
-
-        Intent addIntent = new Intent();
-        addIntent
-                .putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-        addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, R.string.app_name);
-        addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
-                Intent.ShortcutIconResource.fromContext(getApplicationContext(),
-                        R.mipmap.ic_launcher));
-
-        addIntent
-                .setAction("com.android.launcher.action.INSTALL_SHORTCUT");
-        getApplicationContext().sendBroadcast(addIntent);
-    }
 }

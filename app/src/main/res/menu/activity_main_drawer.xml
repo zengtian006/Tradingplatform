@@ -24,16 +24,29 @@
             android:title="@string/action_watch_list" />
     </group>
 
-    <item android:title="@string/subheader">
+    <item
+        android:id="@+id/nav_noLoggedin"
+        android:title="@string/subheader">
         <menu>
             <item
-                android:id="@+id/sign_up"
+                android:id="@+id/nav_sign_up"
                 android:icon="@android:drawable/ic_menu_myplaces"
                 android:title="@string/action_signup" />
             <item
-                android:id="@+id/login"
+                android:id="@+id/nav_login"
                 android:icon="@android:drawable/ic_menu_view"
                 android:title="@string/action_login" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/nav_Loggedin"
+        android:title="@string/subheader">
+        <menu>
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@android:drawable/ic_menu_myplaces"
+                android:title="@string/action_logout" />
         </menu>
     </item>
 

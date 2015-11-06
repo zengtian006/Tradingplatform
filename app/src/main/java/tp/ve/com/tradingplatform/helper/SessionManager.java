@@ -19,9 +19,10 @@ public class SessionManager {
     int PRIVATE_MODE = 0;
 
     // Shared preferences file name
-    private static final String PREF_NAME = "AndroidHiveLogin";
+    private static final String PREF_NAME = "TPLogin";
 
     private static final String KEY_IS_LOGGED_IN = "isLoggedIn";
+    private static final String KEY_IS_TOKEN_ID = "tokenId";
 
     public SessionManager(Context context) {
         this._context = context;
@@ -29,10 +30,10 @@ public class SessionManager {
         editor = pref.edit();
     }
 
-    public void setLogin(boolean isLoggedIn) {
+    public void setLogin(boolean isLoggedIn, String token) {
 
         editor.putBoolean(KEY_IS_LOGGED_IN, isLoggedIn);
-
+        editor.putString(KEY_IS_TOKEN_ID, token);
         // commit changes
         editor.commit();
 

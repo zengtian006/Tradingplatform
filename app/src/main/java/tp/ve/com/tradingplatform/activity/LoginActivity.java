@@ -37,7 +37,6 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = LoginActivity.class.getSimpleName();
     private ProgressDialog pDialog;
     private SessionManager session;
-    private SQLiteHandler db;
 
     private EditText edt_username;
     private EditText edt_password;
@@ -59,6 +58,9 @@ public class LoginActivity extends AppCompatActivity {
 
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
+
+        // Session manager
+        session = new SessionManager(getApplicationContext());
 
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +85,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
+
 
     private void requestFocus(View view) {
         if (view.requestFocus()) {
@@ -141,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(String response) {
-                Log.d(TAG, "Login Response: " + response.toString());
+                Log.d(TAG, "Login Response: " + response);
                 hideDialog();
 
                 try {
@@ -150,24 +153,14 @@ public class LoginActivity extends AppCompatActivity {
 //                    Toast.makeText(getApplicationContext(), success.toString(), Toast.LENGTH_LONG).show();
                     // Check for error node in json
                     if (success) {
+                        JSONObject jObjData = new JSONObject(jObj.getString("data"));
+                        String tokenId = jObjData.getString("token");
+                        Log.d(TAG, "token8888:" + jObjData.getString("token"));
                         // user successfully logged in
                         // Create login session
-//                        session.setLogin(true);
-//
-//                        // Now store the user in SQLite
-//                        String uid = jObj.getString("uid");
-//
-//                        JSONObject user = jObj.getJSONObject("user");
-//                        String name = user.getString("name");
-//                        String email = user.getString("email");
-//                        String created_at = user
-//                                .getString("created_at");
-//
-//                        // Inserting row in users table
-//                        db.addUser(name, email, uid, created_at);
+                        session.setLogin(true, tokenId);
 
 //                     Launch main activity
-
                         Intent intent = new Intent(LoginActivity.this,
                                 MainActivity.class);
                         startActivity(intent);

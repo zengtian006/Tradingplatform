@@ -1,12 +1,13 @@
 package tp.ve.com.tradingplatform.activity;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import tp.ve.com.tradingplatform.R;
@@ -19,17 +20,22 @@ import tp.ve.com.tradingplatform.fragment.SignupPhone2Fragment;
  */
 public class SignupActivity extends AppCompatActivity {
 
-    Toolbar toolbar;
     Integer currentFragment;
+
+
+    public static Context context;
+    public static CoordinatorLayout coordinatorLayout;
+    public static FragmentManager fragmentManager;
+    public static String phoneNo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-//        toolbar = (Toolbar) findViewById(R.id.sToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        context = SignupActivity.this;
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         final FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.floatBtn);
         myFab.setOnClickListener(new View.OnClickListener() {
@@ -76,7 +82,7 @@ public class SignupActivity extends AppCompatActivity {
         }
 
         if (fragment != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.container_body, fragment);
             fragmentTransaction.commit();
