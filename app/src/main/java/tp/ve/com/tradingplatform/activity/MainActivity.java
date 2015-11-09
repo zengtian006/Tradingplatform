@@ -17,7 +17,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -90,10 +92,10 @@ public class MainActivity extends AppCompatActivity
 
     private LinearLayout scroll_linear_bss_menu;
     private LinearLayout scroll_linear_sub_menu;
-    DrawerLayout drawer;
-    NavigationView navigationView;
+    public static DrawerLayout drawer;
+    static NavigationView navigationView;
 
-    private SessionManager session;
+    private static SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,21 +114,24 @@ public class MainActivity extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
 
+
         navigationView.setNavigationItemSelectedListener(this);
 
         session = new SessionManager(getApplicationContext());
+
+        View h = navigationView.inflateHeaderView(R.layout.nav_header_main);
+//        View header = LayoutInflater.from(this).inflate(R.layout.nav_header_main, null);
+//        navigationView.addHeaderView(header);
+        TextView text = (TextView) h.findViewById(R.id.nav_user_nickname);
+        text.setText(session.getUserName());
+
 
         if (!session.isLoggedIn()) {
             logoutUser();
             showSignupMenu();
 //            Toast.makeText(MainActivity.this, "no logged in", Toast.LENGTH_SHORT).show();
         } else {
-            showLogoutMenu();
-//            Toast.makeText(MainActivity.this, "logged in", Toast.LENGTH_SHORT).show();
-            Snackbar snackbar = Snackbar
-                    .make(drawer, "You have logged in", Snackbar.LENGTH_SHORT);
-
-            snackbar.show();
+            session.verifyToken();
         }
 
 
@@ -206,16 +211,17 @@ public class MainActivity extends AppCompatActivity
        /* if (Build.VERSION.SDK_INT >= 19) {
             webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         }*/
+
     }
 
-    private void showSignupMenu() {
+    public static void showSignupMenu() {
         MenuItem noLogMenuItem = navigationView.getMenu().findItem(R.id.nav_noLoggedin);
         noLogMenuItem.setVisible(true);
         MenuItem LogMenuItem = navigationView.getMenu().findItem(R.id.nav_Loggedin);
         LogMenuItem.setVisible(false);
     }
 
-    private void showLogoutMenu() {
+    public static void showLogoutMenu() {
         MenuItem noLogMenuItem = navigationView.getMenu().findItem(R.id.nav_noLoggedin);
         noLogMenuItem.setVisible(false);
         MenuItem LogMenuItem = navigationView.getMenu().findItem(R.id.nav_Loggedin);
@@ -224,10 +230,8 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    private void logoutUser() {
-        session.setLogin(false, "");
-
-//        db.deleteUsers();
+    public static void logoutUser() {
+        session.setLogin(false, "", "Guest");
 
         // Launching the login activity
 //        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
