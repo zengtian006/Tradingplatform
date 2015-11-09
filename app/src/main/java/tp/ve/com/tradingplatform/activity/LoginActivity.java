@@ -158,7 +158,7 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d(TAG, "token8888:" + jObjData.getString("token"));
                         // user successfully logged in
                         // Create login session
-                        session.setLogin(true, tokenId);
+                        session.setLogin(true, tokenId, name);
 
 //                     Launch main activity
                         Intent intent = new Intent(LoginActivity.this,
@@ -212,8 +212,6 @@ public class LoginActivity extends AppCompatActivity {
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_json_obj);
-
-
     }
 
     private void showDialog() {

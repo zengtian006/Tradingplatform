@@ -50,8 +50,8 @@
     <string name="hint_password">Password</string>
     <string name="btn_sign_up">SIGN UP</string>
     <string name="btn_verify">NEXT</string>
-    <string name="btn_link_to_login">Already registred! Login Me.</string>
-    <string name="btn_link_to_register">Not a Member? Sign up now.</string>
+    <string name="btn_link_to_login">Already registered! Login</string>
+    <string name="btn_link_to_register">Not Registered? Sign up now.</string>
     <string name="title_signup_phone">Sign Up with Phone</string>
     <string name="title_signup_email">Sign Up with Email</string>
 
@@ -64,4 +64,5 @@
     <string name="err_msg_password_mismatch">Password confirmation does not match password !</string>
     <string name="err_msg_phone">Enter your phone number</string>
     <string name="err_msg_email">Enter valid email address</string>
+    <string name="login_user_name">Guest</string>
 </resources>

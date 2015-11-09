@@ -106,7 +106,7 @@ public class SignupEmailFragment extends Fragment {
                     if (success) {
                         // User successfully stored in MySQL
                         // Now store the user in sqlite
-                        Toast.makeText(SignupActivity.context, "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(SignupActivity.context, "You should receive an e-mail shortly to authenticate your account", Toast.LENGTH_LONG).show();
 
                         // Launch login activity
                         Intent intent = new Intent(
