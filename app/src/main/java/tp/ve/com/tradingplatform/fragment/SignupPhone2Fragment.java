@@ -71,6 +71,7 @@ public class SignupPhone2Fragment extends Fragment {
                 String password = edt_password.getText().toString();
                 String phone = SignupActivity.phoneNo;
                 if (submitForm()) {
+                    Log.v(TAG, "PHONE: " + phone);
                     registerUser(username, phone, password);
                 }
             }
