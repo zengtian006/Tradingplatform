@@ -18,6 +18,7 @@
     <string name="action_signup">Sign up</string>
     <string name="action_login">Login</string>
     <string name="action_logout">Log out</string>
+    <string name="action_accountsetting">Account Setting</string>
 
 
     <string name="bssmenu_buy">BUY</string>
@@ -65,4 +66,11 @@
     <string name="err_msg_phone">Enter your phone number</string>
     <string name="err_msg_email">Enter valid email address</string>
     <string name="login_user_name">Guest</string>
+
+    <!--Account Setting -->
+    <string name="label_basic_infomation">Basic Information</string>
+    <string name="hint_nationality">Nationality</string>
+    <string name="hint_address1">Address 1</string>
+    <string name="hint_address2">Address 2</string>
+    <string name="hint_address3">Address 3</string>
 </resources>

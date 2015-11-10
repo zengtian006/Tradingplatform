@@ -20,7 +20,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_name"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:typeface="sans" />
         </android.support.design.widget.TextInputLayout>
 
 
@@ -34,7 +35,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:typeface="sans" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -47,7 +49,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Confirm password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:typeface="sans" />
         </android.support.design.widget.TextInputLayout>
 
         <Button

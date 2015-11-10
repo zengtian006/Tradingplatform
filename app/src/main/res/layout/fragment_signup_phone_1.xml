@@ -52,7 +52,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_phone"
                     android:inputType="phone"
-                    android:phoneNumber="true" />
+                    android:phoneNumber="true"
+                    android:typeface="sans" />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 

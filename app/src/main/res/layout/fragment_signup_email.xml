@@ -25,7 +25,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_email"
                 android:inputType="textEmailAddress"
-                android:phoneNumber="true" />
+                android:phoneNumber="true"
+                android:typeface="sans" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -38,7 +39,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_name"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:typeface="sans" />
         </android.support.design.widget.TextInputLayout>
 
 
@@ -52,7 +54,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:typeface="sans" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -65,7 +68,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Confirm password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:typeface="sans" />
         </android.support.design.widget.TextInputLayout>
 
         <Button
@@ -75,7 +79,8 @@
             android:layout_marginTop="20dp"
             android:background="@color/colorAccent"
             android:text="@string/btn_sign_up"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:typeface="sans" />
 
 
     </LinearLayout>
