@@ -415,7 +415,8 @@ public class MainActivity extends AppCompatActivity
         switch (id) {
             case R.id.nav_sign_up:
                 Intent intent_sign = new Intent();
-                intent_sign.setClass(MainActivity.this, SignupActivity.class);
+//                intent_sign.setClass(MainActivity.this, SignupActivity.class);
+                intent_sign.setClass(MainActivity.this, AccountSettingActivity.class);
                 startActivity(intent_sign);
 //                finish();
 //                Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();

@@ -8,4 +8,9 @@ public class AppConfig {
     public static String URL_REGISTER = "http://10.0.3.91/api/members/register";
 
     public static String TEST_TOKEN = "http://10.0.3.91/api/members/index.json";
+
+    public static final String FILE_UPLOAD_URL = "http://192.168.0.104/AndroidFileUpload/fileUpload.php";
+
+    public static final String IMAGE_DIRECTORY_NAME = "myUpload";
+
 }
