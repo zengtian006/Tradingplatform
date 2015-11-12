@@ -41,14 +41,56 @@
                 android:layout_marginTop="5dp">
 
                 <EditText
-                    android:id="@+id/input_name"
+                    android:id="@+id/input_name_setting"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/icon_fullname"
+                    android:drawablePadding="10dip"
+                    android:drawableStart="@drawable/icon_fullname"
                     android:hint="@string/hint_name"
                     android:singleLine="true"
                     android:textSize="16dp"
                     android:typeface="sans" />
             </android.support.design.widget.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1.53"
+                android:paddingLeft="30dp">
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/gender_group"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rb_male"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/radio_male"
+                        android:textColor="#7e7e7e"
+                        android:textSize="16dp"
+                        android:checked="false" />
+
+                    <RadioButton
+                        android:id="@+id/rb_female"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/radio_female"
+                        android:textColor="#7e7e7e"
+                        android:textSize="16dp" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2dip"
+                android:background="#c2c2c2" />
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_mobile"
@@ -56,9 +98,16 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/input_mobile"
+                    android:id="@+id/input_mobile_setting"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:drawableLeft="@drawable/icon_code"
+                    android:drawablePadding="10dip"
+                    android:drawableStart="@drawable/icon_code"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:hint="@string/hint_phone"
                     android:singleLine="true"
                     android:textSize="16dp"
@@ -71,9 +120,12 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/input_email"
+                    android:id="@+id/input_email_setting"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/icon_email"
+                    android:drawablePadding="10dip"
+                    android:drawableStart="@drawable/icon_email"
                     android:hint="@string/hint_email"
                     android:singleLine="true"
                     android:textSize="16dp"
@@ -81,60 +133,18 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_layout_nationality"
+                android:id="@+id/input_layout_lang"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/input_nationality"
+                    android:id="@+id/input_lang_setting"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/hint_nationality"
-                    android:singleLine="true"
-                    android:textSize="16dp"
-                    android:typeface="sans" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_layout_address1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/input_address1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/hint_address1"
-                    android:singleLine="true"
-                    android:textSize="16dp"
-                    android:typeface="sans" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_layout_address2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/input_address2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/hint_address2"
-                    android:singleLine="true"
-                    android:textSize="16dp"
-                    android:typeface="sans" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_layout_address3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/input_address3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/hint_address3"
+                    android:drawableLeft="@drawable/icon_language"
+                    android:drawablePadding="10dip"
+                    android:drawableStart="@drawable/icon_language"
+                    android:hint="@string/hint_lang"
                     android:singleLine="true"
                     android:textSize="16dp"
                     android:typeface="sans" />
@@ -245,6 +255,54 @@
                         android:typeface="sans" />
                 </android.support.design.widget.TextInputLayout>
 
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_address1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/input_address1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/hint_address1"
+                        android:singleLine="true"
+                        android:textSize="16dp"
+                        android:typeface="sans"
+                        android:visibility="gone" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_address2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/input_address2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/hint_address2"
+                        android:singleLine="true"
+                        android:textSize="16dp"
+                        android:typeface="sans"
+                        android:visibility="gone" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_address3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/input_address3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/hint_address3"
+                        android:singleLine="true"
+                        android:textSize="16dp"
+                        android:typeface="sans"
+                        android:visibility="gone" />
+                </android.support.design.widget.TextInputLayout>
+
                 <Button
                     android:id="@+id/btn_uploadID"
                     android:layout_width="match_parent"
@@ -272,6 +330,14 @@
                     android:layout_height="200dp"
                     android:layout_marginTop="15dp"
                     android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/btn_upload"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Upload to Server"
+                    android:visibility="visible" />
 
             </LinearLayout>
         </LinearLayout>
