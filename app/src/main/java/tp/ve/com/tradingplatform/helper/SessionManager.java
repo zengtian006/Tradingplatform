@@ -40,6 +40,7 @@ public class SessionManager {
     private static final String KEY_IS_LOGGED_IN = "isLoggedIn";
     private static final String KEY_IS_TOKEN_ID = "tokenId";
     private static final String KEY_IS_USER_NAME = "userName";
+    private static final String KEY_IS_USER_ID = "userId";
     private String temptoken, tempusername;
 
     public SessionManager(Context context) {
@@ -48,11 +49,12 @@ public class SessionManager {
         editor = pref.edit();
     }
 
-    public void setLogin(boolean isLoggedIn, String token, String username) {
+    public void setLogin(boolean isLoggedIn, String token, String username, String memberId) {
 
         editor.putBoolean(KEY_IS_LOGGED_IN, isLoggedIn);
         editor.putString(KEY_IS_TOKEN_ID, token);
         editor.putString(KEY_IS_USER_NAME, username);
+        editor.putString(KEY_IS_USER_ID, memberId);
         // commit changes
         editor.commit();
 
@@ -64,8 +66,13 @@ public class SessionManager {
     }
 
     public String getUserName() {
-        Log.d(TAG, "777777777777777:" + pref.getString(KEY_IS_USER_NAME, "GUEST"));
+        Log.d(TAG, "777777777777777getUserName:" + pref.getString(KEY_IS_USER_NAME, "GUEST"));
         return pref.getString(KEY_IS_USER_NAME, "GUEST");
+    }
+
+    public String getUserID() {
+        Log.d(TAG, "777777777777777getUserName:" + pref.getString(KEY_IS_USER_ID, ""));
+        return pref.getString(KEY_IS_USER_ID, "");
     }
 
     public void verifyToken() {

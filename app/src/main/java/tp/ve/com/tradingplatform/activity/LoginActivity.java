@@ -153,12 +153,13 @@ public class LoginActivity extends AppCompatActivity {
 //                    Toast.makeText(getApplicationContext(), success.toString(), Toast.LENGTH_LONG).show();
                     // Check for error node in json
                     if (success) {
+                        String member_id = jObj.getString("id");
                         JSONObject jObjData = new JSONObject(jObj.getString("data"));
                         String tokenId = jObjData.getString("token");
-                        Log.d(TAG, "token8888:" + jObjData.getString("token"));
+                        Log.d(TAG, "token:" + jObjData.getString("token"));
                         // user successfully logged in
                         // Create login session
-                        session.setLogin(true, tokenId, name);
+                        session.setLogin(true, tokenId, name, member_id);
 
 //                     Launch main activity
                         Intent intent = new Intent(LoginActivity.this,

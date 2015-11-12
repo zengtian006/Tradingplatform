@@ -33,6 +33,7 @@ import tp.ve.com.tradingplatform.R;
 import tp.ve.com.tradingplatform.activity.LoginActivity;
 import tp.ve.com.tradingplatform.activity.SignupActivity;
 
+import static cn.smssdk.framework.utils.R.getRawRes;
 import static cn.smssdk.framework.utils.R.getStringRes;
 
 /**
@@ -109,27 +110,33 @@ public class SignupPhone1Fragment extends Fragment {
                     //SMS end
 
                     LinearLayout verifyLayout = (LinearLayout) rootView.findViewById(R.id.verify_layout);
-                    final EditText edt_verifycode = new EditText(getContext());
-                    edt_verifycode.setHint("Verification code");
-                    edt_verifycode.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    edt_verifycode.setSingleLine(true);
-                    edt_verifycode.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-                            LayoutParams.WRAP_CONTENT));
-
-                    edt_verifycode.setAnimation(AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in));
-                    verifyLayout.addView(edt_verifycode);
-
                     LinearLayout buttonLayout = (LinearLayout) rootView.findViewById(R.id.button_layout);
+                    Button confirmBtn = (Button) rootView.findViewById(R.id.btn_confirm);
+                    final EditText edt_verifycode = (EditText) rootView.findViewById(R.id.input_verify_code);
+                    verifyLayout.setAnimation(AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in));
+                    verifyLayout.setVisibility(LinearLayout.VISIBLE);
+                    buttonLayout.setVisibility(LinearLayout.GONE);
 
-                    Button confirmBtn = new Button(getContext());
-                    confirmBtn.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
-                    confirmBtn.setText("Verify");
-                    confirmBtn.setTextColor(Color.WHITE);
-
-                    confirmBtn.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-                            LayoutParams.WRAP_CONTENT));
-                    buttonLayout.addView(confirmBtn);
-                    buttonLayout.removeView(verifyBtn);
+//                    final EditText edt_verifycode = new EditText(getContext());
+//                    edt_verifycode.setHint("Verification code");
+//                    edt_verifycode.setInputType(InputType.TYPE_CLASS_NUMBER);
+//                    edt_verifycode.setSingleLine(true);
+//                    edt_verifycode.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+//                            LayoutParams.WRAP_CONTENT));
+//
+//                    edt_verifycode.setAnimation(AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in));
+//                    verifyLayout.addView(edt_verifycode);
+//
+//                    Button confirmBtn = new Button(getContext());
+//                    confirmBtn.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+//                    confirmBtn.setText("Verify");
+//                    confirmBtn.setTextColor(Color.WHITE);
+//
+//                    confirmBtn.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+//                            LayoutParams.WRAP_CONTENT));
+//                    verifyLayout.addView(confirmBtn);
+////                    buttonLayout.addView(confirmBtn);
+//                    buttonLayout.removeView(verifyBtn);
 
                     confirmBtn.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -138,7 +145,6 @@ public class SignupPhone1Fragment extends Fragment {
                             if (!edt_verifycode.getText().toString().isEmpty()) {
                                 SMSSDK.submitVerificationCode(phCode, phString, edt_verifycode.getText().toString());
                             }
-
                         }
                     });
 
@@ -164,18 +170,6 @@ public class SignupPhone1Fragment extends Fragment {
         return rootView;
     }
 
-    private void linkToSecondView() {
-        SignupActivity.phoneNo = edt_Phone.getText().toString();
-        Fragment fragment = new SignupPhone2Fragment();
-
-        if (fragment != null) {
-            FragmentManager fragmentManager = SignupActivity.fragmentManager;
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.container_body, fragment);
-            fragmentTransaction.commit();
-        }
-    }
-
     //SMS start
     Handler handler = new Handler() {
 
@@ -190,7 +184,17 @@ public class SignupPhone1Fragment extends Fragment {
             if (result == SMSSDK.RESULT_COMPLETE) {
                 //短信注册成功后，返回MainActivity,然后提示新好友
                 if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {//验证成功
-                    linkToSecondView();
+                    SignupActivity.phoneNo = phString;
+                    Fragment fragment = new SignupPhone2Fragment();
+
+                    if (fragment != null) {
+                        FragmentManager fragmentManager = SignupActivity.fragmentManager;
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.replace(R.id.container_body, fragment);
+                        fragmentTransaction.commit();
+                    }
+
+
                     Toast.makeText(SignupActivity.context, "Success", Toast.LENGTH_SHORT).show();
 
                 } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {

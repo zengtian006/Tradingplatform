@@ -46,7 +46,7 @@ import tp.ve.com.tradingplatform.helper.SessionManager;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     public final static int HIGHTLIGHT_COLOR = R.color.white1;
     public final static int SUB_MENU_WIDTH = 120;
@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity
 
 
     public static void logoutUser() {
-        session.setLogin(false, "", "Guest");
+        session.setLogin(false, "", "Guest", "");
 
         // Launching the login activity
 //        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -415,8 +415,11 @@ public class MainActivity extends AppCompatActivity
         switch (id) {
             case R.id.nav_sign_up:
                 Intent intent_sign = new Intent();
-//                intent_sign.setClass(MainActivity.this, SignupActivity.class);
-                intent_sign.setClass(MainActivity.this, AccountSettingActivity.class);
+                intent_sign.setClass(MainActivity.this, SignupActivity.class);
+//                intent_sign.setClass(MainActivity.this, AccountSettingActivity.class);
+//                intent_sign.putExtra("id", "idid");
+//                intent_sign.putExtra("name", "namename");
+//                intent_sign.putExtra("contact_no", "phonephone");
                 startActivity(intent_sign);
 //                finish();
 //                Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
@@ -434,6 +437,10 @@ public class MainActivity extends AppCompatActivity
                         .make(drawer, "You have successfully logged out", Snackbar.LENGTH_SHORT);
 
                 snackbar.show();
+                break;
+            case R.id.nav_account:
+                String userid = session.getUserID();
+                Log.v(TAG, "userid!: " + userid);
                 break;
             default:
                 item.setChecked(true);

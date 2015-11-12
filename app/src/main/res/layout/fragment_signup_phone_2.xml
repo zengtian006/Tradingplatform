@@ -2,6 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -19,6 +20,9 @@
                 android:id="@+id/input_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/icon_fullname"
+                android:drawablePadding="10dip"
+                android:drawableStart="@drawable/icon_fullname"
                 android:hint="@string/hint_name"
                 android:singleLine="true"
                 android:typeface="sans" />
@@ -34,6 +38,9 @@
                 android:id="@+id/input_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/icon_pwd"
+                android:drawablePadding="10dip"
+                android:drawableStart="@drawable/icon_pwd"
                 android:hint="@string/hint_password"
                 android:inputType="textPassword"
                 android:typeface="sans" />
@@ -48,6 +55,9 @@
                 android:id="@+id/input_confirm_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/icon_pwd"
+                android:drawablePadding="10dip"
+                android:drawableStart="@drawable/icon_pwd"
                 android:hint="Confirm password"
                 android:inputType="textPassword"
                 android:typeface="sans" />

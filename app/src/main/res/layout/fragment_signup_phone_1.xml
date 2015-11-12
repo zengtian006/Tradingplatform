@@ -35,10 +35,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="2"
-                android:gravity="center_vertical|center_horizontal"
+                android:gravity="center_vertical|bottom|center_horizontal"
+                android:paddingBottom="10dp"
+                android:textSize="16dp"
                 android:textStyle="bold"
-                android:typeface="serif"
-                android:textSize="16dp" />
+                android:typeface="serif" />
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_phone"
@@ -62,7 +63,38 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:orientation="vertical"></LinearLayout>
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_verify_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_verify_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/icon_code"
+                    android:drawablePadding="10dip"
+                    android:drawableStart="@drawable/icon_code"
+                    android:hint="@string/hint_verify_code"
+                    android:inputType="number"
+                    android:phoneNumber="true"
+                    android:typeface="sans" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/btn_confirm"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@color/colorAccent"
+                android:text="@string/btn_confirm"
+                android:textColor="@android:color/white" />
+
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/button_layout"

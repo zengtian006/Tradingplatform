@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import tp.ve.com.tradingplatform.R;
-import tp.ve.com.tradingplatform.activity.LoginActivity;
+import tp.ve.com.tradingplatform.activity.AccountSettingActivity;
 import tp.ve.com.tradingplatform.activity.SignupActivity;
 import tp.ve.com.tradingplatform.app.AppConfig;
 import tp.ve.com.tradingplatform.app.AppController;
@@ -142,14 +142,18 @@ public class SignupPhone2Fragment extends Fragment {
                     if (success) {
                         // User successfully stored in MySQL
                         // Now store the user in sqlite
-                        Toast.makeText(SignupActivity.context, "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
+//                        Toast.makeText(SignupActivity.context, "User successfully registere", Toast.LENGTH_LONG).show();
 
-                        // Launch login activity
+                        // Launch Account Setting activity
+                        JSONObject memberObj = new JSONObject(jObj.getString("data"));
+
                         Intent intent = new Intent(
-                                getContext(), LoginActivity.class);
+                                getContext(), AccountSettingActivity.class);
+                        intent.putExtra("id", memberObj.getString("id"));
+                        intent.putExtra("name", memberObj.getString("name"));
+                        intent.putExtra("contact_no", memberObj.getString("contact_no"));
                         startActivity(intent);
                     } else {
-
                         // Error occurred in registration. Get the error
                         // message
                         String errorMsg = jObj.getString("error_msg");

@@ -48,10 +48,12 @@
     <string name="hint_name">Full Name</string>
     <string name="hint_email">Email</string>
     <string name="hint_phone">Phone</string>
+    <string name="hint_verify_code">Verification Code</string>
     <string name="hint_password">Password</string>
     <string name="btn_sign_up">SIGN UP</string>
     <string name="btn_verify">NEXT</string>
-    <string name="btn_link_to_login">Already registered! Login</string>
+    <string name="btn_confirm">VERIFY</string>
+    <string name="btn_link_to_login">Already Registered! Login</string>
     <string name="btn_link_to_register">Not Registered? Sign up now.</string>
     <string name="title_signup_phone">Sign Up with Phone</string>
     <string name="title_signup_email">Sign Up with Email</string>
@@ -69,7 +71,7 @@
 
     <!--Account Setting -->
     <string name="label_basic_infomation">Basic Information</string>
-    <string name="hint_nationality">Nationality</string>
+    <string name="hint_lang">Language</string>
     <string name="hint_address1">Address 1</string>
     <string name="hint_address2">Address 2</string>
     <string name="hint_address3">Address 3</string>
@@ -79,4 +81,6 @@
     <string name="hint_comWebsite">Company Website</string>
     <string name="hint_comPhone">Office Phone</string>
     <string name="hint_comProduct">Company Product</string>
+    <string name="radio_male">Male</string>
+    <string name="radio_female">Female</string>
 </resources>
