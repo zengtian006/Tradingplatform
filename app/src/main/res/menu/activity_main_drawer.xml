@@ -44,6 +44,10 @@
         android:title="@string/subheader">
         <menu>
             <item
+                android:id="@+id/nav_account"
+                android:icon="@android:drawable/ic_menu_myplaces"
+                android:title="@string/action_accountsetting" />
+            <item
                 android:id="@+id/nav_logout"
                 android:icon="@android:drawable/ic_menu_myplaces"
                 android:title="@string/action_logout" />
