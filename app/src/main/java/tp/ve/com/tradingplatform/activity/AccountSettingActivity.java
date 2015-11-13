@@ -12,7 +12,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
@@ -58,6 +61,7 @@ import tp.ve.com.tradingplatform.R;
 import tp.ve.com.tradingplatform.app.AppConfig;
 import tp.ve.com.tradingplatform.app.AppController;
 import tp.ve.com.tradingplatform.component.MultiSelectionSpinner;
+import tp.ve.com.tradingplatform.helper.SessionManager;
 import tp.ve.com.tradingplatform.utils.RealPathUtil;
 
 /**
@@ -69,14 +73,14 @@ public class AccountSettingActivity extends AppCompatActivity {
     private static final String TAG = AccountSettingActivity.class.getSimpleName();
     private MultiSelectionSpinner multiSelectionSpinner;
     public static LinearLayout linearLayout_advanced;
-    public static ScrollView scrollView;
+    public static NestedScrollView scrollView;
     private ProgressDialog pDialog;
     Button btnUploadID, btnUploadeBizLicense, btnUpload;
     ImageView idImgPreview, BizLicenseImgPreview;
     String member_id, member_name, member_mobile, member_gender, member_lang, member_email;
     EditText edt_name, edt_phone, edt_email, edt_language;
     RadioGroup gender_group;
-    RadioButton rb_male;
+    RadioButton rb_male, rb_female;
 
 
     @Override
@@ -87,9 +91,16 @@ public class AccountSettingActivity extends AppCompatActivity {
         pDialog = new ProgressDialog(AccountSettingActivity.this);
         pDialog.setCancelable(false);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+//        collapsingToolbar.setTitle("Second Activity");
+
         multiSelectionSpinner = (MultiSelectionSpinner) findViewById(R.id.roleSpinner);
         linearLayout_advanced = (LinearLayout) findViewById(R.id.advanced_view);
-        scrollView = (ScrollView) findViewById(R.id.scrollView);
+        scrollView = (NestedScrollView) findViewById(R.id.scrollView);
         btnUploadID = (Button) findViewById(R.id.btn_uploadID);
         btnUploadeBizLicense = (Button) findViewById(R.id.btn_uploadBizLicense);
         btnUpload = (Button) findViewById(R.id.btn_upload);
@@ -101,9 +112,8 @@ public class AccountSettingActivity extends AppCompatActivity {
         edt_language = (EditText) findViewById(R.id.input_lang_setting);
         gender_group = (RadioGroup) findViewById((R.id.gender_group));
         rb_male = (RadioButton) findViewById(R.id.rb_male);
+        rb_female = (RadioButton) findViewById(R.id.rb_female);
 
-        rb_male.setChecked(true);
-        member_gender = "M";
 
         gender_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -121,19 +131,30 @@ public class AccountSettingActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-        Intent intent = getIntent();
-        member_id = intent.getStringExtra("id");
-        member_name = intent.getStringExtra("name");
-        member_mobile = intent.getStringExtra("contact_no");
-
-        Log.v(TAG, "id: " + member_id);
-        Log.v(TAG, "name: " + member_name);
-        Log.v(TAG, "contact_no: " + member_mobile);
-
-        edt_name.setText(member_name.toString());
-        edt_phone.setText(member_mobile.toString());
+//        Intent intent = getIntent();
+//        member_id = intent.getStringExtra("id");
+//        member_name = intent.getStringExtra("name");
+//        member_mobile = intent.getStringExtra("contact_no");
+//
+//        Log.v(TAG, "id: " + member_id);
+//        Log.v(TAG, "name: " + member_name);
+//        Log.v(TAG, "contact_no: " + member_mobile);
+        member_id = SessionManager.currMember.getMember_id();
+        edt_name.setText(SessionManager.currMember.getMember_name());
+        edt_phone.setText(SessionManager.currMember.getMember_mobile());
+        edt_email.setText(SessionManager.currMember.getMember_email());
+        edt_language.setText(SessionManager.currMember.getMember_language());
+        member_gender = SessionManager.currMember.getMember_gender().trim();
+        Log.v(TAG, "Member_gender:" + member_gender);
+        if (member_gender.equals("M")) {
+            rb_male.setChecked(true);
+        } else if (member_gender.equals("F")) {
+            rb_female.setChecked(true);
+        } else {
+            rb_male.setChecked(true);//default
+            member_gender = "M";
+        }
+        Log.v(TAG, "Member_gender:" + member_gender);
 
         btnUploadID.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -269,11 +290,11 @@ public class AccountSettingActivity extends AppCompatActivity {
                     if (success) {
                         // User successfully stored in MySQL
                         // Now store the user in sqlite
-                        Toast.makeText(AccountSettingActivity.this, "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(AccountSettingActivity.this, "Your profile has been updated successfully!", Toast.LENGTH_LONG).show();
 
                         // Launch Login activity
                         Intent intent = new Intent(
-                                AccountSettingActivity.this, LoginActivity.class);
+                                AccountSettingActivity.this, MainActivity.class);
                         startActivity(intent);
                     } else {
                         // Error occurred in registration. Get the error
@@ -292,7 +313,7 @@ public class AccountSettingActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Registration Error: " + error.getMessage());
-                Toast.makeText(SignupActivity.context,
+                Toast.makeText(AccountSettingActivity.this,
                         error.getMessage(), Toast.LENGTH_LONG).show();
                 hideDialog();
             }

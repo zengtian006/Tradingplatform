@@ -110,9 +110,9 @@ public class SignupEmailFragment extends Fragment {
                         Toast.makeText(SignupActivity.context, "You should receive an e-mail shortly to authenticate your account", Toast.LENGTH_LONG).show();
 
                         // Launch login activity
-                        Intent intent = new Intent(
-                                getContext(), AccountSettingActivity.class);
-                        startActivity(intent);
+//                        Intent intent = new Intent(
+//                                getContext(), AccountSettingActivity.class);
+//                        startActivity(intent);
                     } else {
 
                         // Error occurred in registration. Get the error
@@ -213,6 +213,7 @@ public class SignupEmailFragment extends Fragment {
             inputLayoutConfirmPassword.setError(getString(R.string.err_msg_password_mismatch));
             return false;
         } else {
+            inputLayoutConfirmPassword.setErrorEnabled(false);
             inputLayoutPassword.setErrorEnabled(false);
         }
         return true;

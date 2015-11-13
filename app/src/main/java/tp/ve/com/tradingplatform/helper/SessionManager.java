@@ -14,12 +14,16 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import tp.ve.com.tradingplatform.activity.MainActivity;
 import tp.ve.com.tradingplatform.app.AppConfig;
 import tp.ve.com.tradingplatform.app.AppController;
+import tp.ve.com.tradingplatform.entity.Member;
 
 public class SessionManager {
     // LogCat tag
@@ -42,6 +46,9 @@ public class SessionManager {
     private static final String KEY_IS_USER_NAME = "userName";
     private static final String KEY_IS_USER_ID = "userId";
     private String temptoken, tempusername;
+
+    public static Member currMember;
+
 
     public SessionManager(Context context) {
         this._context = context;
@@ -71,7 +78,7 @@ public class SessionManager {
     }
 
     public String getUserID() {
-        Log.d(TAG, "777777777777777getUserName:" + pref.getString(KEY_IS_USER_ID, ""));
+        Log.d(TAG, "777777777777777getUserID:" + pref.getString(KEY_IS_USER_ID, ""));
         return pref.getString(KEY_IS_USER_ID, "");
     }
 
@@ -80,12 +87,28 @@ public class SessionManager {
         temptoken = pref.getString(KEY_IS_TOKEN_ID, "");
         tempusername = pref.getString(KEY_IS_USER_NAME, "GUEST");
 //        Log.d(TAG, "dsfsdfsd" + temptoken);
+        String URL = AppConfig.TEST_TOKEN + getUserID();
         StringRequest strReq = new StringRequest(Request.Method.GET,
-                AppConfig.TEST_TOKEN, new Response.Listener<String>() {
+                URL, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
-                Log.d(TAG, "Register Response: " + response.toString());
+                Log.d(TAG, "Register Response: " + response);
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    JSONObject memberObj = jObj.getJSONObject("member");
+                    currMember = new Member();
+                    currMember.setMember_id(memberObj.getString("id"));
+                    currMember.setMember_email(memberObj.getString("email"));
+                    currMember.setMember_mobile(memberObj.getString("contact_no"));
+                    currMember.setMember_name(memberObj.getString("name"));
+                    currMember.setMember_gender(memberObj.getString("gender"));
+                    currMember.setMember_language(memberObj.getString("language"));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
 
                 MainActivity.showLogoutMenu();
 //            Toast.makeText(MainActivity.this, "logged in", Toast.LENGTH_SHORT).show();

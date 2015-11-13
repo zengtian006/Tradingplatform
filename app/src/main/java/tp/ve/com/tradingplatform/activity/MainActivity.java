@@ -187,6 +187,7 @@ public class MainActivity extends AppCompatActivity
         /*Scroll horizontal sub menu for BUY / SELL / SHARE*/
         scroll_linear_sub_menu = (LinearLayout) this.findViewById(R.id.linear_BSS_sub_menu);
         createMenuButtonsFromMap(BUY_HORIZONTAL_SCROLL_MENU, scroll_linear_sub_menu, SUB_MENU_FONT_SIZE, SUB_MENU_WIDTH, SUB_MENU_HEIGHT);
+        scroll_linear_sub_menu.setVisibility(LinearLayout.GONE);
         /*Main body of app*/
         WebView webView = (WebView) this.findViewById(R.id.web_view);
         webView.getSettings().setDomStorageEnabled(true);
@@ -439,6 +440,9 @@ public class MainActivity extends AppCompatActivity
                 snackbar.show();
                 break;
             case R.id.nav_account:
+                Intent intent = new Intent(
+                        MainActivity.this, AccountSettingActivity.class);
+                startActivity(intent);
                 String userid = session.getUserID();
                 Log.v(TAG, "userid!: " + userid);
                 break;

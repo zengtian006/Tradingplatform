@@ -9,7 +9,7 @@ public class AppConfig {
 
     public static String URL_UPDATE_MEMBER = "http://10.0.3.91/api/members/edit/";
 
-    public static String TEST_TOKEN = "http://10.0.3.91/api/members/index.json";
+    public static String TEST_TOKEN = "http://10.0.3.91/api/members/view/";
 
     public static final String FILE_UPLOAD_URL = "http://192.168.0.104/AndroidFileUpload/fileUpload.php";
 

@@ -75,20 +75,20 @@ public class MultiSelectionSpinner extends Spinner implements
                 System.arraycopy(mSelection, 0, mSelectionAtStart, 0, mSelection.length);
                 if (checkItemPostion.contains("2")) {
                     AccountSettingActivity.linearLayout_advanced.setVisibility(LinearLayout.VISIBLE);
-                    AccountSettingActivity.scrollView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            AccountSettingActivity.scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-                        }
-                    });
+//                    AccountSettingActivity.scrollView.post(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            AccountSettingActivity.scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+//                        }
+//                    });
                 } else {
                     AccountSettingActivity.linearLayout_advanced.setVisibility(LinearLayout.GONE);
-                    AccountSettingActivity.scrollView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            AccountSettingActivity.scrollView.fullScroll(ScrollView.FOCUS_UP);
-                        }
-                    });
+//                    AccountSettingActivity.scrollView.post(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            AccountSettingActivity.scrollView.fullScroll(ScrollView.FOCUS_UP);
+//                        }
+//                    });
                 }
             }
         });

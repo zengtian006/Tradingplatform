@@ -1,7 +1,8 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -21,7 +22,8 @@
             android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
             android:layout_weight="0.07"
-            android:src="@drawable/icon_login" />
+            android:src="@drawable/icon_login"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/textView3"
@@ -32,16 +34,18 @@
             android:layout_marginTop="8dp"
             android:text="Trading Platform"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#646464"
+            android:textColor="#FFFFFF"
             android:textIsSelectable="false"
             android:textSize="26dp"
             android:textStyle="bold"
-            android:typeface="serif" />
+            android:typeface="serif"
+            android:visibility="gone" />
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:textColorHint="#FFFFFF">
 
             <EditText
                 android:id="@+id/input_name"
@@ -52,25 +56,26 @@
                 android:drawableStart="@drawable/icon_username"
                 android:hint="@string/login_name"
                 android:singleLine="true"
-                android:typeface="sans" />
+                android:typeface="serif" />
         </android.support.design.widget.TextInputLayout>
 
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_password"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:textColorHint="#FFFFFF">
 
             <EditText
                 android:id="@+id/input_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/icon_pwd"
+                android:drawableLeft="@drawable/icon_login_pwd"
                 android:drawablePadding="10dip"
-                android:drawableStart="@drawable/icon_pwd"
+                android:drawableStart="@drawable/icon_login_pwd"
                 android:hint="@string/hint_password"
                 android:inputType="textPassword"
-                android:typeface="sans" />
+                android:typeface="serif" />
         </android.support.design.widget.TextInputLayout>
 
         <Button
@@ -78,21 +83,22 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:background="@color/colorAccent"
+            android:background="@android:color/transparent"
             android:text="@string/btn_login"
             android:textColor="@android:color/white"
-            android:typeface="sans" />
+            android:typeface="serif"
+            android:textSize="24dp" />
 
         <Button
             android:id="@+id/btnLinkToRegisterScreen"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dip"
+            android:layout_marginTop="50dp"
             android:background="@android:color/transparent"
             android:text="@string/btn_link_to_register"
             android:textAllCaps="false"
-            android:textColor="@color/grey05"
+            android:textColor="#ffffff"
             android:textSize="15dp" />
 
 

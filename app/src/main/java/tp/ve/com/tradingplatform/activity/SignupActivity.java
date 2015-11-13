@@ -1,6 +1,7 @@
 package tp.ve.com.tradingplatform.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -90,5 +91,12 @@ public class SignupActivity extends AppCompatActivity {
             // set the toolbar title
             getSupportActionBar().setTitle(title);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 }
