@@ -1,58 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_address"
-            android:icon="@android:drawable/ic_menu_manage"
-            android:title="@string/action_address" />
-        <item
-            android:id="@+id/nav_message"
-            android:icon="@android:drawable/ic_menu_manage"
-            android:title="@string/action_message" />
-        <item
-            android:id="@+id/nav_order"
-            android:icon="@android:drawable/ic_menu_manage"
-            android:title="@string/action_order" />
-        <item
-            android:id="@+id/nav_wallet"
-            android:icon="@android:drawable/ic_menu_manage"
-            android:title="@string/action_wallet" />
-        <item
-            android:id="@+id/nav_watch_list"
-            android:icon="@android:drawable/ic_menu_manage"
-            android:title="@string/action_watch_list" />
-    </group>
-
+    <!--<group android:checkableBehavior="single">-->
+    <!--<item-->
+    <!--android:id="@+id/nav_address"-->
+    <!--android:icon="@android:drawable/ic_menu_manage"-->
+    <!--android:title="@string/action_address" />-->
+    <!--<item-->
+    <!--android:id="@+id/nav_message"-->
+    <!--android:icon="@android:drawable/ic_menu_manage"-->
+    <!--android:title="@string/action_message" />-->
+    <!--<item-->
+    <!--android:id="@+id/nav_order"-->
+    <!--android:icon="@android:drawable/ic_menu_manage"-->
+    <!--android:title="@string/action_order" />-->
+    <!--<item-->
+    <!--android:id="@+id/nav_wallet"-->
+    <!--android:icon="@android:drawable/ic_menu_manage"-->
+    <!--android:title="@string/action_wallet" />-->
+    <!--<item-->
+    <!--android:id="@+id/nav_watch_list"-->
+    <!--android:icon="@android:drawable/ic_menu_manage"-->
+    <!--android:title="@string/action_watch_list" />-->
+    <!--</group>-->
     <item
-        android:id="@+id/nav_noLoggedin"
-        android:title="@string/subheader">
+        android:id="@+id/nav_deal"
+        android:title="Join a deal">
         <menu>
             <item
-                android:id="@+id/nav_sign_up"
-                android:icon="@android:drawable/ic_menu_myplaces"
-                android:title="@string/action_signup" />
+                android:icon="@android:drawable/ic_menu_manage"
+                android:title="@string/buymenu_groupbuy" />
             <item
-                android:id="@+id/nav_login"
-                android:icon="@android:drawable/ic_menu_view"
-                android:title="@string/action_login" />
+                android:icon="@android:drawable/ic_menu_manage"
+                android:title="@string/buymenu_bulk" />
+            <item
+                android:icon="@android:drawable/ic_menu_manage"
+                android:title="@string/buymenu_display" />
+            <item
+                android:icon="@android:drawable/ic_menu_manage"
+                android:title="@string/buymenu_watch_list" />
         </menu>
     </item>
 
     <item
-        android:id="@+id/nav_Loggedin"
-        android:title="@string/subheader">
+        android:id="@+id/nav_opportunity"
+        android:title="Find opportunity">
         <menu>
             <item
-                android:id="@+id/nav_account"
-                android:icon="@android:drawable/ic_menu_myplaces"
-                android:title="@string/action_accountsetting" />
+                android:icon="@android:drawable/ic_menu_manage"
+                android:title="@string/sellmenu_add" />
             <item
-                android:id="@+id/nav_logout"
-                android:icon="@android:drawable/ic_menu_myplaces"
-                android:title="@string/action_logout" />
+                android:icon="@android:drawable/ic_menu_manage"
+                android:title="@string/sellmenu_bulk" />
+            <item
+                android:icon="@android:drawable/ic_menu_manage"
+                android:title="@string/sellmenu_scheduled" />
+            <item
+                android:icon="@android:drawable/ic_menu_manage"
+                android:title="@string/sellmenu_selling" />
         </menu>
     </item>
+
+
+    <item
+        android:id="@+id/nav_me"
+        android:title="Me">
+        <menu>
+            <item
+                android:id="@+id/nav_address"
+                android:icon="@android:drawable/ic_menu_manage"
+                android:title="@string/action_address" />
+            <item
+                android:id="@+id/nav_message"
+                android:icon="@android:drawable/ic_menu_manage"
+                android:title="@string/action_message" />
+            <item
+                android:id="@+id/nav_order"
+                android:icon="@android:drawable/ic_menu_manage"
+                android:title="@string/action_order" />
+            <item
+                android:id="@+id/nav_wallet"
+                android:icon="@android:drawable/ic_menu_manage"
+                android:title="@string/action_wallet" />
+            <item
+                android:id="@+id/nav_watch_list"
+                android:icon="@android:drawable/ic_menu_manage"
+                android:title="@string/action_watch_list" />
+        </menu>
+    </item>
+
+    <!--<item-->
+    <!--android:id="@+id/nav_noLoggedin"-->
+    <!--android:title="@string/subheader">-->
+    <!--<menu>-->
+    <!--<item-->
+    <!--android:id="@+id/nav_sign_up"-->
+    <!--android:icon="@android:drawable/ic_menu_myplaces"-->
+    <!--android:title="@string/action_signup" />-->
+    <!--<item-->
+    <!--android:id="@+id/nav_login"-->
+    <!--android:icon="@android:drawable/ic_menu_view"-->
+    <!--android:title="@string/action_login" />-->
+    <!--</menu>-->
+    <!--</item>-->
+
+    <!--<item-->
+    <!--android:id="@+id/nav_Loggedin"-->
+    <!--android:title="@string/subheader">-->
+    <!--<menu>-->
+    <!--<item-->
+    <!--android:id="@+id/nav_account"-->
+    <!--android:icon="@android:drawable/ic_menu_myplaces"-->
+    <!--android:title="@string/action_accountsetting" />-->
+    <!--<item-->
+    <!--android:id="@+id/nav_logout"-->
+    <!--android:icon="@android:drawable/ic_menu_myplaces"-->
+    <!--android:title="@string/action_logout" />-->
+    <!--</menu>-->
+    <!--</item>-->
 
 
 </menu>

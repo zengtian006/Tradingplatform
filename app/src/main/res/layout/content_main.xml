@@ -39,7 +39,7 @@
         <LinearLayout
             android:id="@+id/layout_wheel_menu"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="wrap_content"
             android:layout_alignTop="@+id/layout_upper_body"
 
             android:orientation="vertical">

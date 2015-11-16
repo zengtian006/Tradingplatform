@@ -17,11 +17,16 @@
         app:showAsAction="always">
         <menu>
             <item
+                android:id="@+id/ic_menu_qrcode"
+                android:title="Scan QR Code" />
+            <item
                 android:id="@+id/ic_menu_share"
                 android:title="Share" />
             <item
-                android:id="@+id/ic_menu_qrcode"
-                android:title="Scan QR Code" />
+                android:id="@+id/ic_menu_share_list"
+                android:title="Share List" />
+
+
         </menu>
     </item>
 </menu>

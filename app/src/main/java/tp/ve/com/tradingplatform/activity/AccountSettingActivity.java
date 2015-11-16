@@ -96,7 +96,7 @@ public class AccountSettingActivity extends AppCompatActivity {
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-//        collapsingToolbar.setTitle("Second Activity");
+        collapsingToolbar.setTitle("Account Setting");
 
         multiSelectionSpinner = (MultiSelectionSpinner) findViewById(R.id.roleSpinner);
         linearLayout_advanced = (LinearLayout) findViewById(R.id.advanced_view);

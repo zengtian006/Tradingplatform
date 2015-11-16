@@ -1,6 +1,7 @@
 package tp.ve.com.tradingplatform.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -19,7 +20,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +28,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -45,8 +46,10 @@ import tp.ve.com.tradingplatform.helper.SessionManager;
 
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
     private static final String TAG = MainActivity.class.getSimpleName();
+
+    private final static int SCANNED_GREENEST_CODE = 1;
 
     public final static int HIGHTLIGHT_COLOR = R.color.white1;
     public final static int SUB_MENU_WIDTH = 120;
@@ -59,7 +62,7 @@ public class MainActivity extends AppCompatActivity
 
     static {
         BSS_HORIZONTAL_SCROLL_MENU.put(R.string.bssmenu_buy, null);
-        BSS_HORIZONTAL_SCROLL_MENU.put(R.string.bssmenu_share, null);
+//        BSS_HORIZONTAL_SCROLL_MENU.put(R.string.bssmenu_share, null);
         BSS_HORIZONTAL_SCROLL_MENU.put(R.string.bssmenu_sell, null);
     }
 
@@ -81,21 +84,16 @@ public class MainActivity extends AppCompatActivity
         SELL_HORIZONTAL_SCROLL_MENU.put(R.string.sellmenu_bulk, R.drawable.ic_shopping_basket_black);
     }
 
-    public final static HashMap<Integer, Integer> SHARE_HORIZONTAL_SCROLL_MENU = new LinkedHashMap<Integer, Integer>();
-
-    static {
-        SHARE_HORIZONTAL_SCROLL_MENU.put(R.string.sharemenu_share_item, R.drawable.ic_share_black);
-        SHARE_HORIZONTAL_SCROLL_MENU.put(R.string.sharemenu_customize, R.drawable.ic_public_black);
-        SHARE_HORIZONTAL_SCROLL_MENU.put(R.string.sharemenu_history, R.drawable.ic_storage_black);
-        SHARE_HORIZONTAL_SCROLL_MENU.put(R.string.sharemenu_statistics, R.drawable.ic_event_note_black);
-    }
-
     private LinearLayout scroll_linear_bss_menu;
     private LinearLayout scroll_linear_sub_menu;
     public static DrawerLayout drawer;
     static NavigationView navigationView;
 
     private static SessionManager session;
+
+    private static LinearLayout layout_loggedin, layout_noLoggedin;
+    Button btn_signup, btn_login, btn_account, btn_logout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,12 +117,24 @@ public class MainActivity extends AppCompatActivity
 
         session = new SessionManager(getApplicationContext());
 
-        View h = navigationView.inflateHeaderView(R.layout.nav_header_main);
+        View headerView = navigationView.inflateHeaderView(R.layout.nav_header_main);
 //        View header = LayoutInflater.from(this).inflate(R.layout.nav_header_main, null);
 //        navigationView.addHeaderView(header);
-        TextView text = (TextView) h.findViewById(R.id.nav_user_nickname);
+        TextView text = (TextView) headerView.findViewById(R.id.nav_user_nickname);
         text.setText(session.getUserName());
 
+
+        layout_noLoggedin = (LinearLayout) headerView.findViewById(R.id.layout_noLoggedin);
+        layout_loggedin = (LinearLayout) headerView.findViewById(R.id.layout_Loggedin);
+
+        btn_signup = (Button) headerView.findViewById(R.id.nav_sign_up);
+        btn_login = (Button) headerView.findViewById(R.id.nav_login);
+        btn_logout = (Button) headerView.findViewById(R.id.nav_logout);
+        btn_account = (Button) headerView.findViewById(R.id.nav_account);
+        btn_signup.setOnClickListener(this);
+        btn_login.setOnClickListener(this);
+        btn_logout.setOnClickListener(this);
+        btn_account.setOnClickListener(this);
 
         if (!session.isLoggedIn()) {
             logoutUser();
@@ -182,6 +192,7 @@ public class MainActivity extends AppCompatActivity
         /*Scroll horizontal main menu for BUY / SELL / SHARE*/
         scroll_linear_bss_menu = (LinearLayout) this.findViewById(R.id.linear_BSS_menu);
         createMenuButtonsFromMap(BSS_HORIZONTAL_SCROLL_MENU, scroll_linear_bss_menu, 20, 100, 100);
+        scroll_linear_bss_menu.setVisibility(LinearLayout.GONE);
 
 
         /*Scroll horizontal sub menu for BUY / SELL / SHARE*/
@@ -216,17 +227,21 @@ public class MainActivity extends AppCompatActivity
     }
 
     public static void showSignupMenu() {
-        MenuItem noLogMenuItem = navigationView.getMenu().findItem(R.id.nav_noLoggedin);
-        noLogMenuItem.setVisible(true);
-        MenuItem LogMenuItem = navigationView.getMenu().findItem(R.id.nav_Loggedin);
-        LogMenuItem.setVisible(false);
+//        MenuItem noLogMenuItem = navigationView.getMenu().findItem(R.id.nav_noLoggedin);
+//        noLogMenuItem.setVisible(true);
+//        MenuItem LogMenuItem = navigationView.getMenu().findItem(R.id.nav_Loggedin);
+//        LogMenuItem.setVisible(false);
+        layout_loggedin.setVisibility(LinearLayout.GONE);
+        layout_noLoggedin.setVisibility(LinearLayout.VISIBLE);
     }
 
     public static void showLogoutMenu() {
-        MenuItem noLogMenuItem = navigationView.getMenu().findItem(R.id.nav_noLoggedin);
-        noLogMenuItem.setVisible(false);
-        MenuItem LogMenuItem = navigationView.getMenu().findItem(R.id.nav_Loggedin);
-        LogMenuItem.setVisible(true);
+//        MenuItem noLogMenuItem = navigationView.getMenu().findItem(R.id.nav_noLoggedin);
+//        noLogMenuItem.setVisible(false);
+//        MenuItem LogMenuItem = navigationView.getMenu().findItem(R.id.nav_Loggedin);
+//        LogMenuItem.setVisible(true);
+        layout_loggedin.setVisibility(LinearLayout.VISIBLE);
+        layout_noLoggedin.setVisibility(LinearLayout.GONE);
 
     }
 
@@ -300,7 +315,8 @@ public class MainActivity extends AppCompatActivity
 
 
         //only for main BSS menu
-        if (getString(button_text_id) == getString(R.string.bssmenu_buy) || getString(button_text_id) == getString(R.string.bssmenu_sell) || getString(button_text_id) == getString(R.string.bssmenu_share)) {
+//        if (getString(button_text_id) == getString(R.string.bssmenu_buy) || getString(button_text_id) == getString(R.string.bssmenu_sell) || getString(button_text_id) == getString(R.string.bssmenu_share)) {
+        if (getString(button_text_id) == getString(R.string.bssmenu_buy) || getString(button_text_id) == getString(R.string.bssmenu_sell)) {
             if (getString(button_text_id) == getString(R.string.bssmenu_buy)) {
                 textView.setBackgroundResource(HIGHTLIGHT_COLOR);
                 textView.setTextColor(Color.BLACK);
@@ -329,13 +345,13 @@ public class MainActivity extends AppCompatActivity
                     removeAllChildMenuButton(scroll_linear_sub_menu);
                     createMenuButtonsFromMap(BUY_HORIZONTAL_SCROLL_MENU, scroll_linear_sub_menu, SUB_MENU_FONT_SIZE, SUB_MENU_WIDTH, SUB_MENU_HEIGHT);
                     //add action go to home page of buy menu (first item in buy menu)
-                } else if (v.getTag().toString().equals(getString(R.string.bssmenu_share))) {
-                    removeAllChildMenuButtonColor(scroll_linear_bss_menu);
-                    textView.setBackgroundResource(HIGHTLIGHT_COLOR);
-                    textView.setTextColor(Color.BLACK);
-                    removeAllChildMenuButton(scroll_linear_sub_menu);
-
-                    createMenuButtonsFromMap(SHARE_HORIZONTAL_SCROLL_MENU, scroll_linear_sub_menu, SUB_MENU_FONT_SIZE, SUB_MENU_WIDTH, SUB_MENU_HEIGHT);
+//                } else if (v.getTag().toString().equals(getString(R.string.bssmenu_share))) {
+//                    removeAllChildMenuButtonColor(scroll_linear_bss_menu);
+//                    textView.setBackgroundResource(HIGHTLIGHT_COLOR);
+//                    textView.setTextColor(Color.BLACK);
+//                    removeAllChildMenuButton(scroll_linear_sub_menu);
+//
+//                    createMenuButtonsFromMap(SHARE_HORIZONTAL_SCROLL_MENU, scroll_linear_sub_menu, SUB_MENU_FONT_SIZE, SUB_MENU_WIDTH, SUB_MENU_HEIGHT);
                 } else if (v.getTag().toString().equals(getString(R.string.bssmenu_sell))) {
                     removeAllChildMenuButtonColor(scroll_linear_bss_menu);
                     textView.setBackgroundResource(HIGHTLIGHT_COLOR);
@@ -399,6 +415,14 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        switch (id) {
+            case R.id.ic_menu_qrcode:
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, MipcaActivityCapture.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivityForResult(intent, SCANNED_GREENEST_CODE);
+                break;
+        }
 
         //noinspection SimplifiableIfStatement
        /* if (id == R.id.action_settings) {
@@ -413,17 +437,49 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        setTitle(item.getTitle());
         switch (id) {
+//            case R.id.nav_sign_up:
+//                Intent intent_sign = new Intent();
+//                intent_sign.setClass(MainActivity.this, SignupActivity.class);
+//                startActivity(intent_sign);
+//                break;
+//            case R.id.nav_login:
+//                Intent intent_login = new Intent();
+//                intent_login.setClass(MainActivity.this, LoginActivity.class);
+//                startActivity(intent_login);
+////                finish();
+//                break;
+//            case R.id.nav_logout:
+//                logoutUser();
+//                showSignupMenu();
+//                Snackbar snackbar = Snackbar
+//                        .make(drawer, "You have successfully logged out", Snackbar.LENGTH_SHORT);
+//
+//                snackbar.show();
+//                break;
+//            case R.id.nav_account:
+//                Intent intent = new Intent(
+//                        MainActivity.this, AccountSettingActivity.class);
+//                startActivity(intent);
+//                String userid = session.getUserID();
+//                Log.v(TAG, "userid!: " + userid);
+//                break;
+            default:
+                break;
+        }
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
             case R.id.nav_sign_up:
                 Intent intent_sign = new Intent();
                 intent_sign.setClass(MainActivity.this, SignupActivity.class);
-//                intent_sign.setClass(MainActivity.this, AccountSettingActivity.class);
-//                intent_sign.putExtra("id", "idid");
-//                intent_sign.putExtra("name", "namename");
-//                intent_sign.putExtra("contact_no", "phonephone");
                 startActivity(intent_sign);
-//                finish();
-//                Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_login:
                 Intent intent_login = new Intent();
@@ -446,22 +502,7 @@ public class MainActivity extends AppCompatActivity
                 String userid = session.getUserID();
                 Log.v(TAG, "userid!: " + userid);
                 break;
-            default:
-                item.setChecked(true);
-                break;
         }
-
-       /* if (id == R.id.nav_address) {
-            // Handle the address action
-        } else if (id == R.id.nav_message) {
-
-        }
-*/
-
-//        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
-
-
 }
