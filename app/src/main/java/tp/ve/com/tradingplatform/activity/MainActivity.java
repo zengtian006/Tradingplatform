@@ -227,19 +227,23 @@ public class MainActivity extends AppCompatActivity
     }
 
     public static void showSignupMenu() {
-//        MenuItem noLogMenuItem = navigationView.getMenu().findItem(R.id.nav_noLoggedin);
-//        noLogMenuItem.setVisible(true);
-//        MenuItem LogMenuItem = navigationView.getMenu().findItem(R.id.nav_Loggedin);
-//        LogMenuItem.setVisible(false);
+        MenuItem deal = navigationView.getMenu().findItem(R.id.nav_deal);
+        deal.setVisible(false);
+        MenuItem opportunity = navigationView.getMenu().findItem(R.id.nav_opportunity);
+        opportunity.setVisible(false);
+        MenuItem me = navigationView.getMenu().findItem(R.id.nav_me);
+        me.setVisible(false);
         layout_loggedin.setVisibility(LinearLayout.GONE);
         layout_noLoggedin.setVisibility(LinearLayout.VISIBLE);
     }
 
     public static void showLogoutMenu() {
-//        MenuItem noLogMenuItem = navigationView.getMenu().findItem(R.id.nav_noLoggedin);
-//        noLogMenuItem.setVisible(false);
-//        MenuItem LogMenuItem = navigationView.getMenu().findItem(R.id.nav_Loggedin);
-//        LogMenuItem.setVisible(true);
+        MenuItem deal = navigationView.getMenu().findItem(R.id.nav_deal);
+        deal.setVisible(true);
+        MenuItem opportunity = navigationView.getMenu().findItem(R.id.nav_opportunity);
+        opportunity.setVisible(true);
+        MenuItem me = navigationView.getMenu().findItem(R.id.nav_me);
+        me.setVisible(true);
         layout_loggedin.setVisibility(LinearLayout.VISIBLE);
         layout_noLoggedin.setVisibility(LinearLayout.GONE);
 
