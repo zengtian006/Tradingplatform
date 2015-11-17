@@ -428,12 +428,13 @@ public class MainActivity extends AppCompatActivity
                 startActivityForResult(intent, SCANNED_GREENEST_CODE);
                 break;
             case R.id.ic_menu_share:
-                intent.setAction(Intent.ACTION_SEND);
-//                intent.setType("text/plain");
-                intent.setType("image/*");
-                intent.putExtra(Intent.EXTRA_TEXT, "www.baidu.com");
-                intent.putExtra(Intent.EXTRA_STREAM, "http://www.joomlaworks.net/images/demos/galleries/abstract/7.jpg");
-                startActivity(Intent.createChooser(intent, "Share"));
+//                intent.setAction(Intent.ACTION_SEND);
+//                intent.setType("image/*");
+//                intent.putExtra(Intent.EXTRA_TEXT, "www.baidu.com");
+//                intent.putExtra(Intent.EXTRA_STREAM, "http://www.joomlaworks.net/images/demos/galleries/abstract/7.jpg");
+//                startActivity(Intent.createChooser(intent, "Share"));
+                intent.setClass(MainActivity.this, ShareActivity.class);
+                startActivity(intent);
                 break;
         }
 

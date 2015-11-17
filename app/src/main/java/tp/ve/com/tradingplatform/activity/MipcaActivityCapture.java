@@ -1,5 +1,6 @@
 package tp.ve.com.tradingplatform.activity;
 
+import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.media.AudioManager;
@@ -104,7 +105,6 @@ public class MipcaActivityCapture extends AppCompatActivity implements Callback 
     }
 
     /**
-     *
      * @param result
      * @param barcode
      */
@@ -122,9 +122,9 @@ public class MipcaActivityCapture extends AppCompatActivity implements Callback 
 //            resultIntent.putExtras(bundle);
 //            this.setResult(RESULT_OK, resultIntent);
             Toast.makeText(MipcaActivityCapture.this, resultString, Toast.LENGTH_LONG).show();
-//            Intent intent = new Intent(MipcaActivityCapture.this, URLActivity.class);
-//            intent.putExtra("result", resultString);
-//            startActivity(intent);
+            Intent intent = new Intent(MipcaActivityCapture.this, ShareActivity.class);
+            intent.putExtra("URL", resultString);
+            startActivity(intent);
         }
         MipcaActivityCapture.this.finish();
     }

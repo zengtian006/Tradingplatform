@@ -330,8 +330,12 @@ public class AccountSettingActivity extends AppCompatActivity {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("name", member_name);
                 params.put("gender", member_gender);
-                params.put("language", member_lang);
-                params.put("email", member_email);
+                if (!member_lang.equals("")) {
+                    params.put("language", member_lang);
+                }
+                if (!member_email.equals("")) {
+                    params.put("email", member_email);
+                }
 //                params.put("name", "test");
 //                params.put("gender", "M");
 //                params.put("language", "chinese");
@@ -349,7 +353,9 @@ public class AccountSettingActivity extends AppCompatActivity {
 
         };
         // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        AppController.getInstance().
+
+                addToRequestQueue(strReq, tag_string_req);
     }
 
     @Override
