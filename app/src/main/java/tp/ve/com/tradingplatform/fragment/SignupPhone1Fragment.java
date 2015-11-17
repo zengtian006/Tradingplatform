@@ -1,8 +1,8 @@
 package tp.ve.com.tradingplatform.fragment;
 
 
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,8 +10,6 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.text.InputType;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -19,13 +17,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
@@ -33,7 +33,6 @@ import tp.ve.com.tradingplatform.R;
 import tp.ve.com.tradingplatform.activity.LoginActivity;
 import tp.ve.com.tradingplatform.activity.SignupActivity;
 
-import static cn.smssdk.framework.utils.R.getRawRes;
 import static cn.smssdk.framework.utils.R.getStringRes;
 
 /**
@@ -51,6 +50,7 @@ public class SignupPhone1Fragment extends Fragment {
     //    SMS information
     private static String APPKEY = "92fe0af33ee2";
     private static String APPSECRET = "025d167cf82e598ab470fe65acda95ea";
+    Context mContext;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,7 +72,7 @@ public class SignupPhone1Fragment extends Fragment {
         };
         SMSSDK.registerEventHandler(eh);
         //SMS end
-
+        mContext = getContext();
     }
 
     @Override
@@ -83,6 +83,12 @@ public class SignupPhone1Fragment extends Fragment {
         edt_Phone = (EditText) rootView.findViewById(R.id.input_phone);
         phoneCode = (TextView) rootView.findViewById(R.id.phone_code);
         phoneAreaSP = (Spinner) rootView.findViewById(R.id.phone_area);
+
+//
+//        ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.phone_area));
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        phoneAreaSP.setAdapter(adapter);
+
         btnLinkToLogin = (Button) rootView.findViewById(R.id.btnLinkToLoginScreen);
         inputLayoutPhone = (TextInputLayout) rootView.findViewById(R.id.input_layout_phone);
 
@@ -195,7 +201,7 @@ public class SignupPhone1Fragment extends Fragment {
                     }
 
 
-                    Toast.makeText(SignupActivity.context, "Success", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(SignupActivity.context, "Success", Toast.LENGTH_SHORT).show();
 
                 } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
                     Toast.makeText(SignupActivity.context, "Verification code has been sent", Toast.LENGTH_SHORT).show();

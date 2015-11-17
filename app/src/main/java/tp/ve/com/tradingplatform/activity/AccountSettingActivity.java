@@ -93,7 +93,7 @@ public class AccountSettingActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle("Account Setting");
@@ -142,8 +142,13 @@ public class AccountSettingActivity extends AppCompatActivity {
         member_id = SessionManager.currMember.getMember_id();
         edt_name.setText(SessionManager.currMember.getMember_name());
         edt_phone.setText(SessionManager.currMember.getMember_mobile());
-        edt_email.setText(SessionManager.currMember.getMember_email());
-        edt_language.setText(SessionManager.currMember.getMember_language());
+        if (!SessionManager.currMember.getMember_email().equals("null")) {
+            edt_email.setText(SessionManager.currMember.getMember_email());
+        }
+        if (!SessionManager.currMember.getMember_language().equals("null")) {
+            edt_language.setText(SessionManager.currMember.getMember_language());
+        }
+
         member_gender = SessionManager.currMember.getMember_gender().trim();
         Log.v(TAG, "Member_gender:" + member_gender);
         if (member_gender.equals("M")) {

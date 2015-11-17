@@ -53,6 +53,7 @@
         <activity
             android:name=".activity.AccountSettingActivity"
             android:label="@string/action_accountsetting"
+            android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <!--android:theme="@style/AppTheme.NoActionBar"-->
 

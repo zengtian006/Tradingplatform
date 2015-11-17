@@ -419,12 +419,21 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        Intent intent = new Intent();
         switch (id) {
             case R.id.ic_menu_qrcode:
-                Intent intent = new Intent();
+
                 intent.setClass(MainActivity.this, MipcaActivityCapture.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivityForResult(intent, SCANNED_GREENEST_CODE);
+                break;
+            case R.id.ic_menu_share:
+                intent.setAction(Intent.ACTION_SEND);
+//                intent.setType("text/plain");
+                intent.setType("image/*");
+                intent.putExtra(Intent.EXTRA_TEXT, "www.baidu.com");
+                intent.putExtra(Intent.EXTRA_STREAM, "http://www.joomlaworks.net/images/demos/galleries/abstract/7.jpg");
+                startActivity(Intent.createChooser(intent, "Share"));
                 break;
         }
 
