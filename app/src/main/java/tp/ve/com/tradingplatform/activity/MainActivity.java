@@ -9,6 +9,7 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -42,6 +43,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import tp.ve.com.tradingplatform.R;
+import tp.ve.com.tradingplatform.entity.Member;
 import tp.ve.com.tradingplatform.helper.SessionManager;
 
 
@@ -55,6 +57,8 @@ public class MainActivity extends AppCompatActivity
     public final static int SUB_MENU_WIDTH = 120;
     public final static int SUB_MENU_HEIGHT = 120;
     public final static int SUB_MENU_FONT_SIZE = 8;
+
+    boolean doubleBackToExitPressedOnce = false;
 
 
     /*TEXT + res id*/
@@ -93,6 +97,8 @@ public class MainActivity extends AppCompatActivity
 
     private static LinearLayout layout_loggedin, layout_noLoggedin;
     Button btn_signup, btn_login, btn_account, btn_logout;
+    View headerView;
+    static TextView icontext;
 
 
     @Override
@@ -117,11 +123,10 @@ public class MainActivity extends AppCompatActivity
 
         session = new SessionManager(getApplicationContext());
 
-        View headerView = navigationView.inflateHeaderView(R.layout.nav_header_main);
+        headerView = navigationView.inflateHeaderView(R.layout.nav_header_main);
+        icontext = (TextView) headerView.findViewById(R.id.nav_user_nickname);
 //        View header = LayoutInflater.from(this).inflate(R.layout.nav_header_main, null);
 //        navigationView.addHeaderView(header);
-        TextView text = (TextView) headerView.findViewById(R.id.nav_user_nickname);
-        text.setText(session.getUserName());
 
 
         layout_noLoggedin = (LinearLayout) headerView.findViewById(R.id.layout_noLoggedin);
@@ -139,6 +144,7 @@ public class MainActivity extends AppCompatActivity
         if (!session.isLoggedIn()) {
             logoutUser();
             showSignupMenu();
+            icontext.setText("GUEST");
 //            Toast.makeText(MainActivity.this, "no logged in", Toast.LENGTH_SHORT).show();
         } else {
             session.verifyToken();
@@ -247,11 +253,13 @@ public class MainActivity extends AppCompatActivity
         layout_loggedin.setVisibility(LinearLayout.VISIBLE);
         layout_noLoggedin.setVisibility(LinearLayout.GONE);
 
+        icontext.setText(session.currMember.getMember_name());
+
     }
 
 
     public static void logoutUser() {
-        session.setLogin(false, "", "Guest", "");
+        session.setLogin(false, "", session.getUserName(), "");
 
         // Launching the login activity
 //        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -402,7 +410,21 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                return;
+            }
+
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);
         }
     }
 
@@ -519,4 +541,5 @@ public class MainActivity extends AppCompatActivity
         }
         drawer.closeDrawer(GravityCompat.START);
     }
+
 }

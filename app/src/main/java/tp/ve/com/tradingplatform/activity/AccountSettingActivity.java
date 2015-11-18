@@ -301,6 +301,7 @@ public class AccountSettingActivity extends AppCompatActivity {
                         Intent intent = new Intent(
                                 AccountSettingActivity.this, MainActivity.class);
                         startActivity(intent);
+                        finish();
                     } else {
                         // Error occurred in registration. Get the error
                         // message

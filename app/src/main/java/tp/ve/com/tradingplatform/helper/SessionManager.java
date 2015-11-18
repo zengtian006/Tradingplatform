@@ -44,6 +44,7 @@ public class SessionManager {
     private static final String KEY_IS_LOGGED_IN = "isLoggedIn";
     private static final String KEY_IS_TOKEN_ID = "tokenId";
     private static final String KEY_IS_USER_NAME = "userName";
+    private static final String KEY_IS_FULL_NAME = "fullName";
     private static final String KEY_IS_USER_ID = "userId";
     private String temptoken, tempusername;
 
@@ -108,7 +109,6 @@ public class SessionManager {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
 
                 MainActivity.showLogoutMenu();
 //            Toast.makeText(MainActivity.this, "logged in", Toast.LENGTH_SHORT).show();

@@ -86,4 +86,6 @@
 
     <!--QR code reader-->
     <string name="scan_text">Align the QR Code within the frame to scan</string>
+    <!--Share-->
+    <string name="hint_url">Enter URL</string>
 </resources>

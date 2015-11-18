@@ -149,5 +149,6 @@ public class ShareActivity extends AppCompatActivity {
         super.onBackPressed();
         Intent intent = new Intent(ShareActivity.this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 }
