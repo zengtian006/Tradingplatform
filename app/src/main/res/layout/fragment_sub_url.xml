@@ -17,7 +17,8 @@
             android:id="@+id/urlText"
             android:layout_width="266dp"
             android:layout_height="wrap_content"
-            android:hint="@string/hint_url" />
+            android:hint="@string/hint_url"
+            android:text="www.baidu.com" />
 
         <Button
             android:id="@+id/btn_fetch"
@@ -67,7 +68,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/view_image"
             android:layout_width="fill_parent"
             android:layout_height="60dp"
             android:layout_gravity="center_horizontal" />
