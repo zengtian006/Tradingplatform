@@ -51,11 +51,16 @@
                 android:value=".activity.MainActivity" />
         </activity>
         <activity
-            android:name=".activity.AccountSettingActivity"
+            android:name=".activity.AccountSettingActivity_bacup"
             android:label="@string/action_accountsetting"
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <!--android:theme="@style/AppTheme.NoActionBar"-->
+        <activity
+            android:name=".activity.AccountSettingActivity"
+            android:label="@string/label_accountsetting"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".activity.MipcaActivityCapture"

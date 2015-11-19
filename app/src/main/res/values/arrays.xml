@@ -13,6 +13,18 @@
         <item>Macao</item>
     </string-array>
 
+    <string-array name="roles">
+        <item>Buyer</item>
+        <item>ITP</item>
+        <item>Supplier</item>
+    </string-array>
+
+    <string-array name="photos">
+        <item>@drawable/ic_shopping_basket_black</item>
+        <item>@drawable/ic_shopping_basket_black</item>
+        <item>@drawable/ic_shopping_basket_black</item>
+    </string-array>
+
     <string-array name="CountryCodes">
         <item>852,HK</item>
         <item>86,CN</item>
