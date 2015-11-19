@@ -19,6 +19,7 @@
     <string name="action_login">Login</string>
     <string name="action_logout">Log out</string>
     <string name="action_accountsetting">Account</string>
+    <string name="label_accountsetting">Account Setting</string>
     <string name="action_help">Help</string>
 
 
@@ -70,14 +71,13 @@
     <string name="login_user_name">Guest</string>
 
     <!--Account Setting -->
-    <string name="label_basic_infomation">Basic Information</string>
     <string name="hint_lang">Language</string>
     <string name="hint_address1">Address 1</string>
     <string name="hint_address2">Address 2</string>
     <string name="hint_address3">Address 3</string>
     <string name="label_role_setting">Role Setting</string>
     <string name="hint_comName">Company Name</string>
-    <string name="hint_comProfile">Company Profile</string>
+    <string name="hint_comProfile">Company Description</string>
     <string name="hint_comWebsite">Company Website</string>
     <string name="hint_comPhone">Office Phone</string>
     <string name="hint_comProduct">Company Product</string>

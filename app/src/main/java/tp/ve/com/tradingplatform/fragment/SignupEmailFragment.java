@@ -1,7 +1,6 @@
 package tp.ve.com.tradingplatform.fragment;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
@@ -21,18 +20,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
-import junit.framework.Test;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import tp.ve.com.tradingplatform.R;
-import tp.ve.com.tradingplatform.activity.AccountSettingActivity;
-import tp.ve.com.tradingplatform.activity.LoginActivity;
 import tp.ve.com.tradingplatform.activity.SignupActivity;
 import tp.ve.com.tradingplatform.app.AppConfig;
 import tp.ve.com.tradingplatform.app.AppController;

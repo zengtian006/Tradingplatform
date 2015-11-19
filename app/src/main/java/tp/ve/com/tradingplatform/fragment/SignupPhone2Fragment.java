@@ -27,7 +27,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import tp.ve.com.tradingplatform.R;
-import tp.ve.com.tradingplatform.activity.AccountSettingActivity;
 import tp.ve.com.tradingplatform.activity.LoginActivity;
 import tp.ve.com.tradingplatform.activity.SignupActivity;
 import tp.ve.com.tradingplatform.app.AppConfig;
