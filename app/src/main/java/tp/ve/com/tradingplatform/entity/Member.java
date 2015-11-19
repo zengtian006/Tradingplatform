@@ -11,6 +11,33 @@ public class Member {
     String member_mobile;
     String member_gender;
     String member_language;
+    String member_itp;
+    String member_supplier;
+    String member_default_role;
+
+    public String getMember_default_role() {
+        return member_default_role;
+    }
+
+    public void setMember_default_role(String member_default_role) {
+        this.member_default_role = member_default_role;
+    }
+
+    public String getMember_itp() {
+        return member_itp;
+    }
+
+    public void setMember_itp(String member_itp) {
+        this.member_itp = member_itp;
+    }
+
+    public String getMember_supplier() {
+        return member_supplier;
+    }
+
+    public void setMember_supplier(String member_supplier) {
+        this.member_supplier = member_supplier;
+    }
 
     public String getMember_gender() {
         return member_gender;

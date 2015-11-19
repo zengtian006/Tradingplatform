@@ -1,16 +1,13 @@
 package tp.ve.com.tradingplatform.activity;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -43,7 +40,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import tp.ve.com.tradingplatform.R;
-import tp.ve.com.tradingplatform.entity.Member;
 import tp.ve.com.tradingplatform.helper.SessionManager;
 
 
@@ -52,6 +48,7 @@ public class MainActivity extends AppCompatActivity
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private final static int SCANNED_GREENEST_CODE = 1;
+    public static int currentRole;
 
     public final static int HIGHTLIGHT_COLOR = R.color.white1;
     public final static int SUB_MENU_WIDTH = 120;
@@ -252,8 +249,17 @@ public class MainActivity extends AppCompatActivity
         me.setVisible(true);
         layout_loggedin.setVisibility(LinearLayout.VISIBLE);
         layout_noLoggedin.setVisibility(LinearLayout.GONE);
-
-        icontext.setText(session.currMember.getMember_name());
+        String roleTitle = "Buyer";
+        if (session.currMember.getMember_default_role().equals("B")) {
+            currentRole = 0;//Buyer
+        } else if (session.currMember.getMember_default_role().equals("I")) {
+            currentRole = 1; //ITP
+            roleTitle = "ITP";
+        } else if (session.currMember.getMember_default_role().equals("S")) {
+            currentRole = 2; //Supplier
+            roleTitle = "Supplier";
+        }
+        icontext.setText(roleTitle + ": " + session.currMember.getMember_name());
 
     }
 

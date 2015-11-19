@@ -10,22 +10,20 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_weight="0.06"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:padding="10dp">
 
         <EditText
             android:id="@+id/urlText"
-            android:layout_width="266dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_url"
             android:text="www.baidu.com" />
 
         <Button
             android:id="@+id/btn_fetch"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="2"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
             android:background="@color/colorAccent"
             android:text="Fetch"
             android:textColor="#FFFFFF"

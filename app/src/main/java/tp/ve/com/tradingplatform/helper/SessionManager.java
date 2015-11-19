@@ -46,7 +46,7 @@ public class SessionManager {
     private static final String KEY_IS_USER_NAME = "userName";
     private static final String KEY_IS_FULL_NAME = "fullName";
     private static final String KEY_IS_USER_ID = "userId";
-    private String temptoken, tempusername;
+    public static String temptoken, tempusername;
 
     public static Member currMember;
 
@@ -105,6 +105,9 @@ public class SessionManager {
                     currMember.setMember_name(memberObj.getString("name"));
                     currMember.setMember_gender(memberObj.getString("gender"));
                     currMember.setMember_language(memberObj.getString("language"));
+                    currMember.setMember_itp(memberObj.getString("itp_verified"));
+                    currMember.setMember_supplier(memberObj.getString("supplier_verified"));
+                    currMember.setMember_default_role(memberObj.getString("default_role"));
 
                 } catch (JSONException e) {
                     e.printStackTrace();

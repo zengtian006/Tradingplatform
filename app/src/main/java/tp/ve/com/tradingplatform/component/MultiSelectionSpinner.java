@@ -8,7 +8,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 
@@ -17,7 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import tp.ve.com.tradingplatform.activity.AccountSettingActivity;
+import tp.ve.com.tradingplatform.activity.AccountSettingActivity_bacup;
 
 public class MultiSelectionSpinner extends Spinner implements
         OnMultiChoiceClickListener {
@@ -74,7 +73,7 @@ public class MultiSelectionSpinner extends Spinner implements
             public void onClick(DialogInterface dialog, int which) {
                 System.arraycopy(mSelection, 0, mSelectionAtStart, 0, mSelection.length);
                 if (checkItemPostion.contains("2")) {
-                    AccountSettingActivity.linearLayout_advanced.setVisibility(LinearLayout.VISIBLE);
+                    AccountSettingActivity_bacup.linearLayout_advanced.setVisibility(LinearLayout.VISIBLE);
 //                    AccountSettingActivity.scrollView.post(new Runnable() {
 //                        @Override
 //                        public void run() {
@@ -82,7 +81,7 @@ public class MultiSelectionSpinner extends Spinner implements
 //                        }
 //                    });
                 } else {
-                    AccountSettingActivity.linearLayout_advanced.setVisibility(LinearLayout.GONE);
+                    AccountSettingActivity_bacup.linearLayout_advanced.setVisibility(LinearLayout.GONE);
 //                    AccountSettingActivity.scrollView.post(new Runnable() {
 //                        @Override
 //                        public void run() {
