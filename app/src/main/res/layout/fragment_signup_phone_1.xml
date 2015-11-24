@@ -121,8 +121,8 @@
             android:background="@android:color/transparent"
             android:text="@string/btn_link_to_login"
             android:textAllCaps="false"
-            android:textColor="@color/grey05"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+            android:textColor="#7e7e7f" />
 
 
     </LinearLayout>

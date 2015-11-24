@@ -38,129 +38,257 @@
                     android:orientation="vertical"
                     android:weightSum="1">
 
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/input_layout_comName"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.53"
+                        android:gravity="bottom|center"
+                        android:paddingLeft="30dp"
+                        android:visibility="visible"
+                        android:layout_marginTop="10dp">
 
-                        <EditText
-                            android:id="@+id/input_comName"
+                        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:id="@+id/type_group"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/rb_company"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/radio_company"
+                                android:textColor="#7e7e7e"
+                                android:textSize="16dp"
+                                android:checked="true" />
+
+                            <RadioButton
+                                android:id="@+id/rb_individual"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:checked="false"
+                                android:text="@string/radio_individual"
+                                android:textColor="#7e7e7e"
+                                android:textSize="16dp" />
+                        </RadioGroup>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_company"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/input_layout_comName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/input_comName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/hint_comName"
+                                android:singleLine="true"
+                                android:textSize="16dp"
+                                android:typeface="sans" />
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/input_layout_comProfile"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/input_comProfile"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/hint_comProfile"
+                                android:maxLines="3"
+                                android:textSize="16dp"
+                                android:typeface="sans" />
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/input_layout_comWebsite"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/input_comWebsite"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/hint_comWebsite"
+                                android:singleLine="true"
+                                android:textSize="16dp"
+                                android:typeface="sans" />
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/input_layout_comPhone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/input_comPhone"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/hint_comPhone"
+                                android:inputType="phone"
+                                android:singleLine="true"
+                                android:textSize="16dp"
+                                android:typeface="sans" />
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/input_layout_comProduct"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/input_comProduct"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/hint_comProduct"
+                                android:singleLine="true"
+                                android:textSize="16dp"
+                                android:typeface="sans" />
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/input_layout_address1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/input_address1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/hint_address1"
+                                android:singleLine="true"
+                                android:textSize="16dp"
+                                android:typeface="sans"
+                                android:visibility="gone" />
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/input_layout_address2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/input_address2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/hint_address2"
+                                android:singleLine="true"
+                                android:textSize="16dp"
+                                android:typeface="sans"
+                                android:visibility="gone" />
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/input_layout_address3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/input_address3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/hint_address3"
+                                android:singleLine="true"
+                                android:textSize="16dp"
+                                android:typeface="sans"
+                                android:visibility="gone" />
+                        </android.support.design.widget.TextInputLayout>
+
+                        <Button
+                            android:id="@+id/btn_uploadBizLicense"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/hint_comName"
-                            android:singleLine="true"
-                            android:textSize="16dp"
-                            android:typeface="sans" />
-                    </android.support.design.widget.TextInputLayout>
+                            android:layout_gravity="center_horizontal"
+                            android:text="Upload your Business License" />
 
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/input_layout_comProfile"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <EditText
-                            android:id="@+id/input_comProfile"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/hint_comProfile"
-                            android:maxLines="3"
-                            android:textSize="16dp"
-                            android:typeface="sans" />
-                    </android.support.design.widget.TextInputLayout>
-
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/input_layout_comWebsite"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <EditText
-                            android:id="@+id/input_comWebsite"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/hint_comWebsite"
-                            android:singleLine="true"
-                            android:textSize="16dp"
-                            android:typeface="sans" />
-                    </android.support.design.widget.TextInputLayout>
-
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/input_layout_comPhone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <EditText
-                            android:id="@+id/input_comPhone"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/hint_comPhone"
-                            android:inputType="phone"
-                            android:singleLine="true"
-                            android:textSize="16dp"
-                            android:typeface="sans" />
-                    </android.support.design.widget.TextInputLayout>
-
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/input_layout_comProduct"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <EditText
-                            android:id="@+id/input_comProduct"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/hint_comProduct"
-                            android:singleLine="true"
-                            android:textSize="16dp"
-                            android:typeface="sans" />
-                    </android.support.design.widget.TextInputLayout>
-
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/input_layout_address1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <EditText
-                            android:id="@+id/input_address1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/hint_address1"
-                            android:singleLine="true"
-                            android:textSize="16dp"
-                            android:typeface="sans"
+                        <ImageView
+                            android:id="@+id/BizLicenseImgPreview"
+                            android:layout_width="fill_parent"
+                            android:layout_height="100dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="10dp"
                             android:visibility="gone" />
-                    </android.support.design.widget.TextInputLayout>
 
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/input_layout_address2"
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_individual"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
-                        <EditText
-                            android:id="@+id/input_address2"
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/input_layout_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/hint_address2"
-                            android:singleLine="true"
-                            android:textSize="16dp"
-                            android:typeface="sans"
-                            android:visibility="gone" />
-                    </android.support.design.widget.TextInputLayout>
+                            android:layout_marginTop="5dp">
 
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/input_layout_address3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                            <EditText
+                                android:id="@+id/input_name_setting"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableLeft="@drawable/icon_fullname"
+                                android:drawablePadding="10dip"
+                                android:drawableStart="@drawable/icon_fullname"
+                                android:hint="@string/hint_name"
+                                android:singleLine="true"
+                                android:textSize="16dp"
+                                android:typeface="sans" />
+                        </android.support.design.widget.TextInputLayout>
 
-                        <EditText
-                            android:id="@+id/input_address3"
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/input_layout_mobile"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/hint_address3"
-                            android:singleLine="true"
-                            android:textSize="16dp"
-                            android:typeface="sans"
-                            android:visibility="gone" />
-                    </android.support.design.widget.TextInputLayout>
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/input_mobile_setting"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:clickable="false"
+                                android:cursorVisible="false"
+                                android:drawableLeft="@drawable/icon_code"
+                                android:drawablePadding="10dip"
+                                android:drawableStart="@drawable/icon_code"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:hint="@string/hint_phone"
+                                android:singleLine="true"
+                                android:textSize="16dp"
+                                android:typeface="sans" />
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/input_layout_email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/input_email_setting"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableLeft="@drawable/icon_email"
+                                android:drawablePadding="10dip"
+                                android:drawableStart="@drawable/icon_email"
+                                android:hint="@string/hint_email"
+                                android:singleLine="true"
+                                android:textSize="16dp"
+                                android:typeface="sans" />
+                        </android.support.design.widget.TextInputLayout>
+
+                    </LinearLayout>
 
                     <Button
                         android:id="@+id/btn_uploadID"
@@ -192,21 +320,6 @@
                         android:layout_marginBottom="10dp"
                         android:layout_marginTop="10dp"
                         android:adjustViewBounds="false"
-                        android:visibility="gone" />
-
-                    <Button
-                        android:id="@+id/btn_uploadBizLicense"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text="Upload your Business License" />
-
-                    <ImageView
-                        android:id="@+id/BizLicenseImgPreview"
-                        android:layout_width="fill_parent"
-                        android:layout_height="100dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
                         android:visibility="gone" />
 
 
