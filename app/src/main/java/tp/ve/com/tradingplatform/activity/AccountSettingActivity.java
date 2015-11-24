@@ -204,9 +204,10 @@ public class AccountSettingActivity extends AppCompatActivity {
         if (viewPager.getCurrentItem() != 0) {
             viewPager.setCurrentItem(0);
         } else {
-            Intent intent = new Intent(AccountSettingActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
+//            Intent intent = new Intent(AccountSettingActivity.this, MainActivity.class);
+//            startActivity(intent);
+//            finish();
+            super.onBackPressed();
         }
     }
 }

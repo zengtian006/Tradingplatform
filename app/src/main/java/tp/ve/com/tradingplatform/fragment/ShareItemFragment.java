@@ -5,8 +5,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.text.method.Touch;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,13 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tp.ve.com.tradingplatform.R;
+import tp.ve.com.tradingplatform.component.CustomViewPager;
 
 /**
  * Created by Zeng on 2015/11/17.
  */
 public class ShareItemFragment extends Fragment {
     private TabLayout tabLayout;
-    public static ViewPager viewPager;
+    public static CustomViewPager viewPager;
     private int[] tabIcons = {
             R.drawable.ic_tab_favourite,
             R.drawable.ic_tab_call,
@@ -40,14 +39,7 @@ public class ShareItemFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_shareitem, container, false);
-        viewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
-        viewPager.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-
-        });
+        viewPager = (CustomViewPager) rootView.findViewById(R.id.viewpager);
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
         adapter.addFrag(new SubURLFragment(), "BUY");

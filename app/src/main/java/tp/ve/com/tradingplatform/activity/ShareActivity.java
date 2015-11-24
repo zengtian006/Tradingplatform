@@ -1,6 +1,9 @@
 package tp.ve.com.tradingplatform.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -9,30 +12,42 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import tp.ve.com.tradingplatform.R;
+import tp.ve.com.tradingplatform.component.CustomViewPager;
+import tp.ve.com.tradingplatform.fragment.AccountSettingAdvancedFragment;
 import tp.ve.com.tradingplatform.fragment.ShareBlogFragment;
 import tp.ve.com.tradingplatform.fragment.ShareItemFragment;
 import tp.ve.com.tradingplatform.fragment.ShareListFragment;
+import tp.ve.com.tradingplatform.fragment.SubURLFragment;
+import tp.ve.com.tradingplatform.utils.RealPathUtil;
 
 /**
  * Created by Zeng on 2015/11/17.
  */
 public class ShareActivity extends AppCompatActivity {
+    private final static String TAG = ShareActivity.class.getSimpleName();
+
     private final static int SCANNED_GREENEST_CODE = 1;
+    public static Uri outputFileUri;
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
-    private ViewPager viewPager;
+    private CustomViewPager viewPager;
     public static String urlString;
 
     @Override
@@ -46,13 +61,7 @@ public class ShareActivity extends AppCompatActivity {
         Intent intent = getIntent();
         urlString = intent.getStringExtra("URL");
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
+        viewPager = (CustomViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -151,4 +160,52 @@ public class ShareActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 200) {
+                Uri selectedImageUri;
+                Bitmap bitmap;
+                if (data.getData() == null) { //isCamera
+                    selectedImageUri = outputFileUri;
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inSampleSize = 8;
+                    bitmap = BitmapFactory.decodeFile(selectedImageUri.getPath(), options);
+                    Log.v(TAG, "url!!!!!:" + String.valueOf(selectedImageUri.getPath()));
+                } else {
+                    selectedImageUri = data.getData();
+                    outputFileUri = selectedImageUri;
+                    InputStream imageStream = null;
+                    try {
+                        imageStream = getContentResolver().openInputStream(selectedImageUri);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    bitmap = BitmapFactory.decodeStream(imageStream);
+                    Log.v(TAG, "Real Path: " + RealPathUtil.getRealPathFromURI_API19(this, data.getData()));
+                }
+                SubURLFragment.view_image.setImageBitmap(bitmap);
+                SubURLFragment.view_image.setTag("full");
+                SubURLFragment.btn_img_del.setVisibility(Button.VISIBLE);
+            }
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // save file url in bundle as it will be null on screen orientation
+        // changes
+        outState.putParcelable("file_uri", outputFileUri);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // get the file url
+        outputFileUri = savedInstanceState.getParcelable("file_uri");
+    }
+
 }

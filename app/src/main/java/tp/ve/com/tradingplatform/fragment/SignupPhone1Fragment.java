@@ -99,6 +99,7 @@ public class SignupPhone1Fragment extends Fragment {
                 Intent i = new Intent(getContext(),
                         LoginActivity.class);
                 startActivity(i);
+                getActivity().finish();
             }
         });
 

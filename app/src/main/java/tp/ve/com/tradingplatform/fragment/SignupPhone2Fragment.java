@@ -154,6 +154,7 @@ public class SignupPhone2Fragment extends Fragment {
 //                        intent.putExtra("name", memberObj.getString("name"));
 //                        intent.putExtra("contact_no", memberObj.getString("contact_no"));
                         startActivity(intent);
+                        getActivity().finish();
                     } else {
                         // Error occurred in registration. Get the error
                         // message

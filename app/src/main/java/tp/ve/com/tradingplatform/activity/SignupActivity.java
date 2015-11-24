@@ -28,6 +28,8 @@ public class SignupActivity extends AppCompatActivity {
     public static CoordinatorLayout coordinatorLayout;
     public static FragmentManager fragmentManager;
     public static String phoneNo;
+    public FloatingActionButton myFab;
+    public static int initView = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,7 @@ public class SignupActivity extends AppCompatActivity {
         context = SignupActivity.this;
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
-        final FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.floatBtn);
+        myFab = (FloatingActionButton) findViewById(R.id.floatBtn);
         myFab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 switch (currentFragment) {
@@ -57,7 +59,8 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
         currentFragment = 0;
-        displayView(0);
+        displayView(initView);
+        initView = 0;
 
 
     }

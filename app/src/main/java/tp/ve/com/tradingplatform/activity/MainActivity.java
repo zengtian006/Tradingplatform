@@ -41,6 +41,7 @@ import java.util.Map;
 
 import tp.ve.com.tradingplatform.R;
 import tp.ve.com.tradingplatform.helper.SessionManager;
+import tp.ve.com.tradingplatform.utils.VersionUtil;
 
 
 public class MainActivity extends AppCompatActivity
@@ -100,6 +101,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        checkShowTutorial();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -227,6 +229,16 @@ public class MainActivity extends AppCompatActivity
             webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         }*/
 
+    }
+
+    private void checkShowTutorial() {
+        int oldVersionCode = VersionUtil.getAppPrefInt(this, "version_code");
+        int currentVersionCode = VersionUtil.getAppVersionCode(this);
+        if (currentVersionCode > oldVersionCode) {
+            startActivity(new Intent(MainActivity.this, ProductTourActivity.class));
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            VersionUtil.putAppPrefInt(this, "version_code", currentVersionCode);
+        }
     }
 
     public static void showSignupMenu() {
@@ -417,7 +429,8 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             if (doubleBackToExitPressedOnce) {
-                super.onBackPressed();
+//                super.onBackPressed();
+                System.exit(0);
                 return;
             }
 
@@ -463,6 +476,8 @@ public class MainActivity extends AppCompatActivity
 //                startActivity(Intent.createChooser(intent, "Share"));
                 intent.setClass(MainActivity.this, ShareActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.ic_menu_share_list:
                 break;
         }
 

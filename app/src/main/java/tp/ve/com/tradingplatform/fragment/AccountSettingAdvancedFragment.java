@@ -19,7 +19,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
@@ -64,6 +67,10 @@ public class AccountSettingAdvancedFragment extends Fragment {
     public static ImageView idImgPreview, BizLicenseImgPreview;
     private ProgressDialog pDialog;
     private String member_id;
+    LinearLayout layout_compay, layout_individual;
+    RadioGroup type_group;
+    EditText edt_name, edt_phone, edt_email;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,7 +85,22 @@ public class AccountSettingAdvancedFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_account_advanced, container, false);
         findView(rootView);
         setListener();
+        setView();
         return rootView;
+    }
+
+    private void setView() {
+        layout_individual.setVisibility(LinearLayout.GONE);
+        if (AccountSettingActivity.from_string.equals("Supplier")) {
+            type_group.setVisibility(RadioGroup.GONE);
+        } else {
+
+            edt_name.setText(SessionManager.currMember.getMember_name());
+            edt_phone.setText(SessionManager.currMember.getMember_mobile());
+            if (!SessionManager.currMember.getMember_email().equals("null")) {
+                edt_email.setText(SessionManager.currMember.getMember_email());
+            }
+        }
     }
 
     private void setListener() {
@@ -103,6 +125,23 @@ public class AccountSettingAdvancedFragment extends Fragment {
             }
         });
 
+        type_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                switch (checkedId) {
+                    case R.id.rb_company:
+                        layout_individual.setVisibility(LinearLayout.GONE);
+                        layout_compay.setVisibility(LinearLayout.VISIBLE);
+                        break;
+                    case R.id.rb_individual:
+                        layout_individual.setVisibility(LinearLayout.VISIBLE);
+                        layout_compay.setVisibility(LinearLayout.GONE);
+                        break;
+                }
+            }
+        });
+
     }
 
     private void findView(View view) {
@@ -113,6 +152,12 @@ public class AccountSettingAdvancedFragment extends Fragment {
         btnDone = (Button) view.findViewById(R.id.btn_done);
         idImgPreview = (ImageView) view.findViewById(R.id.idImgPreview);
         BizLicenseImgPreview = (ImageView) view.findViewById(R.id.BizLicenseImgPreview);
+        layout_compay = (LinearLayout) view.findViewById(R.id.layout_company);
+        layout_individual = (LinearLayout) view.findViewById(R.id.layout_individual);
+        type_group = (RadioGroup) view.findViewById((R.id.type_group));
+        edt_name = (EditText) view.findViewById(R.id.input_name_setting);
+        edt_phone = (EditText) view.findViewById(R.id.input_mobile_setting);
+        edt_email = (EditText) view.findViewById(R.id.input_email_setting);
     }
 
     private void openImageIntent(int requestcode) {
