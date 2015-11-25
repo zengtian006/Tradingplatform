@@ -1,5 +1,6 @@
 package tp.ve.com.tradingplatform.fragment;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -21,9 +22,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.text.util.Linkify;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -52,6 +55,7 @@ import tp.ve.com.tradingplatform.activity.AccountSettingActivity;
 import tp.ve.com.tradingplatform.activity.MainActivity;
 import tp.ve.com.tradingplatform.activity.ShareActivity;
 import tp.ve.com.tradingplatform.app.AppConfig;
+import tp.ve.com.tradingplatform.utils.RealPathUtil;
 
 import android.view.inputmethod.InputMethodManager;
 
@@ -62,7 +66,7 @@ public class SubURLFragment extends Fragment {
     private static final String TAG = SubURLFragment.class.getSimpleName();
 
     private static final int CAPTURE_IMAGE_REQUEST_CODE = 200;
-    EditText edt_title, edt_url;
+    public static EditText edt_title, edt_url;
     public static ImageView view_image;
     public static String img;
     Bitmap bitmap;
@@ -89,6 +93,7 @@ public class SubURLFragment extends Fragment {
     }
 
     private void setView() {
+        edt_url.setText(ShareActivity.iniURL);
         view_image.setTag("empty");
         btn_img_del.setVisibility(Button.GONE);
     }
@@ -100,6 +105,17 @@ public class SubURLFragment extends Fragment {
 
                 if (view_image.getTag().toString().equals("empty")) {
                     openImageIntent(CAPTURE_IMAGE_REQUEST_CODE);
+                } else {
+                    ShareActivity.img_dialog = new AlertDialog.Builder(getActivity()).create();
+                    ShareActivity.img_dialog.show();
+                    Window window = ShareActivity.img_dialog.getWindow();
+                    window.setGravity(Gravity.CENTER); // 非常重要：设置对话框弹出的位置
+
+                    window.setBackgroundDrawableResource(android.R.color.transparent);
+                    window.setContentView(R.layout.image_dialog);
+                    ImageView imageView = (ImageView) window.findViewById(R.id.dialog_imageView);
+
+                    imageView.setImageDrawable(view_image.getDrawable());
                 }
             }
         });
@@ -110,6 +126,7 @@ public class SubURLFragment extends Fragment {
                 view_image.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.icon_addpic_unfocused));
                 view_image.setTag("empty");
                 btn_img_del.setVisibility(Button.GONE);
+                ShareActivity.loaclImgPath = "";
 //                btn_img_del.setAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out));
             }
         });
@@ -140,6 +157,7 @@ public class SubURLFragment extends Fragment {
                 SubContentFragment.custom_text.setText("Check this link for more information " + edt_url.getText().toString());
                 Linkify.addLinks(SubContentFragment.custom_text, Linkify.ALL);
                 SubContentFragment.s_img.setImageDrawable(view_image.getDrawable());
+                SubContentFragment.s_img.setTag(view_image.getTag());
                 SubContentFragment.tv_title.setText(edt_title.getText());
                 ShareItemFragment.viewPager.setCurrentItem(1);
             }
@@ -180,10 +198,14 @@ public class SubURLFragment extends Fragment {
             Document doc = Jsoup.connect(urlString).get();
             title = doc.title();
             Elements imgs = doc.getElementsByTag("img");
-            for (Element el : imgs) {
+            for (int i = 0; i < 2; i++) {
+                Element el = imgs.get(i);
                 img = el.attr("abs:src");
-                Log.v(TAG, "image address: " + img);
             }
+//            for (Element el : imgs) {
+//                img = el.attr("abs:src");
+//                Log.v(TAG, "image address: " + img);
+//            }
         } finally {
             if (stream != null) {
                 stream.close();
@@ -274,7 +296,7 @@ public class SubURLFragment extends Fragment {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
                 Locale.getDefault()).format(new Date());
         File imageFile = new File(mediaStorageDir.getPath() + File.separator
-                + "IMG_" + timeStamp + ".jpg");
+                + "IMG_" + timeStamp + ".png");
 
 
         ShareActivity.outputFileUri = Uri.fromFile(imageFile);

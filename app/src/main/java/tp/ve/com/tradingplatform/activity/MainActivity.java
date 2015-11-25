@@ -1,5 +1,6 @@
 package tp.ve.com.tradingplatform.activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -22,13 +23,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +43,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import cn.sharesdk.framework.ShareSDK;
 import tp.ve.com.tradingplatform.R;
 import tp.ve.com.tradingplatform.helper.SessionManager;
 import tp.ve.com.tradingplatform.utils.VersionUtil;
@@ -97,6 +102,7 @@ public class MainActivity extends AppCompatActivity
     Button btn_signup, btn_login, btn_account, btn_logout;
     View headerView;
     static TextView icontext;
+    WebView webView;
 
 
     @Override
@@ -205,7 +211,7 @@ public class MainActivity extends AppCompatActivity
         createMenuButtonsFromMap(BUY_HORIZONTAL_SCROLL_MENU, scroll_linear_sub_menu, SUB_MENU_FONT_SIZE, SUB_MENU_WIDTH, SUB_MENU_HEIGHT);
         scroll_linear_sub_menu.setVisibility(LinearLayout.GONE);
         /*Main body of app*/
-        WebView webView = (WebView) this.findViewById(R.id.web_view);
+        webView = (WebView) this.findViewById(R.id.web_view);
         webView.getSettings().setDomStorageEnabled(true);
         File dir = getCacheDir();
 
@@ -223,8 +229,10 @@ public class MainActivity extends AppCompatActivity
         webView.setWebChromeClient(new WebChromeClient());
         webView.getSettings().setJavaScriptEnabled(true);
 
-        webView.loadUrl("http://" + getString(R.string.app_url));
+//        webView.loadUrl("http://" + getString(R.string.app_url));
+        webView.loadUrl("http://www.ebay.com/itm/Beats-by-Dr-Dre-Solo-HD-Headband-Headphones/261950783639?_trksid=p2045573.c100033.m2042&_trkparms=aid%3D111001%26algo%3DREC.SEED%26ao%3D1%26asc%3D20131017132637%26meid%3D096829e44adb4097bf7ff8bfe231b641%26pid%3D100033%26rk%3D1%26rkt%3D2%26mehot%3Dpp%26sd%3D261950783639");
         //webView.clearCache(true);
+
        /* if (Build.VERSION.SDK_INT >= 19) {
             webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         }*/
@@ -474,6 +482,7 @@ public class MainActivity extends AppCompatActivity
 //                intent.putExtra(Intent.EXTRA_TEXT, "www.baidu.com");
 //                intent.putExtra(Intent.EXTRA_STREAM, "http://www.joomlaworks.net/images/demos/galleries/abstract/7.jpg");
 //                startActivity(Intent.createChooser(intent, "Share"));
+                ShareActivity.iniURL = webView.getUrl().toString();
                 intent.setClass(MainActivity.this, ShareActivity.class);
                 startActivity(intent);
                 break;
@@ -563,4 +572,8 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }
