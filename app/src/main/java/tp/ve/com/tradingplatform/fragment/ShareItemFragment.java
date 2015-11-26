@@ -42,8 +42,8 @@ public class ShareItemFragment extends Fragment {
         viewPager = (CustomViewPager) rootView.findViewById(R.id.viewpager);
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFrag(new SubURLFragment(), "BUY");
-        adapter.addFrag(new SubContentFragment(), "SHARE");
+        adapter.addFrag(new SubURLFragment(), "URL");
+        adapter.addFrag(new SubContentFragment(), "Content");
         viewPager.setAdapter(adapter);
 
         tabLayout = (TabLayout) rootView.findViewById(R.id.tabs);

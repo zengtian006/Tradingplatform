@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -59,7 +60,6 @@ public class ShareActivity extends AppCompatActivity implements PlatformActionLi
 
     private final static int SCANNED_GREENEST_CODE = 1;
     public static Uri outputFileUri;
-    public static String iniURL = "";
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
@@ -81,7 +81,10 @@ public class ShareActivity extends AppCompatActivity implements PlatformActionLi
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-        urlString = intent.getStringExtra("URL");
+        if (intent.getStringExtra("URL") != null) {
+            urlString = intent.getStringExtra("URL");
+        }
+
 
         viewPager = (CustomViewPager) findViewById(R.id.viewpager);
         viewPager.setOffscreenPageLimit(3);

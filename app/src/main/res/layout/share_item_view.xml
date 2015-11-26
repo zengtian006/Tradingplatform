@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+
+        <ImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/test" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="eeeeeeeeee"
+                android:textColor="@color/primary_dark_material_dark"
+                android:textSize="18dp"
+                android:typeface="serif" />
+
+            <TextView
+                android:id="@+id/s_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="wwwwwwwwwww"
+                android:textColor="@color/grey05"
+                android:textSize="14dp"
+                android:typeface="serif"
+                android:layout_marginTop="10dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

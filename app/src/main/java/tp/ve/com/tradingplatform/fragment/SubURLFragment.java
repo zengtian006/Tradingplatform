@@ -21,6 +21,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.text.util.Linkify;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -35,11 +36,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,17 +51,28 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import tp.ve.com.tradingplatform.R;
 import tp.ve.com.tradingplatform.activity.AccountSettingActivity;
 import tp.ve.com.tradingplatform.activity.MainActivity;
 import tp.ve.com.tradingplatform.activity.ShareActivity;
+import tp.ve.com.tradingplatform.activity.SignupActivity;
 import tp.ve.com.tradingplatform.app.AppConfig;
+import tp.ve.com.tradingplatform.app.AppController;
+import tp.ve.com.tradingplatform.helper.SessionManager;
 import tp.ve.com.tradingplatform.utils.RealPathUtil;
 
 import android.view.inputmethod.InputMethodManager;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 
 /**
  * Created by Zeng on 2015/11/17.
@@ -89,11 +104,95 @@ public class SubURLFragment extends Fragment {
         findView(rootView);
         setListener(rootView);
         setView();
+
+        Button testbtn = (Button) rootView.findViewById(R.id.testbtn);
+        testbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bitmap myImg = BitmapFactory.decodeFile(ShareActivity.loaclImgPath);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                // Must compress the Image to reduce image size to make upload easy
+                myImg.compress(Bitmap.CompressFormat.PNG, 50, stream);
+                byte[] byte_arr = stream.toByteArray();
+                // Encode Image to String
+                String encodedString = Base64.encodeToString(byte_arr, 0);
+                Log.v(TAG, "EncodedString: " + encodedString);
+                uploadImage(encodedString);
+            }
+        });
+
         return rootView;
     }
 
+    private void uploadImage(final String imgString) {
+        String tag_string_req = "req_update";
+
+
+        String URL = "http://10.0.3.91/api/images/add";
+        Log.v(TAG, "URL: " + URL);
+        ;
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                URL, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Register Response: " + response.toString());
+//                try {
+//                    response = response.substring(response.indexOf("{"), response.lastIndexOf("}") + 1);
+//                    JSONObject jObj = new JSONObject(response);
+//                    boolean success = Boolean.valueOf(jObj.getString("success"));
+//                    if (success) {
+//                        // User successfully stored in MySQL
+//                        // Now store the user in sqlite
+//                        Toast.makeText(getActivity(), "Upload successfully!", Toast.LENGTH_LONG).show();
+//
+//                        // Launch Login activity
+//                    } else {
+//                        // Error occurred in registration. Get the error
+//                        // message
+//                        String errorMsg = jObj.getString("error_msg");
+//                        Toast.makeText(getActivity(),
+//                                errorMsg, Toast.LENGTH_LONG).show();
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Registration Error: " + error.getMessage());
+                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to register url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("image", imgString);
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+//                headers.put("Content-Type", "application/json");
+                headers.put("Accept", "application/json");
+//                headers.put("Authorization", "Bearer " + SessionManager.temptoken);
+                return headers;
+            }
+        };
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
+
     private void setView() {
-        edt_url.setText(ShareActivity.iniURL);
+        edt_url.setText(ShareActivity.urlString);
         view_image.setTag("empty");
         btn_img_del.setVisibility(Button.GONE);
     }
@@ -177,7 +276,6 @@ public class SubURLFragment extends Fragment {
 
     private void findView(View rootView) {
         edt_url = (EditText) rootView.findViewById(R.id.urlText);
-        edt_url.setText(ShareActivity.urlString);
         edt_title = (EditText) rootView.findViewById(R.id.text_title);
         view_image = (ImageView) rootView.findViewById(R.id.view_image);
         btn_img_del = (Button) rootView.findViewById(R.id.btn_img_del);

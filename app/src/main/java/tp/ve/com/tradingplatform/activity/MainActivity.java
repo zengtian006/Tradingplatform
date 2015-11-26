@@ -482,7 +482,7 @@ public class MainActivity extends AppCompatActivity
 //                intent.putExtra(Intent.EXTRA_TEXT, "www.baidu.com");
 //                intent.putExtra(Intent.EXTRA_STREAM, "http://www.joomlaworks.net/images/demos/galleries/abstract/7.jpg");
 //                startActivity(Intent.createChooser(intent, "Share"));
-                ShareActivity.iniURL = webView.getUrl().toString();
+                ShareActivity.urlString = webView.getUrl().toString();
                 intent.setClass(MainActivity.this, ShareActivity.class);
                 startActivity(intent);
                 break;

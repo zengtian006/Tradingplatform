@@ -35,4 +35,5 @@ dependencies {
     compile files('libs/jsoup-1.8.2.jar')
     compile files('libs/libammsdk.jar')
     compile project(':sharesdk')
+    compile project(':swipelist')
 }
