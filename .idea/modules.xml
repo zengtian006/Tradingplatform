@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/Tradingplatform.iml" filepath="$PROJECT_DIR$/Tradingplatform.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/sharesdk/sharesdk.iml" filepath="$PROJECT_DIR$/sharesdk/sharesdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/swipelist/swipelist.iml" filepath="$PROJECT_DIR$/swipelist/swipelist.iml" />
     </modules>
   </component>
 </project>
