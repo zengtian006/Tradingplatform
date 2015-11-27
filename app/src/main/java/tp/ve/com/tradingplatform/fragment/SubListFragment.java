@@ -69,6 +69,7 @@ public class SubListFragment extends Fragment {
     private SwipeMenuListView mListView;
     EditText searchText;
     private ProgressDialog pDialog;
+    public static int startTimes;
 
 
     @Override
@@ -80,6 +81,7 @@ public class SubListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        startTimes = 1;
         View rootView = inflater.inflate(R.layout.fragment_sub_list, container, false);
 
         findView(rootView);
@@ -112,7 +114,6 @@ public class SubListFragment extends Fragment {
     }
 
     private void setView() {
-
         loadShareContent();
 //
 //        mShareList = new ArrayList<ShareContent>();
@@ -149,7 +150,6 @@ public class SubListFragment extends Fragment {
                 ShareContent item = mShareList.get(position);
                 switch (index) {
                     case 0:
-//					delete(item);
                         mShareList.remove(position);
                         mAdapter.notifyDataSetChanged();
                         break;
@@ -161,6 +161,8 @@ public class SubListFragment extends Fragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ShareContent item = mShareList.get(position);
+                Toast.makeText(getActivity(), item.getsId() + ": " + item.getsContent(), Toast.LENGTH_SHORT).show();
                 ShareListFragment.viewPager.setCurrentItem(1);
             }
         });
@@ -173,7 +175,7 @@ public class SubListFragment extends Fragment {
         searchText = (EditText) rootView.findViewById(R.id.inputSearch);
     }
 
-    private void loadShareContent() {
+    public void loadShareContent() {
         pDialog.setMessage("Loading...");
         showDialog();
         StringRequest strReq = new StringRequest(Request.Method.POST,
@@ -190,17 +192,17 @@ public class SubListFragment extends Fragment {
                     for (int i = 0; i < jsonArray.length(); i++) {
 
                         JSONObject shareObj = new JSONObject(jsonArray.get(i).toString());
-                        Log.v(TAG, "JSON Parse: " + shareObj.getString("img_path"));
 
                         ShareContent shareContent = new ShareContent();
                         shareContent.setsTitle(shareObj.getString("title"));
+                        shareContent.setsContent(shareObj.getString("content"));
 
                         SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
                         String dateFormatted = f.format(f.parse(shareObj.getString("created")));
-                        Log.v(TAG, "time: " + dateFormatted);
                         shareContent.setsDate(dateFormatted);
 
                         shareContent.setsImg_path(shareObj.getString("img_path"));
+                        shareContent.setsId(shareObj.getString("id"));
                         mShareList.add(shareContent);
                     }
                 } catch (JSONException e) {
@@ -221,11 +223,18 @@ public class SubListFragment extends Fragment {
             }
         }) {
             @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("member_id", SessionManager.currMember.getMember_id());
+                return params;
+            }
+
+            @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
 //                headers.put("Content-Type", "application/json");
                 headers.put("Accept", "application/json");
-//                headers.put("Authorization", "Bearer " + SessionManager.temptoken);
+                headers.put("Authorization", "Bearer " + SessionManager.temptoken);
                 return headers;
             }
         };
@@ -236,22 +245,23 @@ public class SubListFragment extends Fragment {
     class AppAdapter extends BaseSwipListAdapter implements Filterable {
         private ItemFilter mFilter = new ItemFilter();
         private List<ShareContent> originalData = null;
-        private List<ShareContent> filteredData = null;
+        //        private List<ShareContent> filteredData = null;
         ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
         public AppAdapter(List<ShareContent> mShareList) {
             this.originalData = mShareList;
-            this.filteredData = mShareList;
+//            this.filteredData = mShareList;
         }
 
         @Override
         public int getCount() {
-            return filteredData.size();
+//            return filteredData.size();
+            return mShareList.size();
         }
 
         @Override
         public ShareContent getItem(int position) {
-            return filteredData.get(position);
+            return mShareList.get(position);
         }
 
         @Override
@@ -340,8 +350,8 @@ public class SubListFragment extends Fragment {
             @SuppressWarnings("unchecked")
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                filteredData = (List<ShareContent>) results.values;
-                notifyDataSetChanged();
+                mShareList = (List<ShareContent>) results.values;
+                mAdapter.notifyDataSetChanged();
             }
 
         }

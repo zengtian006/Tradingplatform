@@ -18,8 +18,11 @@
         android:background="@drawable/edit_border"
         android:hint="Search.."
         android:inputType="textVisiblePassword"
-        android:padding="10dp"
-        android:textSize="16dp" />
+        android:textSize="16dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp" />
 
     <swipemenulistview.SwipeMenuListView
         android:id="@+id/listView"

@@ -4,11 +4,21 @@ package tp.ve.com.tradingplatform.entity;
  * Created by Zeng on 2015/11/26.
  */
 public class ShareContent {
+    String sId;
     String sURL;
     String sTitle;
     String sImg_path;
     String sContent;
     String sDate;
+
+    public String getsId() {
+        return sId;
+    }
+
+    public void setsId(String sId) {
+        this.sId = sId;
+    }
+
 
     public String getsDate() {
         return sDate;

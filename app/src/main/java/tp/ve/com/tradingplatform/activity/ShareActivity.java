@@ -49,6 +49,7 @@ import tp.ve.com.tradingplatform.fragment.ShareBlogFragment;
 import tp.ve.com.tradingplatform.fragment.ShareItemFragment;
 import tp.ve.com.tradingplatform.fragment.ShareListFragment;
 import tp.ve.com.tradingplatform.fragment.SubContentFragment;
+import tp.ve.com.tradingplatform.fragment.SubListFragment;
 import tp.ve.com.tradingplatform.fragment.SubURLFragment;
 import tp.ve.com.tradingplatform.utils.RealPathUtil;
 
@@ -83,6 +84,29 @@ public class ShareActivity extends AppCompatActivity implements PlatformActionLi
         viewPager = (CustomViewPager) findViewById(R.id.viewpager);
         viewPager.setOffscreenPageLimit(3);
         setupViewPager(viewPager);
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                switch (position) {
+                    case 1:
+                        Log.v(TAG, "Page 2 selected");
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
 
         Intent intent = getIntent();
         if (intent.getStringExtra("URL") != null) {
@@ -282,7 +306,7 @@ public class ShareActivity extends AppCompatActivity implements PlatformActionLi
                     break;
                 case 6:
                     Log.v(TAG, "Share Error: " + msg.obj);
-                    Toast.makeText(getApplicationContext(), "Share failed" + msg.obj, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Share failed " + msg.obj, Toast.LENGTH_LONG).show();
                     break;
 
                 default:
