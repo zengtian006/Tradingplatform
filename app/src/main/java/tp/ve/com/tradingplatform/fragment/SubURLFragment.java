@@ -9,8 +9,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.inputmethodservice.Keyboard;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,6 +19,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.text.util.Linkify;
+//import android.util.Base64;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
@@ -28,7 +27,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,8 +34,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -57,22 +59,10 @@ import java.util.Locale;
 import java.util.Map;
 
 import tp.ve.com.tradingplatform.R;
-import tp.ve.com.tradingplatform.activity.AccountSettingActivity;
-import tp.ve.com.tradingplatform.activity.MainActivity;
 import tp.ve.com.tradingplatform.activity.ShareActivity;
-import tp.ve.com.tradingplatform.activity.SignupActivity;
 import tp.ve.com.tradingplatform.app.AppConfig;
 import tp.ve.com.tradingplatform.app.AppController;
 import tp.ve.com.tradingplatform.helper.SessionManager;
-import tp.ve.com.tradingplatform.utils.RealPathUtil;
-
-import android.view.inputmethod.InputMethodManager;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 
 /**
  * Created by Zeng on 2015/11/17.
@@ -115,8 +105,7 @@ public class SubURLFragment extends Fragment {
                 myImg.compress(Bitmap.CompressFormat.PNG, 50, stream);
                 byte[] byte_arr = stream.toByteArray();
                 // Encode Image to String
-                String encodedString = Base64.encodeToString(byte_arr, 0);
-                Log.v(TAG, "EncodedString: " + encodedString);
+                String encodedString = Base64.encodeToString(byte_arr, Base64.DEFAULT);
                 uploadImage(encodedString);
             }
         });
@@ -124,9 +113,9 @@ public class SubURLFragment extends Fragment {
         return rootView;
     }
 
+
     private void uploadImage(final String imgString) {
         String tag_string_req = "req_update";
-
 
         String URL = "http://10.0.3.91/api/images/add";
         Log.v(TAG, "URL: " + URL);
@@ -172,6 +161,7 @@ public class SubURLFragment extends Fragment {
             protected Map<String, String> getParams() {
                 // Posting params to register url
                 Map<String, String> params = new HashMap<String, String>();
+                Log.v(TAG, "EncodedString: " + imgString);
                 params.put("image", imgString);
 
                 return params;
@@ -182,7 +172,7 @@ public class SubURLFragment extends Fragment {
                 HashMap<String, String> headers = new HashMap<String, String>();
 //                headers.put("Content-Type", "application/json");
                 headers.put("Accept", "application/json");
-//                headers.put("Authorization", "Bearer " + SessionManager.temptoken);
+                headers.put("Authorization", "Bearer " + SessionManager.temptoken);
                 return headers;
             }
         };
@@ -234,6 +224,7 @@ public class SubURLFragment extends Fragment {
             @Override
             public void onClick(View v) {
 //                ShareItemFragment.viewPager.setCurrentItem(1);
+                ShareActivity.loaclImgPath = "";
                 String url = edt_url.getText().toString();
                 if (!url.isEmpty()) {
                     if (!url.contains("http://")) {

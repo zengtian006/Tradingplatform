@@ -1,11 +1,7 @@
 package tp.ve.com.tradingplatform.fragment;
 
 import android.app.ProgressDialog;
-import android.content.pm.ApplicationInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,11 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +25,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
 
@@ -42,7 +35,6 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -114,7 +106,8 @@ public class SubListFragment extends Fragment {
     }
 
     private void setView() {
-        loadShareContent();
+
+        new refreshShareList().execute();
 //
 //        mShareList = new ArrayList<ShareContent>();
 //        for (int i = 0; i < 10; i++) {
@@ -175,15 +168,24 @@ public class SubListFragment extends Fragment {
         searchText = (EditText) rootView.findViewById(R.id.inputSearch);
     }
 
+    private class refreshShareList extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            loadShareContent();
+            return null;
+        }
+    }
+
     public void loadShareContent() {
-        pDialog.setMessage("Loading...");
-        showDialog();
+//        pDialog.setMessage("Loading...");
+//        showDialog();
         StringRequest strReq = new StringRequest(Request.Method.POST,
                 AppConfig.SHARE_INDEX, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, "response: " + response.toString());
-                hideDialog();
+//                hideDialog();
                 try {
                     // Parsing json
                     JSONObject jObj = new JSONObject(response);
@@ -201,7 +203,11 @@ public class SubListFragment extends Fragment {
                         String dateFormatted = f.format(f.parse(shareObj.getString("created")));
                         shareContent.setsDate(dateFormatted);
 
-                        shareContent.setsImg_path(shareObj.getString("img_path"));
+                        if (!shareObj.getString("img_path").contains("http://")) {
+                            shareContent.setsImg_path("http://" + getString(R.string.app_url) + shareObj.getString("img_path"));
+                        } else {
+                            shareContent.setsImg_path(shareObj.getString("img_path"));
+                        }
                         shareContent.setsId(shareObj.getString("id"));
                         mShareList.add(shareContent);
                     }
@@ -219,7 +225,7 @@ public class SubListFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
-                hideDialog();
+//                hideDialog();
             }
         }) {
             @Override

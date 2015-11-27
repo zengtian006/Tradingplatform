@@ -4,12 +4,14 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,8 +23,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import cn.sharesdk.facebook.Facebook;
 import cn.sharesdk.framework.Platform;
@@ -36,6 +54,10 @@ import tp.ve.com.tradingplatform.R;
 import tp.ve.com.tradingplatform.activity.MainActivity;
 import tp.ve.com.tradingplatform.activity.ShareActivity;
 import tp.ve.com.tradingplatform.activity.ShareDialog;
+import tp.ve.com.tradingplatform.app.AppConfig;
+import tp.ve.com.tradingplatform.app.AppController;
+import tp.ve.com.tradingplatform.entity.ShareContent;
+import tp.ve.com.tradingplatform.helper.SessionManager;
 import tp.ve.com.tradingplatform.utils.RealPathUtil;
 
 /**
@@ -103,6 +125,11 @@ public class SubContentFragment extends Fragment {
                         ShareActivity.pDialog.setMessage("Please wait ...");
                         ShareActivity.pDialog.show();
                         shareDialog.dismiss();
+
+                        //
+                        ShareContent newContent = new ShareContent();
+                        String encodedImageString = "";
+
                         HashMap<String, Object> item = (HashMap<String, Object>) parent.getItemAtPosition(position);
                         if (item.get("ItemText").equals("Whatsapp")) {
                             ShareActivity.pDialog.dismiss();
@@ -112,7 +139,21 @@ public class SubContentFragment extends Fragment {
 
                             shareIntent.setPackage("com.whatsapp");
                             shareIntent.putExtra(Intent.EXTRA_TEXT, tv_title.getText().toString() + "\n" + custom_text.getText().toString());
+                            newContent.setsTitle(tv_title.getText().toString());
+                            newContent.setsContent(custom_text.getText().toString());
+                            newContent.setsURL(SubURLFragment.edt_url.getText().toString());
                             if (hasImg) {
+                                if (ShareActivity.loaclImgPath != "") {
+                                    Bitmap myImg = BitmapFactory.decodeFile(ShareActivity.loaclImgPath);
+                                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                    // Must compress the Image to reduce image size to make upload easy
+                                    myImg.compress(Bitmap.CompressFormat.PNG, 50, stream);
+                                    byte[] byte_arr = stream.toByteArray();
+                                    // Encode Image to String
+                                    encodedImageString = Base64.encodeToString(byte_arr, 0);
+                                } else {
+                                    newContent.setsImg_path(SubURLFragment.img);
+                                }
                                 shareIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
                                 shareIntent.setType("image/*");
                             } else {
@@ -158,8 +199,7 @@ public class SubContentFragment extends Fragment {
 //                                e.printStackTrace();
 //                            }
 
-//                            sp.setImageUrl("http://7sby7r.com1.z0.glb.clouddn.com/CYSJ_02.jpg");//网络图片rul
-                            sp.setUrl(SubURLFragment.edt_url.getText().toString());   //网友点进链接后，可以看到分享的详情
+                            sp.setUrl(SubURLFragment.edt_url.getText().toString());   //点进链接后，可以看到分享的详情
 
                             //3、非常重要：获取平台对象
                             Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
@@ -226,10 +266,56 @@ public class SubContentFragment extends Fragment {
                             twitter.share(sp);
                         }
 
+                        addShareContent(newContent, encodedImageString);
+                        Log.v(TAG, "onItemListener end");
                     }
                 });
             }
         });
+    }
+
+    private void addShareContent(final ShareContent newContent, final String encodedImageString) {
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.SHARE_ADD, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "response: " + response.toString());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("member_id", SessionManager.currMember.getMember_id());
+                params.put("title", newContent.getsTitle());
+                params.put("url", newContent.getsURL());
+                params.put("content", newContent.getsContent());
+                Log.v(TAG, "encodedImage: " + encodedImageString);
+                Log.v(TAG, "img_path: " + newContent.getsImg_path());
+                if (encodedImageString != "") {
+                    params.put("img_path", "local_image");
+                    params.put("encoded_image", encodedImageString);
+                } else {
+                    params.put("img_path", newContent.getsImg_path());
+                }
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+//                headers.put("Content-Type", "application/json");
+                headers.put("Accept", "application/json");
+                headers.put("Authorization", "Bearer " + SessionManager.temptoken);
+                return headers;
+            }
+        };
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq);
     }
 
     private void findView(View rootView) {
