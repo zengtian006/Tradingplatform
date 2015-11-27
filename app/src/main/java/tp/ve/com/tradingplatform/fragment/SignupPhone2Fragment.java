@@ -143,12 +143,12 @@ public class SignupPhone2Fragment extends Fragment {
                     if (success) {
                         // User successfully stored in MySQL
                         // Now store the user in sqlite
-                        Toast.makeText(SignupActivity.context, "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
                         // Launch Account Setting activity
 //                        Intent intent = new Intent(
 //                                getContext(), AccountSettingActivity.class);
                         Intent intent = new Intent(
-                                getContext(), LoginActivity.class);
+                                getActivity(), LoginActivity.class);
 //                        JSONObject memberObj = new JSONObject(jObj.getString("data"));
 //                        intent.putExtra("id", memberObj.getString("id"));
 //                        intent.putExtra("name", memberObj.getString("name"));
@@ -159,7 +159,7 @@ public class SignupPhone2Fragment extends Fragment {
                         // Error occurred in registration. Get the error
                         // message
                         String errorMsg = jObj.getString("error_msg");
-                        Toast.makeText(SignupActivity.context,
+                        Toast.makeText(getActivity(),
                                 errorMsg, Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
@@ -172,7 +172,7 @@ public class SignupPhone2Fragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Registration Error: " + error.getMessage());
-                Toast.makeText(SignupActivity.context,
+                Toast.makeText(getActivity(),
                         error.getMessage(), Toast.LENGTH_LONG).show();
                 hideDialog();
             }

@@ -176,7 +176,9 @@ public abstract class RadioAdapter<T> extends RecyclerView.Adapter<RadioAdapter.
                         // Launch Login activity
                         Intent intent = new Intent(
                                 mContext, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         mContext.startActivity(intent);
+
                     } else {
                         // Error occurred in registration. Get the error
                         // message

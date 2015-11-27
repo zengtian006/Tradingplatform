@@ -239,12 +239,13 @@ public class AccountSettingAdvancedFragment extends Fragment {
                         // Launch Login activity
                         Intent intent = new Intent(
                                 getActivity(), MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     } else {
                         // Error occurred in registration. Get the error
                         // message
                         String errorMsg = jObj.getString("error_msg");
-                        Toast.makeText(SignupActivity.context,
+                        Toast.makeText(getActivity(),
                                 errorMsg, Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {

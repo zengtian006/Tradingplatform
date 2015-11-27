@@ -1,5 +1,6 @@
 package tp.ve.com.tradingplatform.fragment;
 
+import android.app.ProgressDialog;
 import android.content.pm.ApplicationInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,8 +24,27 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.NetworkImageView;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import swipemenulistview.BaseSwipListAdapter;
 import swipemenulistview.SwipeMenu;
@@ -32,7 +52,10 @@ import swipemenulistview.SwipeMenuCreator;
 import swipemenulistview.SwipeMenuItem;
 import swipemenulistview.SwipeMenuListView;
 import tp.ve.com.tradingplatform.R;
+import tp.ve.com.tradingplatform.app.AppConfig;
+import tp.ve.com.tradingplatform.app.AppController;
 import tp.ve.com.tradingplatform.entity.ShareContent;
+import tp.ve.com.tradingplatform.helper.SessionManager;
 
 /**
  * Created by Zeng on 2015/11/26.
@@ -43,7 +66,15 @@ public class SubListFragment extends Fragment {
     private List<ShareContent> mShareList;
     private AppAdapter mAdapter;
     private SwipeMenuListView mListView;
+    EditText searchText;
+    private ProgressDialog pDialog;
 
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        pDialog = new ProgressDialog(getActivity());
+    }
 
     @Nullable
     @Override
@@ -51,12 +82,12 @@ public class SubListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_sub_list, container, false);
 
         findView(rootView);
+        setListner();
         setView();
-        String products[] = {"Dell Inspiron", "HTC One X", "HTC Wildfire S", "HTC Sense", "HTC Sensation XE",
-                "iPhone 4S", "Samsung Galaxy Note 800",
-                "Samsung Galaxy S3", "MacBook Air", "Mac Mini", "MacBook Pro"};
+        return rootView;
+    }
 
-        EditText searchText = (EditText) rootView.findViewById(R.id.inputSearch);
+    private void setListner() {
         searchText.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -77,23 +108,20 @@ public class SubListFragment extends Fragment {
                 // TODO Auto-generated method stub
             }
         });
-
-        return rootView;
     }
 
     private void setView() {
-        mShareList = new ArrayList<ShareContent>();
-        for (int i = 0; i < 10; i++) {
-            ShareContent shareContent = new ShareContent();
-            shareContent.setsTitle("Title " + i);
-            shareContent.setsDate("2015.12.25");
-            shareContent.setsImg_path("/storage/emulated/0/Pictures/1448440826707.jpg");
-            mShareList.add(shareContent);
-        }
 
-        mAdapter = new AppAdapter(mShareList);
-        mListView.setAdapter(mAdapter);
-
+        loadShareContent();
+//
+//        mShareList = new ArrayList<ShareContent>();
+//        for (int i = 0; i < 10; i++) {
+//            ShareContent shareContent = new ShareContent();
+//            shareContent.setsTitle("Title " + i);
+//            shareContent.setsDate("2015.12.25");
+//            shareContent.setsImg_path("http://10.0.3.91/webroot/img/bk.jpg");
+//            mShareList.add(shareContent);
+//        }
         // step 1. create a MenuCreator
         SwipeMenuCreator creator = new SwipeMenuCreator() {
 
@@ -112,19 +140,96 @@ public class SubListFragment extends Fragment {
                 menu.addMenuItem(deleteItem);
             }
         };
+
+        // step 2. listener item click event
+        mListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                ShareContent item = mShareList.get(position);
+                switch (index) {
+                    case 0:
+//					delete(item);
+                        mShareList.remove(position);
+                        mAdapter.notifyDataSetChanged();
+                        break;
+                }
+                return false;
+            }
+        });
         // set creator
         mListView.setMenuCreator(creator);
     }
 
     private void findView(View rootView) {
         mListView = (SwipeMenuListView) rootView.findViewById(R.id.listView);
+        searchText = (EditText) rootView.findViewById(R.id.inputSearch);
     }
 
+    private void loadShareContent() {
+        pDialog.setMessage("Loading...");
+        showDialog();
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.SHARE_INDEX, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "response: " + response.toString());
+                hideDialog();
+                try {
+                    // Parsing json
+                    JSONObject jObj = new JSONObject(response);
+                    JSONArray jsonArray = jObj.getJSONArray("shares");
+                    mShareList = new ArrayList<ShareContent>();
+                    for (int i = 0; i < jsonArray.length(); i++) {
+
+                        JSONObject shareObj = new JSONObject(jsonArray.get(i).toString());
+                        Log.v(TAG, "JSON Parse: " + shareObj.getString("img_path"));
+
+                        ShareContent shareContent = new ShareContent();
+                        shareContent.setsTitle(shareObj.getString("title"));
+
+                        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+                        String dateFormatted = f.format(f.parse(shareObj.getString("created")));
+                        Log.v(TAG, "time: " + dateFormatted);
+                        shareContent.setsDate(dateFormatted);
+
+                        shareContent.setsImg_path(shareObj.getString("img_path"));
+                        mShareList.add(shareContent);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                mAdapter = new AppAdapter(mShareList);
+                mListView.setAdapter(mAdapter);
+                mAdapter.notifyDataSetChanged();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                hideDialog();
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+//                headers.put("Content-Type", "application/json");
+                headers.put("Accept", "application/json");
+//                headers.put("Authorization", "Bearer " + SessionManager.temptoken);
+                return headers;
+            }
+        };
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq);
+    }
 
     class AppAdapter extends BaseSwipListAdapter implements Filterable {
         private ItemFilter mFilter = new ItemFilter();
         private List<ShareContent> originalData = null;
         private List<ShareContent> filteredData = null;
+        ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
         public AppAdapter(List<ShareContent> mShareList) {
             this.originalData = mShareList;
@@ -155,8 +260,12 @@ public class SubListFragment extends Fragment {
             }
             ViewHolder holder = (ViewHolder) convertView.getTag();
             ShareContent item = getItem(position);
-            Bitmap bmImg = BitmapFactory.decodeFile(item.getsImg_path());
-            holder.iv_icon.setImageBitmap(bmImg);
+
+//            Bitmap bmImg = BitmapFactory.decodeFile(item.getsImg_path());
+            if (imageLoader == null)
+                imageLoader = AppController.getInstance().getImageLoader();
+
+            holder.iv_icon.setImageUrl(item.getsImg_path(), imageLoader);
             holder.tv_name.setText(item.getsTitle());
             holder.s_date.setText(item.getsDate());
             holder.iv_icon.setOnClickListener(new View.OnClickListener() {
@@ -176,12 +285,12 @@ public class SubListFragment extends Fragment {
 
 
         class ViewHolder {
-            ImageView iv_icon;
+            NetworkImageView iv_icon;
             TextView tv_name;
             TextView s_date;
 
             public ViewHolder(View view) {
-                iv_icon = (ImageView) view.findViewById(R.id.iv_icon);
+                iv_icon = (NetworkImageView) view.findViewById(R.id.iv_icon);
                 tv_name = (TextView) view.findViewById(R.id.tv_name);
                 s_date = (TextView) view.findViewById(R.id.s_date);
                 view.setTag(this);
@@ -236,6 +345,16 @@ public class SubListFragment extends Fragment {
     private int dp2px(int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
                 getResources().getDisplayMetrics());
+    }
+
+    private void showDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
+
+    private void hideDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
     }
 
 }

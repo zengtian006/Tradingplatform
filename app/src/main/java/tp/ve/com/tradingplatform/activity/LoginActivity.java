@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLinkToRegister.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(),
+                Intent i = new Intent(LoginActivity.this,
                         SignupActivity.class);
                 startActivity(i);
                 finish();
@@ -179,6 +179,7 @@ public class LoginActivity extends AppCompatActivity {
 //                     Launch main activity
                         Intent intent = new Intent(LoginActivity.this,
                                 MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         finish();
                     } else {
@@ -243,9 +244,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(intent);
-        finish();
     }
 }
 

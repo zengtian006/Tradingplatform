@@ -155,51 +155,6 @@ public class MainActivity extends AppCompatActivity
             session.verifyToken();
         }
 
-
-        /*BUY SHARE SELL Menu*/
-       /* WheelMenu wheelMenu = (WheelMenu) findViewById(R.id.wheelMenu);
-        wheelMenu.setDivCount(3);
-        wheelMenu.setWheelImage(R.drawable.wheel_menu_bg);
-
-        //final TextView selectedPositionText = (TextView) findViewById(R.id.selected_position_text);
-        //selectedPositionText.setText("selected: " + (wheelMenu.getSelectedPosition() + 1));
-
-        wheelMenu.setWheelChangeListener(new WheelMenu.WheelChangeListener() {
-            @Override
-            public void onSelectionChange(int selectedPosition) {
-                removeAllChildMenuButton(scroll_linear_sub_menu);
-                if (selectedPosition == 0) {//BUY
-                    createMenuButtonsFromMap(BUY_HORIZONTAL_SCROLL_MENU, scroll_linear_sub_menu);
-                    //add action go to home page of buy menu (first item in buy menu)
-                } else if (selectedPosition == 1) {//SELL
-                    createMenuButtonsFromMap(SELL_HORIZONTAL_SCROLL_MENU, scroll_linear_sub_menu);
-                    //add action go to home page of sell menu (first item in buy menu)
-                } else if (selectedPosition == 2) {//SHARE
-                    createMenuButtonsFromMap(SHARE_HORIZONTAL_SCROLL_MENU, scroll_linear_sub_menu);
-                    //add action go to home page of share menu (first item in buy menu)
-                }
-                //selectedPositionText.setText("selected: " + (selectedPosition + 1));
-
-            }
-        });*/
-
-
-
-        /*Right bottom corner menu*/
-        /*FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
-                .setContentView(createCustomFloatingMainActionView(this, android.R.drawable.ic_menu_manage, Color.BLUE))
-                //.setBackgroundDrawable(R.drawable.custom_buttom)
-                .build();
-
-        SubActionButton.Builder itemBuilder = new SubActionButton.Builder(this);
-        FloatingActionMenu actionMenu = new FloatingActionMenu.Builder(this)
-                .addSubActionView(createCustomFloatingSubActionButton(itemBuilder, this, android.R.drawable.ic_menu_view, Color.BLUE), 100, 100)
-                .addSubActionView(createCustomFloatingSubActionButton(itemBuilder, this, android.R.drawable.ic_menu_info_details, Color.BLUE), 100, 100)
-                .addSubActionView(createCustomFloatingSubActionButton(itemBuilder, this, android.R.drawable.ic_menu_help, Color.BLUE), 100, 100)
-                .attachTo(actionButton)
-                .build();*/
-
-
         /*Scroll horizontal main menu for BUY / SELL / SHARE*/
         scroll_linear_bss_menu = (LinearLayout) this.findViewById(R.id.linear_BSS_menu);
         createMenuButtonsFromMap(BSS_HORIZONTAL_SCROLL_MENU, scroll_linear_bss_menu, 20, 100, 100);
@@ -437,8 +392,8 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             if (doubleBackToExitPressedOnce) {
-//                super.onBackPressed();
-                System.exit(0);
+                super.onBackPressed();
+//                System.exit(0);
                 return;
             }
 
@@ -572,8 +527,4 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 }

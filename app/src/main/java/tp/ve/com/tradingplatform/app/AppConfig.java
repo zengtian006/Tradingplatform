@@ -11,7 +11,7 @@ public class AppConfig {
 
     public static String TEST_TOKEN = "http://10.0.3.91/api/members/view/";
 
-    public static final String FILE_UPLOAD_URL = "http://192.168.0.104/AndroidFileUpload/fileUpload.php";
+    public static String SHARE_INDEX = "http://10.0.3.91/api/shares/index.json";
 
     public static final String IMAGE_DIRECTORY_NAME = "myUpload";
 

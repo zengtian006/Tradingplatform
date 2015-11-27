@@ -101,7 +101,7 @@ public class SignupEmailFragment extends Fragment {
                     if (success) {
                         // User successfully stored in MySQL
                         // Now store the user in sqlite
-                        Toast.makeText(SignupActivity.context, "You should receive an e-mail shortly to authenticate your account", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "You should receive an e-mail shortly to authenticate your account", Toast.LENGTH_LONG).show();
 
                         // Launch login activity
 //                        Intent intent = new Intent(
@@ -112,7 +112,7 @@ public class SignupEmailFragment extends Fragment {
                         // Error occurred in registration. Get the error
                         // message
                         String errorMsg = jObj.getString("error_msg");
-                        Toast.makeText(SignupActivity.context,
+                        Toast.makeText(getActivity(),
                                 errorMsg, Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
@@ -125,7 +125,7 @@ public class SignupEmailFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Registration Error: " + error.getMessage());
-                Toast.makeText(SignupActivity.context,
+                Toast.makeText(getActivity(),
                         error.getMessage(), Toast.LENGTH_LONG).show();
                 hideDialog();
             }

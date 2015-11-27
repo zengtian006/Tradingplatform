@@ -96,7 +96,7 @@ public class SignupPhone1Fragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Intent i = new Intent(getContext(),
+                Intent i = new Intent(getActivity(),
                         LoginActivity.class);
                 startActivity(i);
                 getActivity().finish();
@@ -205,7 +205,7 @@ public class SignupPhone1Fragment extends Fragment {
 //                    Toast.makeText(SignupActivity.context, "Success", Toast.LENGTH_SHORT).show();
 
                 } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
-                    Toast.makeText(SignupActivity.context, "Verification code has been sent", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Verification code has been sent", Toast.LENGTH_SHORT).show();
 
 //                    Snackbar snackbar = Snackbar
 //                            .make(SignupActivity.coordinatorLayout, "Verification code has been sent", Snackbar.LENGTH_LONG);
@@ -214,10 +214,10 @@ public class SignupPhone1Fragment extends Fragment {
                 }
             } else {
                 ((Throwable) data).printStackTrace();
-                int resId = getStringRes(SignupActivity.context, "smssdk_network_error");
-                Toast.makeText(SignupActivity.context, "Wrong verification code", Toast.LENGTH_SHORT).show();
+                int resId = getStringRes(getActivity(), "smssdk_network_error");
+                Toast.makeText(getActivity(), "Wrong verification code", Toast.LENGTH_SHORT).show();
                 if (resId > 0) {
-                    Toast.makeText(SignupActivity.context, resId, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), resId, Toast.LENGTH_SHORT).show();
                 }
             }
 

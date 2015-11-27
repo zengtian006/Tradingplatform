@@ -92,37 +92,37 @@ public class SubContentFragment extends Fragment {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Boolean hasImg = false;
+                        Uri bmpUri = null;
                         if (s_img.getTag().toString().equals("full")) {
                             hasImg = true;
+                            bmpUri = RealPathUtil.getLocalBitmapUri(getActivity(), s_img);
+                            Log.v(TAG, "URL:" + bmpUri);
+                            Log.v(TAG, "Path: " + bmpUri.getPath());
                         }
-
+                        Log.v(TAG, "has image? " + hasImg.toString());
                         ShareActivity.pDialog.setMessage("Please wait ...");
                         ShareActivity.pDialog.show();
                         shareDialog.dismiss();
                         HashMap<String, Object> item = (HashMap<String, Object>) parent.getItemAtPosition(position);
-                        Uri bmpUri = RealPathUtil.getLocalBitmapUri(getActivity(), s_img);
-                        Log.v(TAG, "URL:" + bmpUri);
-                        Log.v(TAG, "Path: " + bmpUri.getPath());
-//                        Uri bmpUri = null;
                         if (item.get("ItemText").equals("Whatsapp")) {
                             ShareActivity.pDialog.dismiss();
 
-                            if (bmpUri != null) {
-                                Intent shareIntent = new Intent();
-                                shareIntent.setAction(Intent.ACTION_SEND);
+                            Intent shareIntent = new Intent();
+                            shareIntent.setAction(Intent.ACTION_SEND);
 
-                                shareIntent.setPackage("com.whatsapp");
-                                shareIntent.putExtra(Intent.EXTRA_TEXT, tv_title.getText().toString() + "\n" + custom_text.getText().toString());
-                                if (hasImg) {
-                                    shareIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
-                                }
+                            shareIntent.setPackage("com.whatsapp");
+                            shareIntent.putExtra(Intent.EXTRA_TEXT, tv_title.getText().toString() + "\n" + custom_text.getText().toString());
+                            if (hasImg) {
+                                shareIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
                                 shareIntent.setType("image/*");
-                                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                try {
-                                    getActivity().startActivity(shareIntent);
-                                } catch (android.content.ActivityNotFoundException ex) {
-                                    Toast.makeText(getActivity(), "Whatsapp have not been installed.", Toast.LENGTH_SHORT).show();
-                                }
+                            } else {
+                                shareIntent.setType("text/plain");
+                            }
+                            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            try {
+                                getActivity().startActivity(shareIntent);
+                            } catch (android.content.ActivityNotFoundException ex) {
+                                Toast.makeText(getActivity(), "Whatsapp have not been installed.", Toast.LENGTH_SHORT).show();
                             }
                         } else if (item.get("ItemText").equals("Weibo")) {
 
