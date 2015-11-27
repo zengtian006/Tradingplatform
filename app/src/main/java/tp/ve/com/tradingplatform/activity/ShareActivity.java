@@ -63,7 +63,7 @@ public class ShareActivity extends AppCompatActivity implements PlatformActionLi
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
-    private CustomViewPager viewPager;
+    public static CustomViewPager viewPager;
     public static String urlString;
     public static AlertDialog img_dialog;
     public static ProgressDialog pDialog;
@@ -80,15 +80,18 @@ public class ShareActivity extends AppCompatActivity implements PlatformActionLi
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        viewPager = (CustomViewPager) findViewById(R.id.viewpager);
+        viewPager.setOffscreenPageLimit(3);
+        setupViewPager(viewPager);
+
         Intent intent = getIntent();
         if (intent.getStringExtra("URL") != null) {
             urlString = intent.getStringExtra("URL");
         }
-
-
-        viewPager = (CustomViewPager) findViewById(R.id.viewpager);
-        viewPager.setOffscreenPageLimit(3);
-        setupViewPager(viewPager);
+        if (intent.getStringExtra("currentpage") != null) {
+            viewPager.setCurrentItem(Integer.valueOf(intent.getStringExtra("currentpage")));
+        }
+        Log.v(TAG, "fetch URL: " + urlString);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);

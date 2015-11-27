@@ -437,11 +437,15 @@ public class MainActivity extends AppCompatActivity
 //                intent.putExtra(Intent.EXTRA_TEXT, "www.baidu.com");
 //                intent.putExtra(Intent.EXTRA_STREAM, "http://www.joomlaworks.net/images/demos/galleries/abstract/7.jpg");
 //                startActivity(Intent.createChooser(intent, "Share"));
-                ShareActivity.urlString = webView.getUrl().toString();
+//                ShareActivity.urlString = webView.getUrl().toString();
                 intent.setClass(MainActivity.this, ShareActivity.class);
+                intent.putExtra("URL", webView.getUrl());
                 startActivity(intent);
                 break;
-            case R.id.ic_menu_share_list:
+            case R.id.ic_menu_share_history:
+                intent.setClass(MainActivity.this, ShareActivity.class);
+                intent.putExtra("currentpage", "1");
+                startActivity(intent);
                 break;
         }
 

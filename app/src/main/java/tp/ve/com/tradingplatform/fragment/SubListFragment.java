@@ -16,6 +16,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Filter;
@@ -156,6 +157,13 @@ public class SubListFragment extends Fragment {
                 return false;
             }
         });
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ShareListFragment.viewPager.setCurrentItem(1);
+            }
+        });
         // set creator
         mListView.setMenuCreator(creator);
     }
@@ -268,18 +276,16 @@ public class SubListFragment extends Fragment {
             holder.iv_icon.setImageUrl(item.getsImg_path(), imageLoader);
             holder.tv_name.setText(item.getsTitle());
             holder.s_date.setText(item.getsDate());
-            holder.iv_icon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getActivity(), "iv_icon_click", Toast.LENGTH_SHORT).show();
-                }
-            });
-            holder.tv_name.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getActivity(), "iv_icon_click", Toast.LENGTH_SHORT).show();
-                }
-            });
+
+//            View.OnClickListener itemClick = new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    ShareListFragment.viewPager.setCurrentItem(1);
+//                }
+//            };
+//
+//            holder.iv_icon.setOnClickListener(itemClick);
+//            holder.tv_name.setOnClickListener(itemClick);
             return convertView;
         }
 

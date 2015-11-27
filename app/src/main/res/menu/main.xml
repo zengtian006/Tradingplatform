@@ -23,8 +23,8 @@
                 android:id="@+id/ic_menu_share"
                 android:title="Share" />
             <item
-                android:id="@+id/ic_menu_share_list"
-                android:title="Share List" />
+                android:id="@+id/ic_menu_share_history"
+                android:title="Share History" />
 
 
         </menu>
