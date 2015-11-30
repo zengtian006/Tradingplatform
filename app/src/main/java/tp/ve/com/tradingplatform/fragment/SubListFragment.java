@@ -3,8 +3,10 @@ package tp.ve.com.tradingplatform.fragment;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -53,13 +55,14 @@ import tp.ve.com.tradingplatform.helper.SessionManager;
 /**
  * Created by Zeng on 2015/11/26.
  */
-public class SubListFragment extends Fragment {
+public class SubListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private final static String TAG = SubListFragment.class.getSimpleName();
 
     private List<ShareContent> mShareList;
     private AppAdapter mAdapter;
     private SwipeMenuListView mListView;
     EditText searchText;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private ProgressDialog pDialog;
     public static int startTimes;
 
@@ -103,6 +106,8 @@ public class SubListFragment extends Fragment {
                 // TODO Auto-generated method stub
             }
         });
+
+        swipeRefreshLayout.setOnRefreshListener(this);
     }
 
     private void setView() {
@@ -155,7 +160,14 @@ public class SubListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ShareContent item = mShareList.get(position);
-                Toast.makeText(getActivity(), item.getsId() + ": " + item.getsContent(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), item.getsId() + ": " + item.getsContent(), Toast.LENGTH_SHORT).show();
+                SubDetailFragment.edt_url.setText(item.getsURL());
+                SubDetailFragment.edt_title.setText(item.getsTitle());
+                SubDetailFragment.edt_content.setText(item.getsContent());
+                ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+                SubDetailFragment.imageView.setImageUrl(item.getsImg_path(), imageLoader);
+                SubDetailFragment.img_url = item.getsImg_path();
+                SubDetailFragment.edt_id.setText(item.getsId());
                 ShareListFragment.viewPager.setCurrentItem(1);
             }
         });
@@ -166,6 +178,18 @@ public class SubListFragment extends Fragment {
     private void findView(View rootView) {
         mListView = (SwipeMenuListView) rootView.findViewById(R.id.listView);
         searchText = (EditText) rootView.findViewById(R.id.inputSearch);
+        swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swiperefresh);
+    }
+
+    @Override
+    public void onRefresh() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                new refreshShareList().execute();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }, 2000);
     }
 
     private class refreshShareList extends AsyncTask<String, String, String> {
@@ -196,6 +220,8 @@ public class SubListFragment extends Fragment {
                         JSONObject shareObj = new JSONObject(jsonArray.get(i).toString());
 
                         ShareContent shareContent = new ShareContent();
+                        shareContent.setsId(shareObj.getString("id"));
+                        shareContent.setsURL(shareObj.getString("url"));
                         shareContent.setsTitle(shareObj.getString("title"));
                         shareContent.setsContent(shareObj.getString("content"));
 
@@ -296,7 +322,7 @@ public class SubListFragment extends Fragment {
 //            View.OnClickListener itemClick = new View.OnClickListener() {
 //                @Override
 //                public void onClick(View v) {
-//                    ShareListFragment.viewPager.setCurrentItem(1);
+//                    ShareListFragment.viewPager.setCurrentItem(1)
 //                }
 //            };
 //

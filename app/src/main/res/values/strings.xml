@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_url">10.0.3.91</string>
+    <string name="app_url">10.0.3.99</string>
     <string name="app_name">Trading platform</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>

@@ -117,7 +117,7 @@ public class SubURLFragment extends Fragment {
     private void uploadImage(final String imgString) {
         String tag_string_req = "req_update";
 
-        String URL = "http://10.0.3.91/api/images/add";
+        String URL = "http://10.0.3.99/api/images/add";
         Log.v(TAG, "URL: " + URL);
         ;
         StringRequest strReq = new StringRequest(Request.Method.POST,

@@ -129,6 +129,9 @@ public class SubContentFragment extends Fragment {
                         //
                         ShareContent newContent = new ShareContent();
                         String encodedImageString = "";
+                        newContent.setsURL(SubURLFragment.edt_url.getText().toString());
+                        newContent.setsTitle(tv_title.getText().toString());
+                        newContent.setsContent(custom_text.getText().toString());
 
                         HashMap<String, Object> item = (HashMap<String, Object>) parent.getItemAtPosition(position);
                         if (item.get("ItemText").equals("Whatsapp")) {
@@ -136,21 +139,11 @@ public class SubContentFragment extends Fragment {
 
                             Intent shareIntent = new Intent();
                             shareIntent.setAction(Intent.ACTION_SEND);
-
                             shareIntent.setPackage("com.whatsapp");
                             shareIntent.putExtra(Intent.EXTRA_TEXT, tv_title.getText().toString() + "\n" + custom_text.getText().toString());
-                            newContent.setsTitle(tv_title.getText().toString());
-                            newContent.setsContent(custom_text.getText().toString());
-                            newContent.setsURL(SubURLFragment.edt_url.getText().toString());
                             if (hasImg) {
                                 if (ShareActivity.loaclImgPath != "") {
-                                    Bitmap myImg = BitmapFactory.decodeFile(ShareActivity.loaclImgPath);
-                                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                                    // Must compress the Image to reduce image size to make upload easy
-                                    myImg.compress(Bitmap.CompressFormat.PNG, 50, stream);
-                                    byte[] byte_arr = stream.toByteArray();
-                                    // Encode Image to String
-                                    encodedImageString = Base64.encodeToString(byte_arr, 0);
+                                    encodedImageString = imgToBase64(ShareActivity.loaclImgPath);
                                 } else {
                                     newContent.setsImg_path(SubURLFragment.img);
                                 }
@@ -171,7 +164,11 @@ public class SubContentFragment extends Fragment {
                             Platform.ShareParams sp = new Platform.ShareParams();
                             sp.setText(tv_title.getText().toString() + "\n" + custom_text.getText().toString()); //分享文本
                             if (hasImg) {
-//                            sp.setImageUrl("http://7sby7r.com1.z0.glb.clouddn.com/CYSJ_02.jpg");//网络图片rul
+                                if (ShareActivity.loaclImgPath != "") {
+                                    encodedImageString = imgToBase64(ShareActivity.loaclImgPath);
+                                } else {
+                                    newContent.setsImg_path(SubURLFragment.img);
+                                }
                             }
                             //3、非常重要：获取平台对象
                             Platform sinaWeibo = ShareSDK.getPlatform(SinaWeibo.NAME);
@@ -188,16 +185,12 @@ public class SubContentFragment extends Fragment {
                             if (hasImg) {
                                 if (ShareActivity.loaclImgPath != "") {
                                     sp.setImagePath(ShareActivity.loaclImgPath);
+                                    encodedImageString = imgToBase64(ShareActivity.loaclImgPath);
                                 } else {
                                     sp.setImageUrl(SubURLFragment.img);
+                                    newContent.setsImg_path(SubURLFragment.img);
                                 }
                             }
-//                            try {
-//                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), bmpUri);
-//                                sp.setImageData(bitmap);
-//                            } catch (IOException e) {
-//                                e.printStackTrace();
-//                            }
 
                             sp.setUrl(SubURLFragment.edt_url.getText().toString());   //点进链接后，可以看到分享的详情
 
@@ -217,8 +210,10 @@ public class SubContentFragment extends Fragment {
                             if (hasImg) {
                                 if (ShareActivity.loaclImgPath != "") {
                                     sp.setImagePath(ShareActivity.loaclImgPath);
+                                    encodedImageString = imgToBase64(ShareActivity.loaclImgPath);
                                 } else {
                                     sp.setImageUrl(SubURLFragment.img);
+                                    newContent.setsImg_path(SubURLFragment.img);
                                 }
                             }
 //                            sp.setImageUrl("http://7sby7r.com1.z0.glb.clouddn.com/CYSJ_02.jpg");//网络图片rul
@@ -236,8 +231,10 @@ public class SubContentFragment extends Fragment {
                             if (hasImg) {
                                 if (ShareActivity.loaclImgPath != "") {
                                     sp.setImagePath(ShareActivity.loaclImgPath);
+                                    encodedImageString = imgToBase64(ShareActivity.loaclImgPath);
                                 } else {
                                     sp.setImageUrl(SubURLFragment.img);
+                                    newContent.setsImg_path(SubURLFragment.img);
                                 }
                             }
 //                            sp.setImageUrl("http://wiki.mob.com/wp-content/uploads/2014/09/ssdk_qig_qi_win.png");//网络图片rul
@@ -254,11 +251,12 @@ public class SubContentFragment extends Fragment {
                             if (hasImg) {
                                 if (ShareActivity.loaclImgPath != "") {
                                     sp.setImagePath(ShareActivity.loaclImgPath);
+                                    encodedImageString = imgToBase64(ShareActivity.loaclImgPath);
                                 } else {
                                     sp.setImageUrl(SubURLFragment.img);
+                                    newContent.setsImg_path(SubURLFragment.img);
                                 }
                             }
-//                            sp.setImageUrl("http://7sby7r.com1.z0.glb.clouddn.com/CYSJ_02.jpg");//网络图片rul
                             //3、非常重要：获取平台对象
                             Platform twitter = ShareSDK.getPlatform(Twitter.NAME);
                             twitter.setPlatformActionListener((PlatformActionListener) getActivity()); // 设置分享事件回调
@@ -272,6 +270,16 @@ public class SubContentFragment extends Fragment {
                 });
             }
         });
+    }
+
+    private String imgToBase64(String loaclImgPath) {
+        Bitmap myImg = BitmapFactory.decodeFile(loaclImgPath);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        // Must compress the Image to reduce image size to make upload easy
+        myImg.compress(Bitmap.CompressFormat.PNG, 50, stream);
+        byte[] byte_arr = stream.toByteArray();
+        // Encode Image to String
+        return Base64.encodeToString(byte_arr, 0);
     }
 
     private void addShareContent(final ShareContent newContent, final String encodedImageString) {
