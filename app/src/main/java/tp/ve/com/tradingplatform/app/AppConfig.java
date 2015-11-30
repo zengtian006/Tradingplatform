@@ -14,6 +14,7 @@ public class AppConfig {
 
     public static String SHARE_INDEX = "http://" + IP_ADD + "/api/shares/index.json";
     public static String SHARE_ADD = "http://" + IP_ADD + "/api/shares/add";
+    public static String SHARE_DEL = "http://" + IP_ADD + "/api/shares/delete/";
 
     public static final String IMAGE_DIRECTORY_NAME = "myUpload";
 

@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -108,6 +109,11 @@ public class SubListFragment extends Fragment implements SwipeRefreshLayout.OnRe
         });
 
         swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setColorSchemeResources(
+                android.R.color.holo_red_light,
+                android.R.color.holo_blue_light,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light);
     }
 
     private void setView() {
@@ -148,6 +154,7 @@ public class SubListFragment extends Fragment implements SwipeRefreshLayout.OnRe
                 ShareContent item = mShareList.get(position);
                 switch (index) {
                     case 0:
+                        new delShare().execute(item.getsId());
                         mShareList.remove(position);
                         mAdapter.notifyDataSetChanged();
                         break;
@@ -164,6 +171,7 @@ public class SubListFragment extends Fragment implements SwipeRefreshLayout.OnRe
                 SubDetailFragment.edt_url.setText(item.getsURL());
                 SubDetailFragment.edt_title.setText(item.getsTitle());
                 SubDetailFragment.edt_content.setText(item.getsContent());
+                Linkify.addLinks(SubDetailFragment.edt_content, Linkify.ALL);
                 ImageLoader imageLoader = AppController.getInstance().getImageLoader();
                 SubDetailFragment.imageView.setImageUrl(item.getsImg_path(), imageLoader);
                 SubDetailFragment.img_url = item.getsImg_path();
@@ -173,6 +181,7 @@ public class SubListFragment extends Fragment implements SwipeRefreshLayout.OnRe
         });
         // set creator
         mListView.setMenuCreator(creator);
+        mListView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
     }
 
     private void findView(View rootView) {
@@ -190,6 +199,49 @@ public class SubListFragment extends Fragment implements SwipeRefreshLayout.OnRe
                 swipeRefreshLayout.setRefreshing(false);
             }
         }, 2000);
+    }
+
+    private class delShare extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            Log.v(TAG, params[0]);
+
+            StringRequest strReq = new StringRequest(Request.Method.POST,
+                    AppConfig.SHARE_DEL + params[0], new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Log.d(TAG, "response: " + response.toString());
+                    try {
+                        JSONObject jObj = new JSONObject(response);
+                        Boolean success = Boolean.valueOf(jObj.getString("success"));
+                        if (success) {
+                            Toast.makeText(getActivity(), "Record deleted successfully", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getActivity(), "Error: Cannot delete this record", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    VolleyLog.d(TAG, "Error: " + error.getMessage());
+                }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+//                headers.put("Content-Type", "application/json");
+                    headers.put("Accept", "application/json");
+                    headers.put("Authorization", "Bearer " + SessionManager.temptoken);
+                    return headers;
+                }
+            };
+            AppController.getInstance().addToRequestQueue(strReq);
+            return null;
+        }
     }
 
     private class refreshShareList extends AsyncTask<String, String, String> {
