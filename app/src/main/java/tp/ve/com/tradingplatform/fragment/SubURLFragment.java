@@ -244,7 +244,7 @@ public class SubURLFragment extends Fragment {
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SubContentFragment.custom_text.setText("Check this link for more information " + edt_url.getText().toString());
+                SubContentFragment.custom_text.setText("Check this link for more information " + edt_url.getText().toString() + '\n');
                 Linkify.addLinks(SubContentFragment.custom_text, Linkify.ALL);
                 SubContentFragment.s_img.setImageDrawable(view_image.getDrawable());
                 SubContentFragment.s_img.setTag(view_image.getTag());

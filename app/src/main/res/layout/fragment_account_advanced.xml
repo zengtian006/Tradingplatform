@@ -41,11 +41,11 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
                         android:layout_weight="1.53"
                         android:gravity="bottom|center"
                         android:paddingLeft="30dp"
-                        android:visibility="visible"
-                        android:layout_marginTop="10dp">
+                        android:visibility="visible">
 
                         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
                             android:id="@+id/type_group"
@@ -58,10 +58,10 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:checked="true"
                                 android:text="@string/radio_company"
                                 android:textColor="#7e7e7e"
-                                android:textSize="16dp"
-                                android:checked="true" />
+                                android:textSize="16dp" />
 
                             <RadioButton
                                 android:id="@+id/rb_individual"
@@ -210,15 +210,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:text="Upload your Business License" />
-
-                        <ImageView
-                            android:id="@+id/BizLicenseImgPreview"
-                            android:layout_width="fill_parent"
-                            android:layout_height="100dp"
-                            android:layout_marginBottom="10dp"
-                            android:layout_marginTop="10dp"
+                            android:text="Upload your Business License"
                             android:visibility="gone" />
+
+                        <!--<ImageView-->
+                        <!--android:id="@+id/BizLicenseImgPreview"-->
+                        <!--android:layout_width="fill_parent"-->
+                        <!--android:layout_height="100dp"-->
+                        <!--android:layout_marginBottom="10dp"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:visibility="gone" />-->
 
                     </LinearLayout>
 
@@ -295,34 +296,155 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="Upload your ID card" />
-
-                    <ImageView
-                        android:id="@+id/idImgPreview"
-                        android:layout_width="fill_parent"
-                        android:layout_height="100dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
-                        android:adjustViewBounds="false"
+                        android:text="Upload your ID card"
                         android:visibility="gone" />
+
+                    <!--<ImageView-->
+                    <!--android:id="@+id/idImgPreview"-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:layout_height="100dp"-->
+                    <!--android:layout_marginBottom="10dp"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:adjustViewBounds="false"-->
+                    <!--android:visibility="visible" />-->
 
                     <Button
                         android:id="@+id/btn_uploadAd"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="Upload your Address proof" />
-
-                    <ImageView
-                        android:id="@+id/adImgPreview"
-                        android:layout_width="fill_parent"
-                        android:layout_height="100dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
-                        android:adjustViewBounds="false"
+                        android:text="Upload your Address proof"
                         android:visibility="gone" />
 
+                    <!--<ImageView-->
+                    <!--android:id="@+id/addImgPreview"-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:layout_height="100dp"-->
+                    <!--android:layout_marginBottom="10dp"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:adjustViewBounds="false"-->
+                    <!--android:visibility="gone" />-->
 
+
+                    <HorizontalScrollView
+                        android:id="@+id/horizontalScrollView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp">
+
+                        <LinearLayout
+                            android:id="@+id/img_gallery"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+
+                            <RelativeLayout
+                                android:id="@+id/idImgPreview_layout"
+                                android:layout_width="120dp"
+                                android:layout_height="120dp">
+
+                                <ImageView
+                                    android:id="@+id/idImgPreview"
+                                    android:layout_width="90dp"
+                                    android:layout_height="90dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginRight="10dp"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/icon_addpic_unfocused" />
+
+                                <Button
+                                    android:id="@+id/del_id"
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginTop="5dp"
+                                    android:background="@drawable/bt_dynamic_del"
+                                    android:focusable="false" />
+
+                                <TextView
+                                    android:id="@+id/textView8"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_centerHorizontal="true"
+                                    android:text="ID Card"
+                                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/addImgPreview_layout"
+                                android:layout_width="120dp"
+                                android:layout_height="120dp">
+
+                                <ImageView
+                                    android:id="@+id/addImgPreview"
+                                    android:layout_width="90dp"
+                                    android:layout_height="90dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginRight="10dp"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/icon_addpic_unfocused" />
+
+                                <Button
+                                    android:id="@+id/del_add"
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginTop="5dp"
+                                    android:background="@drawable/bt_dynamic_del"
+                                    android:focusable="false" />
+
+                                <TextView
+                                    android:id="@+id/textView10"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_centerHorizontal="true"
+                                    android:text="Address"
+                                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/BizLicenseImgPreview_layout"
+                                android:layout_width="120dp"
+                                android:layout_height="120dp">
+
+                                <ImageView
+                                    android:id="@+id/BizLicenseImgPreview"
+                                    android:layout_width="90dp"
+                                    android:layout_height="90dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginRight="10dp"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/icon_addpic_unfocused" />
+
+                                <Button
+                                    android:id="@+id/del_biz"
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginTop="5dp"
+                                    android:background="@drawable/bt_dynamic_del"
+                                    android:focusable="false" />
+
+                                <TextView
+                                    android:id="@+id/textView11"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_centerHorizontal="true"
+                                    android:text="Biz License"
+                                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                            </RelativeLayout>
+
+
+                        </LinearLayout>
+                    </HorizontalScrollView>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
         </LinearLayout>
@@ -334,6 +456,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="@color/colorAccent"
-        android:text="Upload to Server"
+        android:text="Apply"
         android:textColor="#FFFFFF" />
 </LinearLayout>

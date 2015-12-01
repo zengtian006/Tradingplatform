@@ -170,7 +170,7 @@ public class SubListFragment extends Fragment implements SwipeRefreshLayout.OnRe
 //                Toast.makeText(getActivity(), item.getsId() + ": " + item.getsContent(), Toast.LENGTH_SHORT).show();
                 SubDetailFragment.edt_url.setText(item.getsURL());
                 SubDetailFragment.edt_title.setText(item.getsTitle());
-                SubDetailFragment.edt_content.setText(item.getsContent());
+                SubDetailFragment.edt_content.setText(item.getsContent() + "\n");
                 Linkify.addLinks(SubDetailFragment.edt_content, Linkify.ALL);
                 ImageLoader imageLoader = AppController.getInstance().getImageLoader();
                 SubDetailFragment.imageView.setImageUrl(item.getsImg_path(), imageLoader);

@@ -1,17 +1,10 @@
 package tp.ve.com.tradingplatform.fragment;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.text.Html;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,15 +23,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,14 +35,13 @@ import cn.sharesdk.twitter.Twitter;
 import cn.sharesdk.wechat.friends.Wechat;
 import cn.sharesdk.wechat.moments.WechatMoments;
 import tp.ve.com.tradingplatform.R;
-import tp.ve.com.tradingplatform.activity.MainActivity;
 import tp.ve.com.tradingplatform.activity.ShareActivity;
 import tp.ve.com.tradingplatform.activity.ShareDialog;
 import tp.ve.com.tradingplatform.app.AppConfig;
 import tp.ve.com.tradingplatform.app.AppController;
 import tp.ve.com.tradingplatform.entity.ShareContent;
 import tp.ve.com.tradingplatform.helper.SessionManager;
-import tp.ve.com.tradingplatform.utils.RealPathUtil;
+import tp.ve.com.tradingplatform.utils.ImageUtil;
 
 /**
  * Created by Zeng on 2015/11/17.
@@ -117,7 +100,7 @@ public class SubContentFragment extends Fragment {
                         Uri bmpUri = null;
                         if (s_img.getTag().toString().equals("full")) {
                             hasImg = true;
-                            bmpUri = RealPathUtil.getLocalBitmapUri(getActivity(), s_img);
+                            bmpUri = ImageUtil.getLocalBitmapUri(getActivity(), s_img);
                             Log.v(TAG, "URL:" + bmpUri);
                             Log.v(TAG, "Path: " + bmpUri.getPath());
                         }
@@ -143,7 +126,7 @@ public class SubContentFragment extends Fragment {
                             shareIntent.putExtra(Intent.EXTRA_TEXT, tv_title.getText().toString() + "\n" + custom_text.getText().toString());
                             if (hasImg) {
                                 if (ShareActivity.loaclImgPath != "") {
-                                    encodedImageString = imgToBase64(ShareActivity.loaclImgPath);
+                                    encodedImageString = ImageUtil.imgToBase64(ShareActivity.loaclImgPath);
                                 } else {
                                     newContent.setsImg_path(SubURLFragment.img);
                                 }
@@ -165,7 +148,7 @@ public class SubContentFragment extends Fragment {
                             sp.setText(tv_title.getText().toString() + "\n" + custom_text.getText().toString()); //分享文本
                             if (hasImg) {
                                 if (ShareActivity.loaclImgPath != "") {
-                                    encodedImageString = imgToBase64(ShareActivity.loaclImgPath);
+                                    encodedImageString = ImageUtil.imgToBase64(ShareActivity.loaclImgPath);
                                 } else {
                                     newContent.setsImg_path(SubURLFragment.img);
                                 }
@@ -185,7 +168,7 @@ public class SubContentFragment extends Fragment {
                             if (hasImg) {
                                 if (ShareActivity.loaclImgPath != "") {
                                     sp.setImagePath(ShareActivity.loaclImgPath);
-                                    encodedImageString = imgToBase64(ShareActivity.loaclImgPath);
+                                    encodedImageString = ImageUtil.imgToBase64(ShareActivity.loaclImgPath);
                                 } else {
                                     sp.setImageUrl(SubURLFragment.img);
                                     newContent.setsImg_path(SubURLFragment.img);
@@ -210,7 +193,7 @@ public class SubContentFragment extends Fragment {
                             if (hasImg) {
                                 if (ShareActivity.loaclImgPath != "") {
                                     sp.setImagePath(ShareActivity.loaclImgPath);
-                                    encodedImageString = imgToBase64(ShareActivity.loaclImgPath);
+                                    encodedImageString = ImageUtil.imgToBase64(ShareActivity.loaclImgPath);
                                 } else {
                                     sp.setImageUrl(SubURLFragment.img);
                                     newContent.setsImg_path(SubURLFragment.img);
@@ -231,7 +214,7 @@ public class SubContentFragment extends Fragment {
                             if (hasImg) {
                                 if (ShareActivity.loaclImgPath != "") {
                                     sp.setImagePath(ShareActivity.loaclImgPath);
-                                    encodedImageString = imgToBase64(ShareActivity.loaclImgPath);
+                                    encodedImageString = ImageUtil.imgToBase64(ShareActivity.loaclImgPath);
                                 } else {
                                     sp.setImageUrl(SubURLFragment.img);
                                     newContent.setsImg_path(SubURLFragment.img);
@@ -251,7 +234,7 @@ public class SubContentFragment extends Fragment {
                             if (hasImg) {
                                 if (ShareActivity.loaclImgPath != "") {
                                     sp.setImagePath(ShareActivity.loaclImgPath);
-                                    encodedImageString = imgToBase64(ShareActivity.loaclImgPath);
+                                    encodedImageString = ImageUtil.imgToBase64(ShareActivity.loaclImgPath);
                                 } else {
                                     sp.setImageUrl(SubURLFragment.img);
                                     newContent.setsImg_path(SubURLFragment.img);
@@ -272,15 +255,6 @@ public class SubContentFragment extends Fragment {
         });
     }
 
-    private String imgToBase64(String loaclImgPath) {
-        Bitmap myImg = BitmapFactory.decodeFile(loaclImgPath);
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        // Must compress the Image to reduce image size to make upload easy
-        myImg.compress(Bitmap.CompressFormat.PNG, 50, stream);
-        byte[] byte_arr = stream.toByteArray();
-        // Encode Image to String
-        return Base64.encodeToString(byte_arr, 0);
-    }
 
     private void addShareContent(final ShareContent newContent, final String encodedImageString) {
         StringRequest strReq = new StringRequest(Request.Method.POST,

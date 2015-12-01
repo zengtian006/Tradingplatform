@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.NetworkImageView;
+import com.android.volley.toolbox.StringRequest;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import cn.sharesdk.facebook.Facebook;
 import cn.sharesdk.framework.Platform;
@@ -27,12 +35,18 @@ import cn.sharesdk.wechat.friends.Wechat;
 import cn.sharesdk.wechat.moments.WechatMoments;
 import tp.ve.com.tradingplatform.R;
 import tp.ve.com.tradingplatform.activity.ShareDialog;
-import tp.ve.com.tradingplatform.utils.RealPathUtil;
+import tp.ve.com.tradingplatform.app.AppConfig;
+import tp.ve.com.tradingplatform.app.AppController;
+import tp.ve.com.tradingplatform.entity.ShareContent;
+import tp.ve.com.tradingplatform.helper.SessionManager;
+import tp.ve.com.tradingplatform.utils.ImageUtil;
 
 /**
  * Created by Zeng on 2015/11/26.
  */
 public class SubDetailFragment extends Fragment {
+    private final static String TAG = SubDetailFragment.class.getSimpleName();
+
     Button btn_back, btn_reshare;
     public static EditText edt_url, edt_title, edt_content, edt_id;
     public static NetworkImageView imageView;
@@ -68,9 +82,16 @@ public class SubDetailFragment extends Fragment {
                 shareDialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        ShareContent updateContent = new ShareContent();
+                        updateContent.setsURL(edt_url.getText().toString());
+                        updateContent.setsTitle(edt_title.getText().toString());
+                        updateContent.setsContent(edt_content.getText().toString());
+                        updateContent.setsId(edt_id.getText().toString());
+//                        updateContent.setsImg_path(img_url);
+
                         HashMap<String, Object> item = (HashMap<String, Object>) parent.getItemAtPosition(position);
                         if (item.get("ItemText").equals("Whatsapp")) {
-                            Uri bmpUri = RealPathUtil.getLocalBitmapUri(getActivity(), imageView);
+                            Uri bmpUri = ImageUtil.getLocalBitmapUri(getActivity(), imageView);
                             Intent shareIntent = new Intent();
                             shareIntent.setAction(Intent.ACTION_SEND);
                             shareIntent.setPackage("com.whatsapp");
@@ -139,12 +160,47 @@ public class SubDetailFragment extends Fragment {
                             // 执行分享
                             twitter.share(sp);
                         }
+                        updateShareContent(updateContent);
                         shareDialog.dismiss();
                     }
                 });
             }
         });
 
+    }
+
+    private void updateShareContent(final ShareContent updateContent) {
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.SHARE_UPDATE + updateContent.getsId(), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "response: " + response.toString());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("title", updateContent.getsTitle());
+                params.put("url", updateContent.getsURL());
+                params.put("content", updateContent.getsContent());
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                headers.put("Authorization", "Bearer " + SessionManager.temptoken);
+                return headers;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(strReq);
     }
 
     private void findView(View rootView) {

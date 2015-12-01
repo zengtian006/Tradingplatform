@@ -59,7 +59,7 @@ import tp.ve.com.tradingplatform.app.AppConfig;
 import tp.ve.com.tradingplatform.app.AppController;
 import tp.ve.com.tradingplatform.component.MultiSelectionSpinner;
 import tp.ve.com.tradingplatform.helper.SessionManager;
-import tp.ve.com.tradingplatform.utils.RealPathUtil;
+import tp.ve.com.tradingplatform.utils.ImageUtil;
 
 /**
  * Created by Zeng on 2015/11/10.
@@ -375,7 +375,7 @@ public class AccountSettingActivity_bacup extends AppCompatActivity {
                     idImgPreview.setImageBitmap(selectedImage);
                 }
                 Log.v(TAG, "url!!!!!:" + String.valueOf(selectedImageUri.getPath()));
-                Log.v(TAG, "Real Path: " + RealPathUtil.getRealPathFromURI_API19(this, data.getData()));
+                Log.v(TAG, "Real Path: " + ImageUtil.getRealPathFromURI_API19(this, data.getData()));
             } else if (requestCode == CAPTURE_IMAGE_REQUEST_CODE_BIZ) {//Upload BL
                 Uri selectedImageUri;
                 Log.v(TAG, "getData" + String.valueOf(data.getData()));

@@ -438,13 +438,19 @@ public class MainActivity extends AppCompatActivity
 //                intent.putExtra(Intent.EXTRA_STREAM, "http://www.joomlaworks.net/images/demos/galleries/abstract/7.jpg");
 //                startActivity(Intent.createChooser(intent, "Share"));
 //                ShareActivity.urlString = webView.getUrl().toString();
+
+                Intent share = new Intent(android.content.Intent.ACTION_SEND);
+                share.setType("text/plain");
+                // Add data to the intent, the receiving app will decide
+                // what to do with it.
+//                share.putExtra(Intent.EXTRA_SUBJECT, "Title Of The Post");
+                share.putExtra(Intent.EXTRA_TEXT, webView.getUrl());
+                startActivity(Intent.createChooser(share, "Share link!"));
+
+                break;
+            case R.id.ic_menu_share_plus:
                 intent.setClass(MainActivity.this, ShareActivity.class);
                 intent.putExtra("URL", webView.getUrl());
-                startActivity(intent);
-                break;
-            case R.id.ic_menu_share_history:
-                intent.setClass(MainActivity.this, ShareActivity.class);
-                intent.putExtra("currentpage", "1");
                 startActivity(intent);
                 break;
         }
