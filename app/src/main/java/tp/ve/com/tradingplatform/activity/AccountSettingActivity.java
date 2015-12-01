@@ -1,13 +1,16 @@
 package tp.ve.com.tradingplatform.activity;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -16,6 +19,7 @@ import tp.ve.com.tradingplatform.app.AppConfig;
 import tp.ve.com.tradingplatform.app.AppController;
 import tp.ve.com.tradingplatform.component.CustomViewPager;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -152,14 +156,15 @@ public class AccountSettingActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
+            BitmapFactory.Options opts = new BitmapFactory.Options();
+            opts.inSampleSize = 4;
             if (requestCode == CAPTURE_IMAGE_REQUEST_CODE_ID) {//Upload ID
                 Uri selectedImageUri;
                 Bitmap bitmap;
+
                 if (data.getData() == null) { //isCamera
                     selectedImageUri = outputFileUri;
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inSampleSize = 8;
-                    bitmap = BitmapFactory.decodeFile(selectedImageUri.getPath(), options);
+                    bitmap = BitmapFactory.decodeFile(selectedImageUri.getPath(), opts);
                     Log.v(TAG, "url!!!!!:" + String.valueOf(selectedImageUri.getPath()));
                 } else {
                     selectedImageUri = data.getData();
@@ -170,7 +175,7 @@ public class AccountSettingActivity extends AppCompatActivity {
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
-                    bitmap = BitmapFactory.decodeStream(imageStream);
+                    bitmap = BitmapFactory.decodeStream(imageStream, null, opts);
                     Log.v(TAG, "Real Path: " + ImageUtil.getRealPathFromURI_API19(this, data.getData()));
                 }
 //                AccountSettingAdvancedFragment.del_id.setVisibility(Button.VISIBLE);
@@ -183,9 +188,7 @@ public class AccountSettingActivity extends AppCompatActivity {
                 Bitmap bitmap;
                 if (data.getData() == null) {
                     selectedImageUri = outputFileUri;
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inSampleSize = 8;
-                    bitmap = BitmapFactory.decodeFile(selectedImageUri.getPath(), options);
+                    bitmap = BitmapFactory.decodeFile(selectedImageUri.getPath(), opts);
                     Log.v(TAG, "url!!!!!:" + String.valueOf(selectedImageUri.getPath()));
                 } else {
                     selectedImageUri = data.getData();
@@ -195,7 +198,7 @@ public class AccountSettingActivity extends AppCompatActivity {
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
-                    bitmap = BitmapFactory.decodeStream(imageStream);
+                    bitmap = BitmapFactory.decodeStream(imageStream, null, opts);
                     Log.v(TAG, "Real Path: " + ImageUtil.getRealPathFromURI_API19(this, data.getData()));
                 }
 //                AccountSettingAdvancedFragment.del_biz.setVisibility(Button.VISIBLE);
@@ -208,9 +211,7 @@ public class AccountSettingActivity extends AppCompatActivity {
                 Bitmap bitmap;
                 if (data.getData() == null) {
                     selectedImageUri = outputFileUri;
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inSampleSize = 8;
-                    bitmap = BitmapFactory.decodeFile(selectedImageUri.getPath(), options);
+                    bitmap = BitmapFactory.decodeFile(selectedImageUri.getPath(), opts);
                     Log.v(TAG, "url!!!!!:" + String.valueOf(selectedImageUri.getPath()));
                 } else {
                     selectedImageUri = data.getData();
@@ -220,7 +221,7 @@ public class AccountSettingActivity extends AppCompatActivity {
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
-                    bitmap = BitmapFactory.decodeStream(imageStream);
+                    bitmap = BitmapFactory.decodeStream(imageStream, null, opts);
                     Log.v(TAG, "Real Path: " + ImageUtil.getRealPathFromURI_API19(this, data.getData()));
                 }
 //                AccountSettingAdvancedFragment.del_add.setVisibility(Button.VISIBLE);
@@ -231,7 +232,6 @@ public class AccountSettingActivity extends AppCompatActivity {
             AccountSettingAdvancedFragment.img_gallery.setVisibility(LinearLayout.VISIBLE);
         }
     }
-
 
     private void uploadImage(final String tag, final String encodedString) {
         String tag_string_req = "req_update";

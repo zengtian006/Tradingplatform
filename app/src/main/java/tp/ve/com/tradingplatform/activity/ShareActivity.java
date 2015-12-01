@@ -208,14 +208,14 @@ public class ShareActivity extends AppCompatActivity implements PlatformActionLi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
+            BitmapFactory.Options opts = new BitmapFactory.Options();
+            opts.inSampleSize = 4;
             if (requestCode == 200) {
                 Uri selectedImageUri;
                 Bitmap bitmap;
                 if (data.getData() == null) { //isCamera
                     selectedImageUri = outputFileUri;
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inSampleSize = 8;
-                    bitmap = BitmapFactory.decodeFile(selectedImageUri.getPath(), options);
+                    bitmap = BitmapFactory.decodeFile(selectedImageUri.getPath(), opts);
                     Log.v(TAG, "url!!!!!:" + String.valueOf(selectedImageUri.getPath()));
                     loaclImgPath = String.valueOf(selectedImageUri.getPath());
                 } else {
@@ -227,7 +227,7 @@ public class ShareActivity extends AppCompatActivity implements PlatformActionLi
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
-                    bitmap = BitmapFactory.decodeStream(imageStream);
+                    bitmap = BitmapFactory.decodeStream(imageStream,null,opts);
                     loaclImgPath = ImageUtil.getRealPathFromURI_API19(this, data.getData());
                     Log.v(TAG, "Real Path: " + ImageUtil.getRealPathFromURI_API19(this, data.getData()));
                 }

@@ -352,13 +352,13 @@ public class AccountSettingActivity_bacup extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
+            BitmapFactory.Options opts = new BitmapFactory.Options();
+            opts.inSampleSize = 4;
             if (requestCode == CAPTURE_IMAGE_REQUEST_CODE_ID) {//Upload ID
                 Uri selectedImageUri;
                 if (data.getData() == null) { //isCamera
                     selectedImageUri = outputFileUri;
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inSampleSize = 8;
-                    final Bitmap bitmap = BitmapFactory.decodeFile(selectedImageUri.getPath(), options);
+                    final Bitmap bitmap = BitmapFactory.decodeFile(selectedImageUri.getPath(), opts);
                     idImgPreview.setVisibility(ImageView.VISIBLE);
                     idImgPreview.setImageBitmap(bitmap);
                 } else {
@@ -370,7 +370,7 @@ public class AccountSettingActivity_bacup extends AppCompatActivity {
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
-                    final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                    final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream, null, opts);
                     idImgPreview.setVisibility(ImageView.VISIBLE);
                     idImgPreview.setImageBitmap(selectedImage);
                 }

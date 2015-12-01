@@ -4,6 +4,7 @@ package tp.ve.com.tradingplatform.utils;
  * Created by Zeng on 2015/11/11.
  */
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.CursorLoader;
@@ -16,6 +17,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.util.Base64;
 import android.widget.ImageView;
 
@@ -38,7 +40,6 @@ public class ImageUtil {
 
         // where id is equal to
         String sel = MediaStore.Images.Media._ID + "=?";
-
         Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 column, sel, new String[]{id}, null);
 
