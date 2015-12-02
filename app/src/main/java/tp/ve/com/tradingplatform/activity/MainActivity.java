@@ -1,6 +1,5 @@
 package tp.ve.com.tradingplatform.activity;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -23,16 +22,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,7 +39,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import cn.sharesdk.framework.ShareSDK;
 import tp.ve.com.tradingplatform.R;
 import tp.ve.com.tradingplatform.helper.SessionManager;
 import tp.ve.com.tradingplatform.utils.VersionUtil;
@@ -185,7 +180,8 @@ public class MainActivity extends AppCompatActivity
         webView.getSettings().setJavaScriptEnabled(true);
 
 //        webView.loadUrl("http://" + getString(R.string.app_url));
-        webView.loadUrl("http://www.ebay.com/itm/Beats-by-Dr-Dre-Solo-HD-Headband-Headphones/261950783639?_trksid=p2045573.c100033.m2042&_trkparms=aid%3D111001%26algo%3DREC.SEED%26ao%3D1%26asc%3D20131017132637%26meid%3D096829e44adb4097bf7ff8bfe231b641%26pid%3D100033%26rk%3D1%26rkt%3D2%26mehot%3Dpp%26sd%3D261950783639");
+//        webView.loadUrl("http://www.ebay.com/itm/Beats-by-Dr-Dre-Solo-HD-Headband-Headphones/261950783639?_trksid=p2045573.c100033.m2042&_trkparms=aid%3D111001%26algo%3DREC.SEED%26ao%3D1%26asc%3D20131017132637%26meid%3D096829e44adb4097bf7ff8bfe231b641%26pid%3D100033%26rk%3D1%26rkt%3D2%26mehot%3Dpp%26sd%3D261950783639");
+        webView.loadUrl("http://www.ebay.com/itm/181687104043");
         //webView.clearCache(true);
 
        /* if (Build.VERSION.SDK_INT >= 19) {
@@ -438,6 +434,7 @@ public class MainActivity extends AppCompatActivity
 //                intent.putExtra(Intent.EXTRA_STREAM, "http://www.joomlaworks.net/images/demos/galleries/abstract/7.jpg");
 //                startActivity(Intent.createChooser(intent, "Share"));
 //                ShareActivity.urlString = webView.getUrl().toString();
+
 
                 Intent share = new Intent(android.content.Intent.ACTION_SEND);
                 share.setType("text/plain");

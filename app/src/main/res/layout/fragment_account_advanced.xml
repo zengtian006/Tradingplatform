@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/aaa">
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -111,7 +112,7 @@
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hint_comName"
                                 android:singleLine="true"
-                                android:textSize="16dp"
+                                android:textSize="15dp"
                                 android:typeface="sans" />
                         </android.support.design.widget.TextInputLayout>
 
@@ -126,7 +127,7 @@
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hint_comProfile"
                                 android:maxLines="3"
-                                android:textSize="16dp"
+                                android:textSize="15dp"
                                 android:typeface="sans" />
                         </android.support.design.widget.TextInputLayout>
 
@@ -141,7 +142,7 @@
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hint_comWebsite"
                                 android:singleLine="true"
-                                android:textSize="16dp"
+                                android:textSize="15dp"
                                 android:typeface="sans" />
                         </android.support.design.widget.TextInputLayout>
 
@@ -157,7 +158,7 @@
                                 android:hint="@string/hint_comPhone"
                                 android:inputType="phone"
                                 android:singleLine="true"
-                                android:textSize="16dp"
+                                android:textSize="15dp"
                                 android:typeface="sans" />
                         </android.support.design.widget.TextInputLayout>
 
@@ -172,7 +173,7 @@
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hint_comProduct"
                                 android:singleLine="true"
-                                android:textSize="16dp"
+                                android:textSize="15dp"
                                 android:typeface="sans" />
                         </android.support.design.widget.TextInputLayout>
 
@@ -264,7 +265,7 @@
                                 android:drawableStart="@drawable/icon_fullname"
                                 android:hint="@string/hint_name"
                                 android:singleLine="true"
-                                android:textSize="16dp"
+                                android:textSize="15dp"
                                 android:typeface="sans" />
                         </android.support.design.widget.TextInputLayout>
 
@@ -286,7 +287,7 @@
                                 android:focusableInTouchMode="false"
                                 android:hint="@string/hint_phone"
                                 android:singleLine="true"
-                                android:textSize="16dp"
+                                android:textSize="15dp"
                                 android:typeface="sans" />
                         </android.support.design.widget.TextInputLayout>
 
@@ -304,7 +305,7 @@
                                 android:drawableStart="@drawable/icon_email"
                                 android:hint="@string/hint_email"
                                 android:singleLine="true"
-                                android:textSize="16dp"
+                                android:textSize="15dp"
                                 android:typeface="sans" />
                         </android.support.design.widget.TextInputLayout>
 

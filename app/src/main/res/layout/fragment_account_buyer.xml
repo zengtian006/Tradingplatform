@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/aaa"
     android:orientation="vertical">
 
     <ScrollView
@@ -9,9 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_gravity="top"
+        android:layout_weight="1"
         android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:layout_weight="1">
+        android:focusableInTouchMode="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,12 +36,13 @@
                     android:layout_height="wrap_content"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingBottom="10dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="25dp"
-                        android:background="@drawable/red_bg" >
+                        android:background="@drawable/red_bg">
 
                         <TextView
                             android:id="@+id/textView13"
@@ -68,7 +70,7 @@
                             android:drawableStart="@drawable/icon_fullname"
                             android:hint="@string/hint_name"
                             android:singleLine="true"
-                            android:textSize="16dp"
+                            android:textSize="15dp"
                             android:typeface="sans" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -94,7 +96,7 @@
                                 android:checked="false"
                                 android:text="@string/radio_male"
                                 android:textColor="#7e7e7e"
-                                android:textSize="16dp" />
+                                android:textSize="15dp" />
 
                             <RadioButton
                                 android:id="@+id/rb_female"
@@ -103,7 +105,7 @@
                                 android:layout_weight="1"
                                 android:text="@string/radio_female"
                                 android:textColor="#7e7e7e"
-                                android:textSize="16dp" />
+                                android:textSize="15dp" />
                         </RadioGroup>
                     </LinearLayout>
 
@@ -134,7 +136,7 @@
                             android:focusableInTouchMode="false"
                             android:hint="@string/hint_phone"
                             android:singleLine="true"
-                            android:textSize="16dp"
+                            android:textSize="15dp"
                             android:typeface="sans" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -152,7 +154,7 @@
                             android:drawableStart="@drawable/icon_email"
                             android:hint="@string/hint_email"
                             android:singleLine="true"
-                            android:textSize="16dp"
+                            android:textSize="15dp"
                             android:typeface="sans" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -170,7 +172,7 @@
                             android:drawableStart="@drawable/icon_language"
                             android:hint="@string/hint_lang"
                             android:singleLine="true"
-                            android:textSize="16dp"
+                            android:textSize="15dp"
                             android:typeface="sans" />
                     </android.support.design.widget.TextInputLayout>
 
