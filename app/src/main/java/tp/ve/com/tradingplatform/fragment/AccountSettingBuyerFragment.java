@@ -179,6 +179,7 @@ public class AccountSettingBuyerFragment extends Fragment {
             protected Map<String, String> getParams() {
                 // Posting params to register url
                 Map<String, String> params = new HashMap<String, String>();
+                params.put("role", "buyer");
                 params.put("name", member_name);
                 params.put("gender", member_gender);
                 if (!member_lang.equals("")) {

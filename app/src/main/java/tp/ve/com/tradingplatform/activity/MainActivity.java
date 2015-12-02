@@ -449,6 +449,7 @@ public class MainActivity extends AppCompatActivity
                 intent.setClass(MainActivity.this, ShareActivity.class);
                 intent.putExtra("URL", webView.getUrl());
                 startActivity(intent);
+//                Log.v(TAG, "Member_id: " + SessionManager.currMember.getMember_id());
                 break;
         }
 

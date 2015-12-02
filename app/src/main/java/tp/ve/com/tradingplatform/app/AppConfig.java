@@ -13,7 +13,7 @@ public class AppConfig {
 
     public static String TEST_TOKEN = "http://" + IP_ADD + "/api/members/view/";
 
-    public static String SHARE_INDEX = "http://" + IP_ADD + "/api/shares/index.json";
+    public static String SHARE_INDEX = "http://" + IP_ADD + "/api/shares/index/";
     public static String SHARE_ADD = "http://" + IP_ADD + "/api/shares/add";
     public static String SHARE_DEL = "http://" + IP_ADD + "/api/shares/delete/";
     public static String SHARE_UPDATE = "http://" + IP_ADD + "/api/shares/edit/";

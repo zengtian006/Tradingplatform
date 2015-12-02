@@ -276,7 +276,7 @@ public class SubContentFragment extends Fragment {
                 params.put("title", newContent.getsTitle());
                 params.put("url", newContent.getsURL());
                 params.put("content", newContent.getsContent());
-                Log.v(TAG, "encodedImage: " + encodedImageString);
+
                 Log.v(TAG, "img_path: " + newContent.getsImg_path());
                 if (encodedImageString != "") {
                     params.put("img_path", "local_image");
@@ -284,6 +284,7 @@ public class SubContentFragment extends Fragment {
                 } else {
                     params.put("img_path", newContent.getsImg_path());
                 }
+                Log.v(TAG, "parameters: " + params.toString());
                 return params;
             }
 

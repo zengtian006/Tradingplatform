@@ -257,7 +257,7 @@ public class SubListFragment extends Fragment implements SwipeRefreshLayout.OnRe
 //        pDialog.setMessage("Loading...");
 //        showDialog();
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.SHARE_INDEX, new Response.Listener<String>() {
+                AppConfig.SHARE_INDEX + SessionManager.currMember.getMember_id(), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, "response: " + response.toString());
@@ -309,7 +309,7 @@ public class SubListFragment extends Fragment implements SwipeRefreshLayout.OnRe
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("member_id", SessionManager.currMember.getMember_id());
+//                params.put("member_id", SessionManager.currMember.getMember_id());
                 return params;
             }
 
