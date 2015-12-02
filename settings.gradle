@@ -1,5 +1,2 @@
-<<<<<<< settings.gradle
 include ':app', ':sharesdk', ':swipelist'
-=======
-include ':app', ':camera', ':pp'
->>>>>>> 1.2
+
