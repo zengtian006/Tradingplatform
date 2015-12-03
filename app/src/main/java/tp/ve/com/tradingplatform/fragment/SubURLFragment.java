@@ -286,15 +286,18 @@ public class SubURLFragment extends Fragment {
         try { // Use Jsoup to Obtain HTML text from URL, Search for Title and IMG TAGS
             Document doc = Jsoup.connect(urlString).get();
             title = doc.title();
-            Elements imgs = doc.getElementsByTag("img");
-            for (int i = 0; i < 2; i++) {
-                Element el = imgs.get(i);
-                img = el.attr("abs:src");
-            }
+//            Elements imgs = doc.getElementsByTag("img");
+            //            for (int i = 0; i < 2; i++) {
+//                Element el = imgs.get(i);
+//                img = el.attr("abs:src");
+//            }
 //            for (Element el : imgs) {
 //                img = el.attr("abs:src");
 //                Log.v(TAG, "image address: " + img);
 //            }
+            img = doc.select("a#large_image0").first().attr("abs:href");
+//            Element imgs = doc.getElementById("large_image0");
+//            img = imgs.getElementsByAttribute("href").toString();
         } finally {
             if (stream != null) {
                 stream.close();

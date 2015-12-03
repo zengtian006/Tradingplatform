@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity
 
 //        webView.loadUrl("http://" + getString(R.string.app_url));
 //        webView.loadUrl("http://www.ebay.com/itm/Beats-by-Dr-Dre-Solo-HD-Headband-Headphones/261950783639?_trksid=p2045573.c100033.m2042&_trkparms=aid%3D111001%26algo%3DREC.SEED%26ao%3D1%26asc%3D20131017132637%26meid%3D096829e44adb4097bf7ff8bfe231b641%26pid%3D100033%26rk%3D1%26rkt%3D2%26mehot%3Dpp%26sd%3D261950783639");
-        webView.loadUrl("http://www.ebay.com/itm/181687104043");
+        webView.loadUrl("http://10.0.3.90/groupbuys/mview/11e57c8249e28c618262f8bc129fbedf");
         //webView.clearCache(true);
 
        /* if (Build.VERSION.SDK_INT >= 19) {
