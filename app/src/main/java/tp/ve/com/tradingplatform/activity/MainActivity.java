@@ -1,28 +1,36 @@
 package tp.ve.com.tradingplatform.activity;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -35,9 +43,6 @@ import android.widget.Toast;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import tp.ve.com.tradingplatform.R;
 import tp.ve.com.tradingplatform.helper.SessionManager;
@@ -49,62 +54,44 @@ public class MainActivity extends AppCompatActivity
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private final static int SCANNED_GREENEST_CODE = 1;
+    private static final int INTENT_REQUEST_ADD_ITEM = 12;
     public static int currentRole;
-
-    public final static int HIGHTLIGHT_COLOR = R.color.white1;
-    public final static int SUB_MENU_WIDTH = 120;
-    public final static int SUB_MENU_HEIGHT = 120;
-    public final static int SUB_MENU_FONT_SIZE = 8;
-
     boolean doubleBackToExitPressedOnce = false;
-
-
-    /*TEXT + res id*/
-    public final static HashMap BSS_HORIZONTAL_SCROLL_MENU = new LinkedHashMap();
-
-    static {
-        BSS_HORIZONTAL_SCROLL_MENU.put(R.string.bssmenu_buy, null);
-//        BSS_HORIZONTAL_SCROLL_MENU.put(R.string.bssmenu_share, null);
-        BSS_HORIZONTAL_SCROLL_MENU.put(R.string.bssmenu_sell, null);
-    }
-
-    public final static HashMap<Integer, Integer> BUY_HORIZONTAL_SCROLL_MENU = new LinkedHashMap<Integer, Integer>();
-
-    static {
-        BUY_HORIZONTAL_SCROLL_MENU.put(R.string.buymenu_display, R.drawable.ic_style_black);
-        BUY_HORIZONTAL_SCROLL_MENU.put(R.string.buymenu_groupbuy, R.drawable.ic_people_black);
-        BUY_HORIZONTAL_SCROLL_MENU.put(R.string.buymenu_bulk, R.drawable.ic_shopping_basket_black);
-        BUY_HORIZONTAL_SCROLL_MENU.put(R.string.buymenu_watch_list, R.drawable.ic_visibility_black);
-    }
-
-    public final static HashMap<Integer, Integer> SELL_HORIZONTAL_SCROLL_MENU = new LinkedHashMap<Integer, Integer>();
-
-    static {
-        SELL_HORIZONTAL_SCROLL_MENU.put(R.string.sellmenu_selling, R.drawable.ic_storage_black);
-        SELL_HORIZONTAL_SCROLL_MENU.put(R.string.sellmenu_scheduled, R.drawable.ic_alarm_on_black);
-        SELL_HORIZONTAL_SCROLL_MENU.put(R.string.sellmenu_add, R.drawable.ic_camera_enhance_black);
-        SELL_HORIZONTAL_SCROLL_MENU.put(R.string.sellmenu_bulk, R.drawable.ic_shopping_basket_black);
-    }
-
-    private LinearLayout scroll_linear_bss_menu;
-    private LinearLayout scroll_linear_sub_menu;
-    public static DrawerLayout drawer;
-    static NavigationView navigationView;
 
     private static SessionManager session;
 
+    public static DrawerLayout drawer;
+    static NavigationView navigationView;
     private static LinearLayout layout_loggedin, layout_noLoggedin;
     Button btn_signup, btn_login, btn_account, btn_logout;
     View headerView;
     static TextView icontext;
+    ImageView img_header;
     WebView webView;
-
+    SharedPreferences appPreferences;
+    boolean isAppInstalled = false;
+    private ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         checkShowTutorial();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        appPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        isAppInstalled = appPreferences.getBoolean("isAppInstalled", false);
+        if (isAppInstalled == false) {
+            addShortcut();
+            /**
+             * Make preference true
+             */
+            SharedPreferences.Editor editor = appPreferences.edit();
+            editor.putBoolean("isAppInstalled", true);
+            editor.commit();
+        }
+        pd = new ProgressDialog(this);
+        pd.setTitle(getString(R.string.app_name));
+        pd.setMessage("Loading");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -117,8 +104,6 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
-
-
         navigationView.setNavigationItemSelectedListener(this);
 
         session = new SessionManager(getApplicationContext());
@@ -127,6 +112,13 @@ public class MainActivity extends AppCompatActivity
         icontext = (TextView) headerView.findViewById(R.id.nav_user_nickname);
 //        View header = LayoutInflater.from(this).inflate(R.layout.nav_header_main, null);
 //        navigationView.addHeaderView(header);
+        img_header = (ImageView) headerView.findViewById(R.id.header_img);
+        img_header.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, MeActivity.class));
+            }
+        });
 
 
         layout_noLoggedin = (LinearLayout) headerView.findViewById(R.id.layout_noLoggedin);
@@ -150,44 +142,95 @@ public class MainActivity extends AppCompatActivity
             session.verifyToken();
         }
 
-        /*Scroll horizontal main menu for BUY / SELL / SHARE*/
-        scroll_linear_bss_menu = (LinearLayout) this.findViewById(R.id.linear_BSS_menu);
-        createMenuButtonsFromMap(BSS_HORIZONTAL_SCROLL_MENU, scroll_linear_bss_menu, 20, 100, 100);
-        scroll_linear_bss_menu.setVisibility(LinearLayout.GONE);
 
-
-        /*Scroll horizontal sub menu for BUY / SELL / SHARE*/
-        scroll_linear_sub_menu = (LinearLayout) this.findViewById(R.id.linear_BSS_sub_menu);
-        createMenuButtonsFromMap(BUY_HORIZONTAL_SCROLL_MENU, scroll_linear_sub_menu, SUB_MENU_FONT_SIZE, SUB_MENU_WIDTH, SUB_MENU_HEIGHT);
-        scroll_linear_sub_menu.setVisibility(LinearLayout.GONE);
         /*Main body of app*/
         webView = (WebView) this.findViewById(R.id.web_view);
         webView.getSettings().setDomStorageEnabled(true);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                super.onProgressChanged(view, newProgress);
+                //mProgressbar.setProgress(newProgress);
+            }
+        });
+        webView.setWebViewClient(new WebViewClient() {
+
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                // mProgressbar.setVisibility(View.VISIBLE);
+                pd.show();
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                // mProgressbar.setVisibility(View.INVISIBLE);
+                pd.dismiss();
+            }
+
+            /*for android ver < 6*/
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                //Log.d("Mylog", "onReceivedError old");
+                super.onReceivedError(view, errorCode, description, failingUrl);
+                view.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(), getString(R.string.cannot_connect_server), Toast.LENGTH_SHORT).show();
+                view.loadUrl("file:///android_asset/error.html");
+            }
+
+            /*for android ver >= 6*/
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                //Log.d("Mylog", "onReceivedError new");
+                super.onReceivedError(view, request, error);
+                view.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(), getString(R.string.cannot_connect_server), Toast.LENGTH_SHORT).show();
+                view.loadUrl("file:///android_asset/error.html");
+            }
+        });
+
         File dir = getCacheDir();
 
         if (!dir.exists()) {
             dir.mkdirs();
         }
-
         webView.getSettings().setAppCachePath(dir.getPath());
-
         webView.getSettings().setAllowFileAccess(true);
         webView.getSettings().setAppCacheEnabled(true);
         webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
 
-        webView.setWebViewClient(new WebViewClient());
-        webView.setWebChromeClient(new WebChromeClient());
-        webView.getSettings().setJavaScriptEnabled(true);
+        webView.loadUrl("http://10.0.3.99/groupbuys/mview/11e57c8149e28c618262f8bc129fbedf");
 
-//        webView.loadUrl("http://" + getString(R.string.app_url));
-//        webView.loadUrl("http://www.ebay.com/itm/Beats-by-Dr-Dre-Solo-HD-Headband-Headphones/261950783639?_trksid=p2045573.c100033.m2042&_trkparms=aid%3D111001%26algo%3DREC.SEED%26ao%3D1%26asc%3D20131017132637%26meid%3D096829e44adb4097bf7ff8bfe231b641%26pid%3D100033%26rk%3D1%26rkt%3D2%26mehot%3Dpp%26sd%3D261950783639");
-        webView.loadUrl("http://10.0.3.90/groupbuys/mview/11e57c8249e28c618262f8bc129fbedf");
-        //webView.clearCache(true);
-
-       /* if (Build.VERSION.SDK_INT >= 19) {
-            webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-        }*/
-
+        webView.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    switch (keyCode) {
+                        case KeyEvent.KEYCODE_BACK:
+                            if (webView.canGoBack()) {
+                                webView.goBack();
+                            } else {
+                                new AlertDialog.Builder(webView.getContext())
+                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                        .setTitle(getString(R.string.app_name))
+                                        .setMessage("Would like to exit?")
+                                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                //Stop the activity
+                                                finish();
+                                            }
+                                        })
+                                        .setNegativeButton("Cancel", null)
+                                        .show();
+                            }
+                            return true;
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     private void checkShowTutorial() {
@@ -205,8 +248,6 @@ public class MainActivity extends AppCompatActivity
         deal.setVisible(false);
         MenuItem opportunity = navigationView.getMenu().findItem(R.id.nav_opportunity);
         opportunity.setVisible(false);
-        MenuItem me = navigationView.getMenu().findItem(R.id.nav_me);
-        me.setVisible(false);
         layout_loggedin.setVisibility(LinearLayout.GONE);
         layout_noLoggedin.setVisibility(LinearLayout.VISIBLE);
     }
@@ -216,8 +257,6 @@ public class MainActivity extends AppCompatActivity
         deal.setVisible(true);
         MenuItem opportunity = navigationView.getMenu().findItem(R.id.nav_opportunity);
         opportunity.setVisible(true);
-        MenuItem me = navigationView.getMenu().findItem(R.id.nav_me);
-        me.setVisible(true);
         layout_loggedin.setVisibility(LinearLayout.VISIBLE);
         layout_noLoggedin.setVisibility(LinearLayout.GONE);
         String roleTitle = "Buyer";
@@ -237,7 +276,6 @@ public class MainActivity extends AppCompatActivity
 
     public static void logoutUser() {
         session.setLogin(false, "", session.getUserName(), "");
-
         // Launching the login activity
 //        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
 //        startActivity(intent);
@@ -269,118 +307,6 @@ public class MainActivity extends AppCompatActivity
         return button;
     }
 
-    private void createMenuButtonsFromMap(HashMap<Integer, Integer> from_map, LinearLayout linear, int font_size, int width, int height) {
-        for (Map.Entry<Integer, Integer> entry : from_map.entrySet()) {
-            addChildMenuButton(linear, entry.getKey(), entry.getValue(), font_size, width, height);
-        }
-    }
-
-    private void addChildMenuButton(LinearLayout linear, int button_text_id, Integer drawable_id, int font_size, int width, int height) {
-        LinearLayout.LayoutParams linearLp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        LinearLayout myLinear = new LinearLayout(this);
-        linearLp.setMargins(40, 1, 40, 1);
-        myLinear.setOrientation(LinearLayout.VERTICAL);
-        myLinear.setTag(getString(button_text_id));
-        linear.addView(myLinear, linearLp);
-
-        /*LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);*/
-
-        if (drawable_id != null) {
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width, height);
-            ImageView imageView = new ImageView(this);
-            imageView.setBackgroundResource(drawable_id);
-            myLinear.addView(imageView, lp);
-        }
-
-
-        LinearLayout.LayoutParams textViewLp = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        final TextView textView = new TextView(this);
-        textView.setText(getString(button_text_id));
-        textView.setTextSize(font_size);
-        textView.setGravity(Gravity.CENTER);
-
-
-        //only for main BSS menu
-//        if (getString(button_text_id) == getString(R.string.bssmenu_buy) || getString(button_text_id) == getString(R.string.bssmenu_sell) || getString(button_text_id) == getString(R.string.bssmenu_share)) {
-        if (getString(button_text_id) == getString(R.string.bssmenu_buy) || getString(button_text_id) == getString(R.string.bssmenu_sell)) {
-            if (getString(button_text_id) == getString(R.string.bssmenu_buy)) {
-                textView.setBackgroundResource(HIGHTLIGHT_COLOR);
-                textView.setTextColor(Color.BLACK);
-            } else {
-                textView.setTextColor(Color.WHITE);
-            }
-            textView.setTypeface(null, Typeface.BOLD);
-            /*Shader shader = new LinearGradient(0, 0, 0, textView.getTextSize(), Color.WHITE, Color.LTGRAY,
-                    Shader.TileMode.CLAMP);
-            textView.getPaint().setShader(shader);*/
-        }
-
-
-        myLinear.addView(textView, textViewLp);
-
-        myLinear.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                //Log.d("Mylog", "clcik "+v.getTag().toString());
-                if (v.getTag().toString().equals(getString(R.string.bssmenu_buy))) {
-                    removeAllChildMenuButtonColor(scroll_linear_bss_menu);
-                    textView.setBackgroundResource(HIGHTLIGHT_COLOR);
-                    textView.setTextColor(Color.BLACK);
-                    removeAllChildMenuButton(scroll_linear_sub_menu);
-                    createMenuButtonsFromMap(BUY_HORIZONTAL_SCROLL_MENU, scroll_linear_sub_menu, SUB_MENU_FONT_SIZE, SUB_MENU_WIDTH, SUB_MENU_HEIGHT);
-                    //add action go to home page of buy menu (first item in buy menu)
-//                } else if (v.getTag().toString().equals(getString(R.string.bssmenu_share))) {
-//                    removeAllChildMenuButtonColor(scroll_linear_bss_menu);
-//                    textView.setBackgroundResource(HIGHTLIGHT_COLOR);
-//                    textView.setTextColor(Color.BLACK);
-//                    removeAllChildMenuButton(scroll_linear_sub_menu);
-//
-//                    createMenuButtonsFromMap(SHARE_HORIZONTAL_SCROLL_MENU, scroll_linear_sub_menu, SUB_MENU_FONT_SIZE, SUB_MENU_WIDTH, SUB_MENU_HEIGHT);
-                } else if (v.getTag().toString().equals(getString(R.string.bssmenu_sell))) {
-                    removeAllChildMenuButtonColor(scroll_linear_bss_menu);
-                    textView.setBackgroundResource(HIGHTLIGHT_COLOR);
-                    textView.setTextColor(Color.BLACK);
-                    removeAllChildMenuButton(scroll_linear_sub_menu);
-                    createMenuButtonsFromMap(SELL_HORIZONTAL_SCROLL_MENU, scroll_linear_sub_menu, SUB_MENU_FONT_SIZE, SUB_MENU_WIDTH, SUB_MENU_HEIGHT);
-
-                } else if (v.getTag().toString().equals(getString(R.string.buymenu_groupbuy))) {
-                    //action..........
-                } else {
-                }
-
-            }
-        });
-    }
-
-    private void removeAllChildMenuButton(LinearLayout linear) {
-        if (linear.getChildCount() > 0)
-            linear.removeAllViews();
-    }
-
-    /*
-    structure : linear -> 3views -> textView in each
-     */
-    private void removeAllChildMenuButtonColor(LinearLayout linear) {
-        if (linear.getChildCount() > 0) {
-            int childcount = linear.getChildCount();
-            for (int i = 0; i < childcount; i++) {
-                View v = linear.getChildAt(i);//3
-                for (int j = 0; j < ((ViewGroup) v).getChildCount(); j++) {
-                    View nextChild = ((ViewGroup) v).getChildAt(j);
-                    if (nextChild instanceof TextView) {
-                        nextChild.setBackgroundColor(Color.TRANSPARENT);
-                        ((TextView) nextChild).setTextColor(Color.WHITE);
-                    }
-                }
-            }
-        }
-    }
-
     @Override
     public void onBackPressed() {
 //        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -410,6 +336,29 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        MenuItem searchItem;
+        searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
+        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        final SearchView finalSearchView = searchView;
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                Log.d("saerch", query);
+                WebView webView = (WebView) findViewById(R.id.web_view);
+                webView.loadUrl("http://10.0.3.90/items/m-index?qa=" + query);
+                finalSearchView.setQuery("", false);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.d("searchnewtext", newText);
+                return false;
+            }
+        });
         return true;
     }
 
@@ -436,7 +385,7 @@ public class MainActivity extends AppCompatActivity
 //                ShareActivity.urlString = webView.getUrl().toString();
 
 
-                Intent share = new Intent(android.content.Intent.ACTION_SEND);
+                Intent share = new Intent(Intent.ACTION_SEND);
                 share.setType("text/plain");
                 // Add data to the intent, the receiving app will decide
                 // what to do with it.
@@ -467,40 +416,30 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         setTitle(item.getTitle());
-        switch (id) {
-//            case R.id.nav_sign_up:
-//                Intent intent_sign = new Intent();
-//                intent_sign.setClass(MainActivity.this, SignupActivity.class);
-//                startActivity(intent_sign);
+//        switch (id) {
+//            case R.id.nav_add_item:
+//                Intent intent = new Intent(MainActivity.this, AddItemActivity.class);
+//                startActivityForResult(intent, INTENT_REQUEST_ADD_ITEM);
 //                break;
-//            case R.id.nav_login:
-//                Intent intent_login = new Intent();
-//                intent_login.setClass(MainActivity.this, LoginActivity.class);
-//                startActivity(intent_login);
-////                finish();
-//                break;
-//            case R.id.nav_logout:
-//                logoutUser();
-//                showSignupMenu();
-//                Snackbar snackbar = Snackbar
-//                        .make(drawer, "You have successfully logged out", Snackbar.LENGTH_SHORT);
-//
-//                snackbar.show();
-//                break;
-//            case R.id.nav_account:
-//                Intent intent = new Intent(
-//                        MainActivity.this, AccountSettingActivity.class);
-//                startActivity(intent);
-//                String userid = session.getUserID();
-//                Log.v(TAG, "userid!: " + userid);
-//                break;
-            default:
-                break;
-        }
+//        }
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "resuleCode " + resultCode);
+        Log.d(TAG, "requestCode " + requestCode);
+
+//        if (resultCode == Activity.RESULT_OK) {
+//            if (requestCode == INTENT_REQUEST_ADD_ITEM) {
+//                Toast.makeText(this, "Your item is added", Toast.LENGTH_LONG).show();
+//                Log.d(TAG, "load new url after add item");
+//                webView.loadUrl("http://" + getString(R.string.app_item_seller_index_url));
+//            }
+//        }
+    }
 
     @Override
     public void onClick(View v) {
@@ -533,6 +472,27 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);
+    }
+
+    private void addShortcut() {
+        //Adding shortcut for MainActivity
+        //on Home screen
+        Intent shortcutIntent = new Intent(getApplicationContext(),
+                MainActivity.class);
+
+        shortcutIntent.setAction(Intent.ACTION_MAIN);
+
+        Intent addIntent = new Intent();
+        addIntent
+                .putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+        addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, R.string.app_name);
+        addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
+                Intent.ShortcutIconResource.fromContext(getApplicationContext(),
+                        R.mipmap.ic_launcher));
+
+        addIntent
+                .setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+        getApplicationContext().sendBroadcast(addIntent);
     }
 
 }
