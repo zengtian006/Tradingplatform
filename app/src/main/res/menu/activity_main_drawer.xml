@@ -28,16 +28,16 @@
         android:title="Join a deal">
         <menu>
             <item
-                android:icon="@android:drawable/ic_menu_manage"
+                android:icon="@drawable/detail1"
                 android:title="@string/buymenu_groupbuy" />
             <item
-                android:icon="@android:drawable/ic_menu_manage"
+                android:icon="@drawable/detail1"
                 android:title="@string/buymenu_bulk" />
             <item
-                android:icon="@android:drawable/ic_menu_manage"
+                android:icon="@drawable/detail1"
                 android:title="@string/buymenu_display" />
             <item
-                android:icon="@android:drawable/ic_menu_manage"
+                android:icon="@drawable/detail1"
                 android:title="@string/buymenu_watch_list" />
         </menu>
     </item>
@@ -47,16 +47,16 @@
         android:title="Find opportunity">
         <menu>
             <item
-                android:icon="@android:drawable/ic_menu_manage"
+                android:icon="@drawable/detail2"
                 android:title="@string/sellmenu_add" />
             <item
-                android:icon="@android:drawable/ic_menu_manage"
+                android:icon="@drawable/detail2"
                 android:title="@string/sellmenu_bulk" />
             <item
-                android:icon="@android:drawable/ic_menu_manage"
+                android:icon="@drawable/detail2"
                 android:title="@string/sellmenu_scheduled" />
             <item
-                android:icon="@android:drawable/ic_menu_manage"
+                android:icon="@drawable/detail2"
                 android:title="@string/sellmenu_selling" />
         </menu>
     </item>
@@ -68,23 +68,23 @@
         <menu>
             <item
                 android:id="@+id/nav_address"
-                android:icon="@android:drawable/ic_menu_manage"
+                android:icon="@drawable/detail3"
                 android:title="@string/action_address" />
             <item
                 android:id="@+id/nav_message"
-                android:icon="@android:drawable/ic_menu_manage"
+                android:icon="@drawable/detail3"
                 android:title="@string/action_message" />
             <item
                 android:id="@+id/nav_order"
-                android:icon="@android:drawable/ic_menu_manage"
+                android:icon="@drawable/detail3"
                 android:title="@string/action_order" />
             <item
                 android:id="@+id/nav_wallet"
-                android:icon="@android:drawable/ic_menu_manage"
+                android:icon="@drawable/detail3"
                 android:title="@string/action_wallet" />
             <item
                 android:id="@+id/nav_watch_list"
-                android:icon="@android:drawable/ic_menu_manage"
+                android:icon="@drawable/detail3"
                 android:title="@string/action_watch_list" />
         </menu>
     </item>
@@ -95,7 +95,7 @@
         <menu>
             <item
                 android:id="@+id/nav_help"
-                android:icon="@android:drawable/ic_menu_manage"
+                android:icon="@drawable/help"
                 android:title="@string/action_help" />
         </menu>
     </item>

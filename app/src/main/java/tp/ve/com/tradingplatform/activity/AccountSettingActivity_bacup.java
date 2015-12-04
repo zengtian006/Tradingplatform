@@ -59,7 +59,7 @@ import tp.ve.com.tradingplatform.app.AppConfig;
 import tp.ve.com.tradingplatform.app.AppController;
 import tp.ve.com.tradingplatform.component.MultiSelectionSpinner;
 import tp.ve.com.tradingplatform.helper.SessionManager;
-import tp.ve.com.tradingplatform.utils.RealPathUtil;
+import tp.ve.com.tradingplatform.utils.ImageUtil;
 
 /**
  * Created by Zeng on 2015/11/10.
@@ -352,13 +352,13 @@ public class AccountSettingActivity_bacup extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
+            BitmapFactory.Options opts = new BitmapFactory.Options();
+            opts.inSampleSize = 4;
             if (requestCode == CAPTURE_IMAGE_REQUEST_CODE_ID) {//Upload ID
                 Uri selectedImageUri;
                 if (data.getData() == null) { //isCamera
                     selectedImageUri = outputFileUri;
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inSampleSize = 8;
-                    final Bitmap bitmap = BitmapFactory.decodeFile(selectedImageUri.getPath(), options);
+                    final Bitmap bitmap = BitmapFactory.decodeFile(selectedImageUri.getPath(), opts);
                     idImgPreview.setVisibility(ImageView.VISIBLE);
                     idImgPreview.setImageBitmap(bitmap);
                 } else {
@@ -370,12 +370,12 @@ public class AccountSettingActivity_bacup extends AppCompatActivity {
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
-                    final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                    final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream, null, opts);
                     idImgPreview.setVisibility(ImageView.VISIBLE);
                     idImgPreview.setImageBitmap(selectedImage);
                 }
                 Log.v(TAG, "url!!!!!:" + String.valueOf(selectedImageUri.getPath()));
-                Log.v(TAG, "Real Path: " + RealPathUtil.getRealPathFromURI_API19(this, data.getData()));
+                Log.v(TAG, "Real Path: " + ImageUtil.getRealPathFromURI_API19(this, data.getData()));
             } else if (requestCode == CAPTURE_IMAGE_REQUEST_CODE_BIZ) {//Upload BL
                 Uri selectedImageUri;
                 Log.v(TAG, "getData" + String.valueOf(data.getData()));

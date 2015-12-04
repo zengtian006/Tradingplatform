@@ -65,7 +65,9 @@ public class LoginActivity extends AppCompatActivity {
 
         // Session manager
         session = new SessionManager(getApplicationContext());
-        edt_username.setText(session.getUserName());
+        if (!session.getUserName().equals("GUEST")) {
+            edt_username.setText(session.getUserName());
+        }
 
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override

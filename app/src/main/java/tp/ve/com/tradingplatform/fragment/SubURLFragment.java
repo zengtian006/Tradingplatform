@@ -117,7 +117,7 @@ public class SubURLFragment extends Fragment {
     private void uploadImage(final String imgString) {
         String tag_string_req = "req_update";
 
-        String URL = "http://10.0.3.91/api/images/add";
+        String URL = "http://10.0.3.99/api/images/add";
         Log.v(TAG, "URL: " + URL);
         ;
         StringRequest strReq = new StringRequest(Request.Method.POST,
@@ -244,7 +244,7 @@ public class SubURLFragment extends Fragment {
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SubContentFragment.custom_text.setText("Check this link for more information " + edt_url.getText().toString());
+                SubContentFragment.custom_text.setText("Check this link for more information " + edt_url.getText().toString() + '\n');
                 Linkify.addLinks(SubContentFragment.custom_text, Linkify.ALL);
                 SubContentFragment.s_img.setImageDrawable(view_image.getDrawable());
                 SubContentFragment.s_img.setTag(view_image.getTag());
@@ -286,15 +286,18 @@ public class SubURLFragment extends Fragment {
         try { // Use Jsoup to Obtain HTML text from URL, Search for Title and IMG TAGS
             Document doc = Jsoup.connect(urlString).get();
             title = doc.title();
-            Elements imgs = doc.getElementsByTag("img");
-            for (int i = 0; i < 2; i++) {
-                Element el = imgs.get(i);
-                img = el.attr("abs:src");
-            }
+//            Elements imgs = doc.getElementsByTag("img");
+            //            for (int i = 0; i < 2; i++) {
+//                Element el = imgs.get(i);
+//                img = el.attr("abs:src");
+//            }
 //            for (Element el : imgs) {
 //                img = el.attr("abs:src");
 //                Log.v(TAG, "image address: " + img);
 //            }
+            img = doc.select("a#large_image0").first().attr("abs:href");
+//            Element imgs = doc.getElementById("large_image0");
+//            img = imgs.getElementsByAttribute("href").toString();
         } finally {
             if (stream != null) {
                 stream.close();

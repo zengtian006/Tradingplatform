@@ -3,10 +3,13 @@ package tp.ve.com.tradingplatform.fragment;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -53,13 +56,14 @@ import tp.ve.com.tradingplatform.helper.SessionManager;
 /**
  * Created by Zeng on 2015/11/26.
  */
-public class SubListFragment extends Fragment {
+public class SubListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private final static String TAG = SubListFragment.class.getSimpleName();
 
     private List<ShareContent> mShareList;
     private AppAdapter mAdapter;
     private SwipeMenuListView mListView;
     EditText searchText;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private ProgressDialog pDialog;
     public static int startTimes;
 
@@ -103,6 +107,13 @@ public class SubListFragment extends Fragment {
                 // TODO Auto-generated method stub
             }
         });
+
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setColorSchemeResources(
+                android.R.color.holo_red_light,
+                android.R.color.holo_blue_light,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light);
     }
 
     private void setView() {
@@ -143,6 +154,7 @@ public class SubListFragment extends Fragment {
                 ShareContent item = mShareList.get(position);
                 switch (index) {
                     case 0:
+                        new delShare().execute(item.getsId());
                         mShareList.remove(position);
                         mAdapter.notifyDataSetChanged();
                         break;
@@ -155,17 +167,81 @@ public class SubListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ShareContent item = mShareList.get(position);
-                Toast.makeText(getActivity(), item.getsId() + ": " + item.getsContent(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), item.getsId() + ": " + item.getsContent(), Toast.LENGTH_SHORT).show();
+                SubDetailFragment.edt_url.setText(item.getsURL());
+                SubDetailFragment.edt_title.setText(item.getsTitle());
+                SubDetailFragment.edt_content.setText(item.getsContent() + "\n");
+                Linkify.addLinks(SubDetailFragment.edt_content, Linkify.ALL);
+                ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+                SubDetailFragment.imageView.setImageUrl(item.getsImg_path(), imageLoader);
+                SubDetailFragment.img_url = item.getsImg_path();
+                SubDetailFragment.edt_id.setText(item.getsId());
                 ShareListFragment.viewPager.setCurrentItem(1);
             }
         });
         // set creator
         mListView.setMenuCreator(creator);
+        mListView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
     }
 
     private void findView(View rootView) {
         mListView = (SwipeMenuListView) rootView.findViewById(R.id.listView);
         searchText = (EditText) rootView.findViewById(R.id.inputSearch);
+        swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swiperefresh);
+    }
+
+    @Override
+    public void onRefresh() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                new refreshShareList().execute();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }, 2000);
+    }
+
+    private class delShare extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            Log.v(TAG, params[0]);
+
+            StringRequest strReq = new StringRequest(Request.Method.POST,
+                    AppConfig.SHARE_DEL + params[0], new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Log.d(TAG, "response: " + response.toString());
+                    try {
+                        JSONObject jObj = new JSONObject(response);
+                        Boolean success = Boolean.valueOf(jObj.getString("success"));
+                        if (success) {
+                            Toast.makeText(getActivity(), "Record deleted successfully", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getActivity(), "Error: Cannot delete this record", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    VolleyLog.d(TAG, "Error: " + error.getMessage());
+                }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+//                headers.put("Content-Type", "application/json");
+                    headers.put("Accept", "application/json");
+                    headers.put("Authorization", "Bearer " + SessionManager.temptoken);
+                    return headers;
+                }
+            };
+            AppController.getInstance().addToRequestQueue(strReq);
+            return null;
+        }
     }
 
     private class refreshShareList extends AsyncTask<String, String, String> {
@@ -181,7 +257,7 @@ public class SubListFragment extends Fragment {
 //        pDialog.setMessage("Loading...");
 //        showDialog();
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.SHARE_INDEX, new Response.Listener<String>() {
+                AppConfig.SHARE_INDEX + SessionManager.currMember.getMember_id(), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, "response: " + response.toString());
@@ -196,6 +272,8 @@ public class SubListFragment extends Fragment {
                         JSONObject shareObj = new JSONObject(jsonArray.get(i).toString());
 
                         ShareContent shareContent = new ShareContent();
+                        shareContent.setsId(shareObj.getString("id"));
+                        shareContent.setsURL(shareObj.getString("url"));
                         shareContent.setsTitle(shareObj.getString("title"));
                         shareContent.setsContent(shareObj.getString("content"));
 
@@ -231,7 +309,7 @@ public class SubListFragment extends Fragment {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("member_id", SessionManager.currMember.getMember_id());
+//                params.put("member_id", SessionManager.currMember.getMember_id());
                 return params;
             }
 
@@ -296,7 +374,7 @@ public class SubListFragment extends Fragment {
 //            View.OnClickListener itemClick = new View.OnClickListener() {
 //                @Override
 //                public void onClick(View v) {
-//                    ShareListFragment.viewPager.setCurrentItem(1);
+//                    ShareListFragment.viewPager.setCurrentItem(1)
 //                }
 //            };
 //

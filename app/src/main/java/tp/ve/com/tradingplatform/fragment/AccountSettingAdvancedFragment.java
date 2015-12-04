@@ -5,8 +5,6 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,7 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
-import android.widget.ScrollView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -36,8 +34,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,11 +45,9 @@ import java.util.Map;
 import tp.ve.com.tradingplatform.R;
 import tp.ve.com.tradingplatform.activity.AccountSettingActivity;
 import tp.ve.com.tradingplatform.activity.MainActivity;
-import tp.ve.com.tradingplatform.activity.SignupActivity;
 import tp.ve.com.tradingplatform.app.AppConfig;
 import tp.ve.com.tradingplatform.app.AppController;
 import tp.ve.com.tradingplatform.helper.SessionManager;
-import tp.ve.com.tradingplatform.utils.RealPathUtil;
 
 /**
  * Created by Zeng on 2015/11/18.
@@ -63,13 +57,17 @@ public class AccountSettingAdvancedFragment extends Fragment {
 
     private static final int CAPTURE_IMAGE_REQUEST_CODE_ID = 100;
     private static final int CAPTURE_IMAGE_REQUEST_CODE_BIZ = 200;
+    private static final int CAPTURE_IMAGE_REQUEST_CODE_ADD = 300;
     Button btnUploadID, btnUploadBizLicense, btnUploadAd, btnDone;
-    public static ImageView idImgPreview, BizLicenseImgPreview;
+    public static ImageView idImgPreview, BizLicenseImgPreview, addImgPreview;
+    public static RelativeLayout idImgPreview_layout, BizLicenseImgPreview_layout, addImgPreview_layout;
+    public static Button del_id, del_add, del_biz;
     private ProgressDialog pDialog;
     private String member_id;
     LinearLayout layout_compay, layout_individual;
     RadioGroup type_group;
-    EditText edt_name, edt_phone, edt_email;
+    EditText edt_name, edt_phone, edt_email, edt_com_name, edt_com_desc, edt_com_website, edt_office_phome, edt_com_product;
+    public static LinearLayout img_gallery;
 
 
     @Override
@@ -90,31 +88,50 @@ public class AccountSettingAdvancedFragment extends Fragment {
     }
 
     private void setView() {
+        Log.v(TAG, "From String: " + AccountSettingActivity.from_string);
         layout_individual.setVisibility(LinearLayout.GONE);
         if (AccountSettingActivity.from_string.equals("Supplier")) {
             type_group.setVisibility(RadioGroup.GONE);
-        } else {
-
+        } else if (AccountSettingActivity.from_string.equals("ITP")) {
             edt_name.setText(SessionManager.currMember.getMember_name());
             edt_phone.setText(SessionManager.currMember.getMember_mobile());
             if (!SessionManager.currMember.getMember_email().equals("null")) {
                 edt_email.setText(SessionManager.currMember.getMember_email());
             }
         }
+        idImgPreview.setTag("empty");
+        addImgPreview.setTag("empty");
+        BizLicenseImgPreview.setTag("empty");
+        del_biz.setVisibility(Button.GONE);
+        del_id.setVisibility(Button.GONE);
+        del_add.setVisibility(Button.GONE);
     }
 
     private void setListener() {
-        btnUploadID.setOnClickListener(new View.OnClickListener() {
+        idImgPreview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openImageIntent(CAPTURE_IMAGE_REQUEST_CODE_ID);
+                if (idImgPreview.getTag().toString().equals("empty")) {
+                    openImageIntent(CAPTURE_IMAGE_REQUEST_CODE_ID);
+                }
             }
         });
 
-        btnUploadBizLicense.setOnClickListener(new View.OnClickListener() {
+        BizLicenseImgPreview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openImageIntent(CAPTURE_IMAGE_REQUEST_CODE_BIZ);
+                if (BizLicenseImgPreview.getTag().toString().equals("empty")) {
+                    openImageIntent(CAPTURE_IMAGE_REQUEST_CODE_BIZ);
+                }
+            }
+        });
+
+        addImgPreview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (addImgPreview.getTag().toString().equals("empty")) {
+                    openImageIntent(CAPTURE_IMAGE_REQUEST_CODE_ADD);
+                }
             }
         });
 
@@ -133,10 +150,12 @@ public class AccountSettingAdvancedFragment extends Fragment {
                     case R.id.rb_company:
                         layout_individual.setVisibility(LinearLayout.GONE);
                         layout_compay.setVisibility(LinearLayout.VISIBLE);
+                        BizLicenseImgPreview_layout.setVisibility(RelativeLayout.VISIBLE);
                         break;
                     case R.id.rb_individual:
                         layout_individual.setVisibility(LinearLayout.VISIBLE);
                         layout_compay.setVisibility(LinearLayout.GONE);
+                        BizLicenseImgPreview_layout.setVisibility(RelativeLayout.GONE);
                         break;
                 }
             }
@@ -152,12 +171,25 @@ public class AccountSettingAdvancedFragment extends Fragment {
         btnDone = (Button) view.findViewById(R.id.btn_done);
         idImgPreview = (ImageView) view.findViewById(R.id.idImgPreview);
         BizLicenseImgPreview = (ImageView) view.findViewById(R.id.BizLicenseImgPreview);
+        addImgPreview = (ImageView) view.findViewById(R.id.addImgPreview);
+        idImgPreview_layout = (RelativeLayout) view.findViewById(R.id.idImgPreview_layout);
+        BizLicenseImgPreview_layout = (RelativeLayout) view.findViewById(R.id.BizLicenseImgPreview_layout);
+        addImgPreview_layout = (RelativeLayout) view.findViewById(R.id.addImgPreview_layout);
         layout_compay = (LinearLayout) view.findViewById(R.id.layout_company);
         layout_individual = (LinearLayout) view.findViewById(R.id.layout_individual);
         type_group = (RadioGroup) view.findViewById((R.id.type_group));
         edt_name = (EditText) view.findViewById(R.id.input_name_setting);
         edt_phone = (EditText) view.findViewById(R.id.input_mobile_setting);
         edt_email = (EditText) view.findViewById(R.id.input_email_setting);
+        img_gallery = (LinearLayout) view.findViewById(R.id.img_gallery);
+        del_id = (Button) view.findViewById(R.id.del_id);
+        del_add = (Button) view.findViewById(R.id.del_add);
+        del_biz = (Button) view.findViewById(R.id.del_biz);
+        edt_com_name = (EditText) view.findViewById(R.id.input_comName);
+        edt_com_desc = (EditText) view.findViewById(R.id.input_comProfile);
+        edt_com_website = (EditText) view.findViewById(R.id.input_comWebsite);
+        edt_office_phome = (EditText) view.findViewById(R.id.input_comPhone);
+        edt_com_product = (EditText) view.findViewById(R.id.input_comProduct);
     }
 
     private void openImageIntent(int requestcode) {
@@ -196,18 +228,15 @@ public class AccountSettingAdvancedFragment extends Fragment {
             intent.putExtra(MediaStore.EXTRA_OUTPUT, AccountSettingActivity.outputFileUri);
             cameraIntents.add(intent);
         }
-
         // Filesystem.
         final Intent galleryIntent = new Intent();
         galleryIntent.setType("image/*");
         galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-
         // Chooser of filesystem options.
         final Intent chooserIntent = Intent.createChooser(galleryIntent, "Select Source");
 
         // Add the camera options.
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[cameraIntents.size()]));
-
         getActivity().startActivityForResult(chooserIntent, requestcode);
     }
 
@@ -225,25 +254,18 @@ public class AccountSettingAdvancedFragment extends Fragment {
 
             @Override
             public void onResponse(String response) {
-                Log.d(TAG, "Register Response: " + response.toString());
+                Log.d(TAG, "Update Response: " + response.toString());
                 hideDialog();
                 try {
-//                    response = response.substring(response.indexOf("{"), response.lastIndexOf("}") + 1);
                     JSONObject jObj = new JSONObject(response);
                     boolean success = Boolean.valueOf(jObj.getString("success"));
                     if (success) {
-                        // User successfully stored in MySQL
-                        // Now store the user in sqlite
-                        Toast.makeText(getActivity(), "Your profile has been updated successfully!", Toast.LENGTH_LONG).show();
-
-                        // Launch Login activity
+                        Toast.makeText(getActivity(), "Your application has been received and is being processed!", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(
                                 getActivity(), MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     } else {
-                        // Error occurred in registration. Get the error
-                        // message
                         String errorMsg = jObj.getString("error_msg");
                         Toast.makeText(getActivity(),
                                 errorMsg, Toast.LENGTH_LONG).show();
@@ -251,10 +273,8 @@ public class AccountSettingAdvancedFragment extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
         }, new Response.ErrorListener() {
-
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Registration Error: " + error.getMessage());
@@ -262,31 +282,48 @@ public class AccountSettingAdvancedFragment extends Fragment {
                 hideDialog();
             }
         }) {
-
             @Override
             protected Map<String, String> getParams() {
-                // Posting params to register url
                 Map<String, String> params = new HashMap<String, String>();
-                params.put(AccountSettingActivity.from_string.toLowerCase() + "_verified", "A");
-//                params.put("name", "test");
-//                params.put("gender", "M");
-//                params.put("language", "chinese");
-//                params.put("email", "zengtian006@gmail.com");
+                String role = AccountSettingActivity.from_string;
+                params.put(role.toLowerCase() + "_verified", "A");
+                params.put("role", role);
+                if (role.equals("ITP")) {
+                    if (type_group.getCheckedRadioButtonId() == R.id.rb_company) {
+                        params.put("type", "C");
+                        params.put("company_name", edt_com_name.getText().toString());
+                        params.put("company_desc", edt_com_desc.getText().toString());
+                        params.put("company_website", edt_com_website.getText().toString());
+                        params.put("office_phone", edt_office_phome.getText().toString());
+                        params.put("company_product", edt_com_product.getText().toString());
+                    } else if (type_group.getCheckedRadioButtonId() == R.id.rb_individual) {
+                        params.put("type", "I");
+                        params.put("full_name", edt_name.getText().toString());
+                        params.put("mobile", edt_phone.getText().toString());
+                        params.put("email", edt_email.getText().toString());
+                    }
+                } else if (role.equals("Supplier")) {
+                    params.put("company_name", edt_com_name.getText().toString());
+                    params.put("company_desc", edt_com_desc.getText().toString());
+                    params.put("company_website", edt_com_website.getText().toString());
+                    params.put("office_phone", edt_office_phome.getText().toString());
+                    params.put("company_product", edt_com_product.getText().toString());
+                }
+                Log.v(TAG, "Paras: " + params.toString());
                 return params;
             }
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
-//                headers.put("Content-Type", "application/json");
                 headers.put("Accept", "application/json");
                 headers.put("Authorization", "Bearer " + SessionManager.temptoken);
                 return headers;
             }
-
         };
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        AppController.getInstance().
+
+                addToRequestQueue(strReq, tag_string_req);
     }
 
     private void showDialog() {

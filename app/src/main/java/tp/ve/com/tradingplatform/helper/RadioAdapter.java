@@ -102,6 +102,7 @@ public abstract class RadioAdapter<T> extends RecyclerView.Adapter<RadioAdapter.
                     String mRole = mText.getText().toString().trim();
 //                    if (mSelectedStatus.equals("Not Applied")) {
                     if (mRole.equals("Buyer")) {
+                        AccountSettingActivity.from_string = mRole;
                         AccountSettingActivity.viewPager.setCurrentItem(1);
                     } else {
                         if (mSelectedStatus.equals("Not Applied")) {

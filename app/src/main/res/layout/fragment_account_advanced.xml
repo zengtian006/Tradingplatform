@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/aaa">
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -40,38 +41,57 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:background="@drawable/red_bg" >
+
+                        <TextView
+                            android:id="@+id/textView12"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical|center"
+                            android:text="Profile"
+                            android:textColor="#ffffff"
+                            android:textStyle="bold"
+                            android:typeface="serif" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
                         android:layout_weight="1.53"
                         android:gravity="bottom|center"
-                        android:paddingLeft="30dp"
                         android:visibility="visible"
-                        android:layout_marginTop="10dp">
+                        android:weightSum="1"
+                        android:paddingLeft="5dp">
 
                         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
                             android:id="@+id/type_group"
                             android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:layout_height="fill_parent"
+                            android:orientation="horizontal"
+                            android:gravity="left"
+                            android:layout_weight="0.25">
 
                             <RadioButton
                                 android:id="@+id/rb_company"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:checked="true"
                                 android:text="@string/radio_company"
                                 android:textColor="#7e7e7e"
                                 android:textSize="16dp"
-                                android:checked="true" />
+                                android:layout_weight="1" />
 
                             <RadioButton
                                 android:id="@+id/rb_individual"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
                                 android:checked="false"
                                 android:text="@string/radio_individual"
                                 android:textColor="#7e7e7e"
-                                android:textSize="16dp" />
+                                android:textSize="16dp"
+                                android:layout_weight="1" />
                         </RadioGroup>
                     </LinearLayout>
 
@@ -92,7 +112,7 @@
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hint_comName"
                                 android:singleLine="true"
-                                android:textSize="16dp"
+                                android:textSize="15dp"
                                 android:typeface="sans" />
                         </android.support.design.widget.TextInputLayout>
 
@@ -107,7 +127,7 @@
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hint_comProfile"
                                 android:maxLines="3"
-                                android:textSize="16dp"
+                                android:textSize="15dp"
                                 android:typeface="sans" />
                         </android.support.design.widget.TextInputLayout>
 
@@ -122,7 +142,7 @@
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hint_comWebsite"
                                 android:singleLine="true"
-                                android:textSize="16dp"
+                                android:textSize="15dp"
                                 android:typeface="sans" />
                         </android.support.design.widget.TextInputLayout>
 
@@ -138,7 +158,7 @@
                                 android:hint="@string/hint_comPhone"
                                 android:inputType="phone"
                                 android:singleLine="true"
-                                android:textSize="16dp"
+                                android:textSize="15dp"
                                 android:typeface="sans" />
                         </android.support.design.widget.TextInputLayout>
 
@@ -153,7 +173,7 @@
                                 android:layout_height="wrap_content"
                                 android:hint="@string/hint_comProduct"
                                 android:singleLine="true"
-                                android:textSize="16dp"
+                                android:textSize="15dp"
                                 android:typeface="sans" />
                         </android.support.design.widget.TextInputLayout>
 
@@ -210,15 +230,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:text="Upload your Business License" />
-
-                        <ImageView
-                            android:id="@+id/BizLicenseImgPreview"
-                            android:layout_width="fill_parent"
-                            android:layout_height="100dp"
-                            android:layout_marginBottom="10dp"
-                            android:layout_marginTop="10dp"
+                            android:text="Upload your Business License"
                             android:visibility="gone" />
+
+                        <!--<ImageView-->
+                        <!--android:id="@+id/BizLicenseImgPreview"-->
+                        <!--android:layout_width="fill_parent"-->
+                        <!--android:layout_height="100dp"-->
+                        <!--android:layout_marginBottom="10dp"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:visibility="gone" />-->
 
                     </LinearLayout>
 
@@ -244,7 +265,7 @@
                                 android:drawableStart="@drawable/icon_fullname"
                                 android:hint="@string/hint_name"
                                 android:singleLine="true"
-                                android:textSize="16dp"
+                                android:textSize="15dp"
                                 android:typeface="sans" />
                         </android.support.design.widget.TextInputLayout>
 
@@ -266,7 +287,7 @@
                                 android:focusableInTouchMode="false"
                                 android:hint="@string/hint_phone"
                                 android:singleLine="true"
-                                android:textSize="16dp"
+                                android:textSize="15dp"
                                 android:typeface="sans" />
                         </android.support.design.widget.TextInputLayout>
 
@@ -284,7 +305,7 @@
                                 android:drawableStart="@drawable/icon_email"
                                 android:hint="@string/hint_email"
                                 android:singleLine="true"
-                                android:textSize="16dp"
+                                android:textSize="15dp"
                                 android:typeface="sans" />
                         </android.support.design.widget.TextInputLayout>
 
@@ -295,33 +316,155 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="Upload your ID card" />
-
-                    <ImageView
-                        android:id="@+id/idImgPreview"
-                        android:layout_width="fill_parent"
-                        android:layout_height="100dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
-                        android:adjustViewBounds="false"
+                        android:text="Upload your ID card"
                         android:visibility="gone" />
+
+                    <!--<ImageView-->
+                    <!--android:id="@+id/idImgPreview"-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:layout_height="100dp"-->
+                    <!--android:layout_marginBottom="10dp"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:adjustViewBounds="false"-->
+                    <!--android:visibility="visible" />-->
 
                     <Button
                         android:id="@+id/btn_uploadAd"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="Upload your Address proof" />
-
-                    <ImageView
-                        android:id="@+id/adImgPreview"
-                        android:layout_width="fill_parent"
-                        android:layout_height="100dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
-                        android:adjustViewBounds="false"
+                        android:text="Upload your Address proof"
                         android:visibility="gone" />
 
+                    <!--<ImageView-->
+                    <!--android:id="@+id/addImgPreview"-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:layout_height="100dp"-->
+                    <!--android:layout_marginBottom="10dp"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:adjustViewBounds="false"-->
+                    <!--android:visibility="gone" />-->
+
+
+                    <HorizontalScrollView
+                        android:id="@+id/horizontalScrollView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp">
+
+                        <LinearLayout
+                            android:id="@+id/img_gallery"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+
+                            <RelativeLayout
+                                android:id="@+id/idImgPreview_layout"
+                                android:layout_width="120dp"
+                                android:layout_height="120dp">
+
+                                <ImageView
+                                    android:id="@+id/idImgPreview"
+                                    android:layout_width="90dp"
+                                    android:layout_height="90dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginRight="10dp"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/icon_addpic_unfocused" />
+
+                                <Button
+                                    android:id="@+id/del_id"
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginTop="5dp"
+                                    android:background="@drawable/bt_dynamic_del"
+                                    android:focusable="false" />
+
+                                <TextView
+                                    android:id="@+id/textView8"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_centerHorizontal="true"
+                                    android:text="ID Card"
+                                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/addImgPreview_layout"
+                                android:layout_width="120dp"
+                                android:layout_height="120dp">
+
+                                <ImageView
+                                    android:id="@+id/addImgPreview"
+                                    android:layout_width="90dp"
+                                    android:layout_height="90dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginRight="10dp"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/icon_addpic_unfocused" />
+
+                                <Button
+                                    android:id="@+id/del_add"
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginTop="5dp"
+                                    android:background="@drawable/bt_dynamic_del"
+                                    android:focusable="false" />
+
+                                <TextView
+                                    android:id="@+id/textView10"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_centerHorizontal="true"
+                                    android:text="Address"
+                                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/BizLicenseImgPreview_layout"
+                                android:layout_width="120dp"
+                                android:layout_height="120dp">
+
+                                <ImageView
+                                    android:id="@+id/BizLicenseImgPreview"
+                                    android:layout_width="90dp"
+                                    android:layout_height="90dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginRight="10dp"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/icon_addpic_unfocused" />
+
+                                <Button
+                                    android:id="@+id/del_biz"
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginTop="5dp"
+                                    android:background="@drawable/bt_dynamic_del"
+                                    android:focusable="false" />
+
+                                <TextView
+                                    android:id="@+id/textView11"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_centerHorizontal="true"
+                                    android:text="Biz License"
+                                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                            </RelativeLayout>
+
+
+                        </LinearLayout>
+                    </HorizontalScrollView>
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>
@@ -334,6 +477,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="@color/colorAccent"
-        android:text="Upload to Server"
+        android:text="Apply"
         android:textColor="#FFFFFF" />
 </LinearLayout>

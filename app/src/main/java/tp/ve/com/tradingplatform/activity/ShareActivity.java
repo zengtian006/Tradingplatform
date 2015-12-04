@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,10 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,14 +40,11 @@ import cn.sharesdk.wechat.friends.Wechat;
 import cn.sharesdk.wechat.moments.WechatMoments;
 import tp.ve.com.tradingplatform.R;
 import tp.ve.com.tradingplatform.component.CustomViewPager;
-import tp.ve.com.tradingplatform.fragment.AccountSettingAdvancedFragment;
 import tp.ve.com.tradingplatform.fragment.ShareBlogFragment;
 import tp.ve.com.tradingplatform.fragment.ShareItemFragment;
 import tp.ve.com.tradingplatform.fragment.ShareListFragment;
-import tp.ve.com.tradingplatform.fragment.SubContentFragment;
-import tp.ve.com.tradingplatform.fragment.SubListFragment;
 import tp.ve.com.tradingplatform.fragment.SubURLFragment;
-import tp.ve.com.tradingplatform.utils.RealPathUtil;
+import tp.ve.com.tradingplatform.utils.ImageUtil;
 
 /**
  * Created by Zeng on 2015/11/17.
@@ -215,14 +208,14 @@ public class ShareActivity extends AppCompatActivity implements PlatformActionLi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
+            BitmapFactory.Options opts = new BitmapFactory.Options();
+            opts.inSampleSize = 4;
             if (requestCode == 200) {
                 Uri selectedImageUri;
                 Bitmap bitmap;
                 if (data.getData() == null) { //isCamera
                     selectedImageUri = outputFileUri;
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inSampleSize = 8;
-                    bitmap = BitmapFactory.decodeFile(selectedImageUri.getPath(), options);
+                    bitmap = BitmapFactory.decodeFile(selectedImageUri.getPath(), opts);
                     Log.v(TAG, "url!!!!!:" + String.valueOf(selectedImageUri.getPath()));
                     loaclImgPath = String.valueOf(selectedImageUri.getPath());
                 } else {
@@ -234,9 +227,9 @@ public class ShareActivity extends AppCompatActivity implements PlatformActionLi
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
-                    bitmap = BitmapFactory.decodeStream(imageStream);
-                    loaclImgPath = RealPathUtil.getRealPathFromURI_API19(this, data.getData());
-                    Log.v(TAG, "Real Path: " + RealPathUtil.getRealPathFromURI_API19(this, data.getData()));
+                    bitmap = BitmapFactory.decodeStream(imageStream,null,opts);
+                    loaclImgPath = ImageUtil.getRealPathFromURI_API19(this, data.getData());
+                    Log.v(TAG, "Real Path: " + ImageUtil.getRealPathFromURI_API19(this, data.getData()));
                 }
                 SubURLFragment.view_image.setImageBitmap(bitmap);
                 SubURLFragment.view_image.setTag("full");

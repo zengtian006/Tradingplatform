@@ -1,17 +1,10 @@
 package tp.ve.com.tradingplatform.fragment;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.text.Html;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,15 +23,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,14 +35,13 @@ import cn.sharesdk.twitter.Twitter;
 import cn.sharesdk.wechat.friends.Wechat;
 import cn.sharesdk.wechat.moments.WechatMoments;
 import tp.ve.com.tradingplatform.R;
-import tp.ve.com.tradingplatform.activity.MainActivity;
 import tp.ve.com.tradingplatform.activity.ShareActivity;
 import tp.ve.com.tradingplatform.activity.ShareDialog;
 import tp.ve.com.tradingplatform.app.AppConfig;
 import tp.ve.com.tradingplatform.app.AppController;
 import tp.ve.com.tradingplatform.entity.ShareContent;
 import tp.ve.com.tradingplatform.helper.SessionManager;
-import tp.ve.com.tradingplatform.utils.RealPathUtil;
+import tp.ve.com.tradingplatform.utils.ImageUtil;
 
 /**
  * Created by Zeng on 2015/11/17.
@@ -117,7 +100,7 @@ public class SubContentFragment extends Fragment {
                         Uri bmpUri = null;
                         if (s_img.getTag().toString().equals("full")) {
                             hasImg = true;
-                            bmpUri = RealPathUtil.getLocalBitmapUri(getActivity(), s_img);
+                            bmpUri = ImageUtil.getLocalBitmapUri(getActivity(), s_img);
                             Log.v(TAG, "URL:" + bmpUri);
                             Log.v(TAG, "Path: " + bmpUri.getPath());
                         }
@@ -129,6 +112,9 @@ public class SubContentFragment extends Fragment {
                         //
                         ShareContent newContent = new ShareContent();
                         String encodedImageString = "";
+                        newContent.setsURL(SubURLFragment.edt_url.getText().toString());
+                        newContent.setsTitle(tv_title.getText().toString());
+                        newContent.setsContent(custom_text.getText().toString());
 
                         HashMap<String, Object> item = (HashMap<String, Object>) parent.getItemAtPosition(position);
                         if (item.get("ItemText").equals("Whatsapp")) {
@@ -136,21 +122,11 @@ public class SubContentFragment extends Fragment {
 
                             Intent shareIntent = new Intent();
                             shareIntent.setAction(Intent.ACTION_SEND);
-
                             shareIntent.setPackage("com.whatsapp");
                             shareIntent.putExtra(Intent.EXTRA_TEXT, tv_title.getText().toString() + "\n" + custom_text.getText().toString());
-                            newContent.setsTitle(tv_title.getText().toString());
-                            newContent.setsContent(custom_text.getText().toString());
-                            newContent.setsURL(SubURLFragment.edt_url.getText().toString());
                             if (hasImg) {
                                 if (ShareActivity.loaclImgPath != "") {
-                                    Bitmap myImg = BitmapFactory.decodeFile(ShareActivity.loaclImgPath);
-                                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                                    // Must compress the Image to reduce image size to make upload easy
-                                    myImg.compress(Bitmap.CompressFormat.PNG, 50, stream);
-                                    byte[] byte_arr = stream.toByteArray();
-                                    // Encode Image to String
-                                    encodedImageString = Base64.encodeToString(byte_arr, 0);
+                                    encodedImageString = ImageUtil.imgToBase64(ShareActivity.loaclImgPath);
                                 } else {
                                     newContent.setsImg_path(SubURLFragment.img);
                                 }
@@ -171,7 +147,11 @@ public class SubContentFragment extends Fragment {
                             Platform.ShareParams sp = new Platform.ShareParams();
                             sp.setText(tv_title.getText().toString() + "\n" + custom_text.getText().toString()); //分享文本
                             if (hasImg) {
-//                            sp.setImageUrl("http://7sby7r.com1.z0.glb.clouddn.com/CYSJ_02.jpg");//网络图片rul
+                                if (ShareActivity.loaclImgPath != "") {
+                                    encodedImageString = ImageUtil.imgToBase64(ShareActivity.loaclImgPath);
+                                } else {
+                                    newContent.setsImg_path(SubURLFragment.img);
+                                }
                             }
                             //3、非常重要：获取平台对象
                             Platform sinaWeibo = ShareSDK.getPlatform(SinaWeibo.NAME);
@@ -188,16 +168,12 @@ public class SubContentFragment extends Fragment {
                             if (hasImg) {
                                 if (ShareActivity.loaclImgPath != "") {
                                     sp.setImagePath(ShareActivity.loaclImgPath);
+                                    encodedImageString = ImageUtil.imgToBase64(ShareActivity.loaclImgPath);
                                 } else {
                                     sp.setImageUrl(SubURLFragment.img);
+                                    newContent.setsImg_path(SubURLFragment.img);
                                 }
                             }
-//                            try {
-//                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), bmpUri);
-//                                sp.setImageData(bitmap);
-//                            } catch (IOException e) {
-//                                e.printStackTrace();
-//                            }
 
                             sp.setUrl(SubURLFragment.edt_url.getText().toString());   //点进链接后，可以看到分享的详情
 
@@ -217,8 +193,10 @@ public class SubContentFragment extends Fragment {
                             if (hasImg) {
                                 if (ShareActivity.loaclImgPath != "") {
                                     sp.setImagePath(ShareActivity.loaclImgPath);
+                                    encodedImageString = ImageUtil.imgToBase64(ShareActivity.loaclImgPath);
                                 } else {
                                     sp.setImageUrl(SubURLFragment.img);
+                                    newContent.setsImg_path(SubURLFragment.img);
                                 }
                             }
 //                            sp.setImageUrl("http://7sby7r.com1.z0.glb.clouddn.com/CYSJ_02.jpg");//网络图片rul
@@ -236,8 +214,10 @@ public class SubContentFragment extends Fragment {
                             if (hasImg) {
                                 if (ShareActivity.loaclImgPath != "") {
                                     sp.setImagePath(ShareActivity.loaclImgPath);
+                                    encodedImageString = ImageUtil.imgToBase64(ShareActivity.loaclImgPath);
                                 } else {
                                     sp.setImageUrl(SubURLFragment.img);
+                                    newContent.setsImg_path(SubURLFragment.img);
                                 }
                             }
 //                            sp.setImageUrl("http://wiki.mob.com/wp-content/uploads/2014/09/ssdk_qig_qi_win.png");//网络图片rul
@@ -254,11 +234,12 @@ public class SubContentFragment extends Fragment {
                             if (hasImg) {
                                 if (ShareActivity.loaclImgPath != "") {
                                     sp.setImagePath(ShareActivity.loaclImgPath);
+                                    encodedImageString = ImageUtil.imgToBase64(ShareActivity.loaclImgPath);
                                 } else {
                                     sp.setImageUrl(SubURLFragment.img);
+                                    newContent.setsImg_path(SubURLFragment.img);
                                 }
                             }
-//                            sp.setImageUrl("http://7sby7r.com1.z0.glb.clouddn.com/CYSJ_02.jpg");//网络图片rul
                             //3、非常重要：获取平台对象
                             Platform twitter = ShareSDK.getPlatform(Twitter.NAME);
                             twitter.setPlatformActionListener((PlatformActionListener) getActivity()); // 设置分享事件回调
@@ -273,6 +254,7 @@ public class SubContentFragment extends Fragment {
             }
         });
     }
+
 
     private void addShareContent(final ShareContent newContent, final String encodedImageString) {
         StringRequest strReq = new StringRequest(Request.Method.POST,
@@ -294,7 +276,7 @@ public class SubContentFragment extends Fragment {
                 params.put("title", newContent.getsTitle());
                 params.put("url", newContent.getsURL());
                 params.put("content", newContent.getsContent());
-                Log.v(TAG, "encodedImage: " + encodedImageString);
+
                 Log.v(TAG, "img_path: " + newContent.getsImg_path());
                 if (encodedImageString != "") {
                     params.put("img_path", "local_image");
@@ -302,6 +284,7 @@ public class SubContentFragment extends Fragment {
                 } else {
                     params.put("img_path", newContent.getsImg_path());
                 }
+                Log.v(TAG, "parameters: " + params.toString());
                 return params;
             }
 

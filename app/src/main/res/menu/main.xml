@@ -18,13 +18,16 @@
         <menu>
             <item
                 android:id="@+id/ic_menu_qrcode"
+                android:icon="@drawable/qr_sacn"
                 android:title="Scan QR Code" />
             <item
                 android:id="@+id/ic_menu_share"
+                android:icon="@drawable/share"
                 android:title="Share" />
             <item
-                android:id="@+id/ic_menu_share_history"
-                android:title="Share History" />
+                android:id="@+id/ic_menu_share_plus"
+                android:icon="@drawable/share_plus"
+                android:title="Share Plus" />
 
 
         </menu>

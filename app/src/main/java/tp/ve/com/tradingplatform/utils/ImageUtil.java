@@ -4,17 +4,21 @@ package tp.ve.com.tradingplatform.utils;
  * Created by Zeng on 2015/11/11.
  */
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.util.Base64;
 import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
@@ -22,7 +26,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class RealPathUtil {
+public class ImageUtil {
 
     @SuppressLint("NewApi")
     public static String getRealPathFromURI_API19(Context context, Uri uri) {
@@ -36,7 +40,6 @@ public class RealPathUtil {
 
         // where id is equal to
         String sel = MediaStore.Images.Media._ID + "=?";
-
         Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 column, sel, new String[]{id}, null);
 
@@ -93,20 +96,23 @@ public class RealPathUtil {
         return Uri.parse(path);
     }
 
+    public static String imgToBase64(String loaclImgPath) {
+        Bitmap myImg = BitmapFactory.decodeFile(loaclImgPath);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        // Must compress the Image to reduce image size to make upload easy
+        myImg.compress(Bitmap.CompressFormat.PNG, 50, stream);
+        byte[] byte_arr = stream.toByteArray();
+        // Encode Image to String
+        return Base64.encodeToString(byte_arr, 0);
+    }
 
-    // Store image to default external storage directory
-//        Uri bmpUri = null;
-//        try {
-//            File file = new File(Environment.getExternalStoragePublicDirectory(
-//                    Environment.DIRECTORY_DOWNLOADS), "share_image_" + System.currentTimeMillis() + ".png");
-//            file.getParentFile().mkdirs();
-//            FileOutputStream out = new FileOutputStream(file);
-//            bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
-//            out.close();
-//            bmpUri = Uri.fromFile(file);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    return bmpUri;
-//}
+    public static String bmpToBase64(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        // Must compress the Image to reduce image size to make upload easy
+        bitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
+        byte[] byte_arr = stream.toByteArray();
+        // Encode Image to String
+        return Base64.encodeToString(byte_arr, 0);
+
+    }
 }
