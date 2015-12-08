@@ -33,6 +33,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
@@ -49,6 +50,14 @@
 
 
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/me_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="9"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_marginRight="10dp" />
 
             <ImageView
                 android:id="@+id/imageView2"

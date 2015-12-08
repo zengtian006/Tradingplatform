@@ -31,7 +31,7 @@ public class MeActivity extends AppCompatActivity {
     String[] item_name = {
             "Address",
             "My message",
-            "My Order",
+            "My order",
             "My wallet",
             "My watch list"
     };
@@ -39,8 +39,16 @@ public class MeActivity extends AppCompatActivity {
             R.drawable.me_address,
             R.drawable.me_message,
             R.drawable.me_order,
-            R.drawable.me_watchlist,
             R.drawable.me_wallet,
+            R.drawable.me_watchlist,
+    };
+
+    String[] item_count = {
+            "",
+            "9",
+            "",
+            "",
+            ""
     };
 
     @Override
@@ -73,12 +81,14 @@ public class MeActivity extends AppCompatActivity {
         private final LayoutInflater inflater;
         private final Context mContext;
         private final String[] item_name;
+        private final String[] item_count;
         private final Integer[] img_id;
 
         public customAdapter(Context context) {
             // TODO Auto-generated constructor stub
             inflater = LayoutInflater.from(context);
             this.item_name = MeActivity.this.item_name;
+            this.item_count = MeActivity.this.item_count;
             this.img_id = item_icon;
             this.mContext = context;
         }
@@ -92,6 +102,7 @@ public class MeActivity extends AppCompatActivity {
         public void onBindViewHolder(customAdapter.viewHolder holder, int position) {
             holder.mName.setText(item_name[position]);
             holder.mImage.setImageResource(img_id[position]);
+            holder.mCount.setText(item_count[position]);
         }
 
         @Override
@@ -102,11 +113,13 @@ public class MeActivity extends AppCompatActivity {
         public class viewHolder extends RecyclerView.ViewHolder {
             public TextView mName;
             public ImageView mImage;
+            public TextView mCount;
 
             public viewHolder(View itemView) {
                 super(itemView);
                 mName = (TextView) itemView.findViewById(R.id.me_name);
                 mImage = (ImageView) itemView.findViewById(R.id.me_icon);
+                mCount = (TextView) itemView.findViewById(R.id.me_count);
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

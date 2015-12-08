@@ -1,23 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/app/libs/jsoup-1.8.2.jar" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/tp/ve/com/tradingplatform/activity/ProductTourActivity.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/tp/ve/com/tradingplatform/activity/SplashActivity.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/tp/ve/com/tradingplatform/entity/Role.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/tp/ve/com/tradingplatform/fragment/ProductTourFragment.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/tp/ve/com/tradingplatform/helper/RadioAdapter.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/tp/ve/com/tradingplatform/helper/RoleAdapter.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/diamond_upholstery.png" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_swipe_indicator_white_18dp.png" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_splash.xml" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_tutorial.xml" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/card_item.xml" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/welcome_fragment1.xml" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/welcome_fragment2.xml" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/welcome_fragment3.xml" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/welcome_fragment4.xml" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/welcome_fragment5.xml" charset="GBK" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>
